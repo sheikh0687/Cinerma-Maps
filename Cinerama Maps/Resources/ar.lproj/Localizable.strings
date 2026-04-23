@@ -1,0 +1,444 @@
+/* 
+  Localizable.strings
+  Cinerama Maps
+
+  Created by Techimmense Software Solutions on 25/11/24.
+  
+*/
+
+
+"No internet connection make sure your device is connected to the internet" = "لا يوجد اتصال تأكد من الشبكة";
+
+"No data Available" = "لا توجد بيانات متاحة";
+
+"Ok" = "حسنًا";
+
+"Yes" = "نعم";
+
+"No" = "لا";
+
+"Open" = "فتح";
+
+"Cancel" = "إلغاء";
+
+"Done" = "تم";
+
+"Camera" = "الكاميرا";
+
+"Gallery" = "المعرض";
+
+"Loading" = "جاري التحميل";
+
+"Please wait" = "الرجاء الانتظار";
+
+"Date" = "التاريخ";
+
+"Explore the world with Cinerama Map" = "استكشف العالم باستخدام خرائط سينيراما";
+
+"Create memories that last a lifetime." = "اصنع ذكريات تدوم مدى الحياة.";
+
+"Plan your dream trip with Tourbliss" = "خطط لرحلة أحلامك مع سينراما";
+
+
+"Please enter the valid mobile number" = "الرجاء إدخال رقم جوال صالح";
+
+"Please enter the valid verification code" = "الرجاء التأكد من رمز التحقق ";
+
+"Register Your Profile" = "سجّل ملفك الشخصي";
+
+"Edit Profile" = "تعديل الملف الشخصي";
+
+"Male" = "ذكر";
+
+"Female" = "أنثى";
+
+"Please enter the first name" = "الرجاء إدخال الاسم الأول";
+
+"Please enter the last name" = "الرجاء إدخال الاسم الأخير";
+
+"Please enter the email" = "الرجاء إدخال البريد الإلكتروني";
+
+"Please enter the mobile number" = "الرجاء إدخال رقم الجوال";
+
+"Please select your gender" = "الرجاء تحديد الجنس";
+
+"Please enter your Date Of Birth" = "الرجاء إدخال تاريخ ميلادك";
+
+"Search" = "بحث";
+
+"% Off Discount" = "% خصم";
+
+"Created by Cineramamap" = "تم الإنشاء بواسطة سينراما";
+
+"Last Update" = "آخر تحديث";
+
+"Trip added successfully" = "تمت إضافة الرحلة بنجاح";
+
+
+"Trip Updated successfully" = "تم تحديث الرحلة بنجاح";
+
+"Please select the map type" = "يرجى تحديد نوع الخريطة";
+
+"Please enter the map name" = "يرجى إدخال اسم الخريطة";
+
+"City maps in " = "خرائط المدن في ";
+
+"SAR for" = "ريال سعودي لـ";
+
+"Month" = "الشهر";
+
+"The writing date is" = "تاريخ الكتابة هو";
+
+"Please enter the name" = "يرجى إدخال الاسم";
+
+"Please enter the card number" = "الرجاء إدخال رقم البطاقة";
+
+"Please enter the cvc number" = "الرجاء إدخال رمز الأمان ";
+
+"Please enter the month and year" = "الرجاء إدخال الشهر والسنة";
+
+"Suggesstion added successfully" = "تمت إضافة الاقتراح بنجاح";
+
+"Please enter the country name" = "الرجاء إدخال اسم الدولة";
+
+"Please enter the description" = "الرجاء إدخال الوصف";
+
+"Rating added successfully" = "تمت إضافة التقييم بنجاح";
+
+"Please select the rating star" = "الرجاء اختيار التقييم";
+
+"Please give the review" = "الرجاء تقديم المراجعة";
+
+"Away from you" = "يبعد عنك";
+
+"Worth visit" = "يستحق الزيارة";
+
+"Not Worth visit" = "لا يستحق الزيارة";
+
+"Do you want to cancel this subscription" = "هل تريد إلغاء هذا الاشتراك";
+
+"Write down your question and problem and we would be happy to help about it" = "اكتب سؤالك ومشكلتك وسنكون سعداء بمساعدتك بشأنها";
+"$ 39 SR" = "$ 39 SR";
+"Settings" = "الإعدادات";
+"No cover allow" = "لا يسمح بالتغطية";
+"Subscriptions" = "الاشتراكات";
+"Submit your suggestion" = "أرسل اقتراحك";
+"Select Map Name" = "حدد اسم الخريطة";
+"About the city" = "حول المدينة";
+"Free trip schedule when planning" = "جدول الرحلات مجاني للمشتركين";
+"Service" = "خدمة";
+"The writing date is 10/08/2024" = "تاريخ الكتابة هو 10/08/2024";
+"Maps" = "الخرائط";
+"Login" = "تسجيل الدخول";
+"About us" = "من نحن ؟ا";
+"One of the key aspects of success in any task or journey is good preparation. This means having all the necessary tools and materials to effectively complete the task or successfully reach the desired destination.\n\nFor example, imagine you are about to embark on a road trip. Before setting off, you will make sure you have enough gas in the car, check that the tires are properly inflated, and have a map or GPS system to guide you. These are all essential tools and preparations for a successful trip.\n\nThe same concept applies to any task or project. If you are working on a computer, you need the necessary software, files, and an internet connection to successfully complete your task." = "إحدى الجوانب الرئيسية للنجاح في أي مهمة أو رحلة هي التحضير الجيد. وهذا يعني أن لديك جميع الأدوات والمواد اللازمة لإتمام المهمة بنجاح أو للوصول إلى الوجهة المطلوبة.\n\nعلى سبيل المثال، تخيل أنك على وشك الشروع في رحلة برية. قبل الانطلاق، ستتأكد من أنك تمتلك كمية كافية من الوقود في السيارة، وتتأكد من أن الإطارات مضخمة بشكل صحيح، وأن لديك خريطة أو نظام GPS لإرشادك. هذه كلها أدوات أساسية للتحضير لرحلة ناجحة.\n\nينطبق نفس المفهوم على أي مهمة أو مشروع. إذا كنت تعمل على جهاز كمبيوتر، تحتاج إلى البرمجيات والملفات اللازمة واتصال بالإنترنت لإتمام مهمتك بنجاح.";
+
+"Select Map type" = "تحديد نوع الخريطة";
+"The Weather:" = "الطقس:";
+"NA" = "NA";
+"Road name, Istanbul" = "اسم الطريق، اسطنبول";
+"Date of birth" = "تاريخ الميلاد";
+"Fast Delivery Company" = "شركة التوصيل السريع";
+"+919424677784" = "+919424677784";
+"Trip needs a table. Add one now." = " لتكتمل رحلتك، أضف جدولك الآن وانطلق! ";
+"Mobile" = "رقم الجوال";
+"Select number of day" = "أختر يوم الرحلة";
+"Total Days" = "إجمالي الأيام";
+"Description" = "وصف";
+"SUBMIT" = "إرسال ";
+"General Information" = "معلومات عامة";
+"How many days in your Trip?" = "كم عدد أيام رحلتك؟";
+"Name" = "الاسم";
+"Free trip schedule when planning" = "جدول الرحلات مجاني للمشتركين";
+
+"Verification" = "تَحَقّق";
+"Profile" = "الملف الشخصي";
+"Total" = "المجموع";
+"Create Schedule" = "إنشاء جدول";
+"Or" = "أو";
+"Submit your suggestion" = "أرسل اقتراحك";
+"Arabic" = "عربي";
+"Select a distance 10 Km" = "اختر مسافة 10 كم";
+"code: 20%" = "الكود: 20%";
+"Select number of day:" = "حدد عدد الأيام:";
+"Search for Location" = "البحث عن الموقع";
+"Map" = "رسم خريطة";
+"Verification Code" = "رمز التحقق";
+"More" = "المزيد";
+"Service Evaluation" = "تقييم الخدمة";
+"Button" = "زر";
+"Guidelines and Tips" = "النصائح والتوصيات";
+"Service Details" = "تفاصيل الخدمة";
+"Communications:" = "شركات الاتصالات:";
+"Language" = "لغة";
+"The Cities" = "الـــــــمـــدن";
+"Privacy and Data" = "الخصوصية والبيانات";
+"Security Code" = "رمز الأمان";
+"Stander" = "الواقف";
+"Account Registration" = "تسجيل حساب";
+"Details Subscription" = "تفاصيل الاشتراك";
+"Type something" = "اكتب شيئا";
+"Notifications" = "الإشعارات";
+"Expiry Date" = "تاريخ الانتهاء";
+"Emergency Phone" = "أرقام الطوارئ";
+"PLACES" = "الأماكن";
+"DONE" = "تم";
+
+"How many days in your Trip?" = "كم عدد أيام الرحلة؟";
+"Platenum" = "Platenum";
+"1 Worth a visit" = "1 يستحق الزيارة";
+"Fast Delivery Company" = "شركة التوصيل السريع";
+"Map type:" = "نوع الخريطة:";
+"Promo Code" = "الرمز الترويجي";
+"Clothing" = "الملابس";
+"Police" = "الشرطة";
+"Enter Name" = "أدخل الاسم";
+"Mobile Number" = "رقم الجوال";
+"Closed" = "مغلق";
+"Give Rating" = " تقييم";
+"Make the schedule public for all" = "أجعل الجدول عام لكل المشتركين";
+"City maps in Turkey" = "خرائط المدن تركيا";
+"Map Name" = "اسم الخريطة";
+"Contact" = "اتصال";
+"Guidelines and Tips" = "النصائح والتوصيات";
+"Enter security code" = "أدخل رمز الأمان";
+"Phone Number" = "رقم الجوال";
+"Payment Successful" = "تم الدفع بنجاح";
+"Contact Us" = "اتصل بنا";
+"Maps" = "الخرائط";
+"Frequent updates on places" = "تحديثات متكررة عن الأماكن";
+"Duration" = "مدة";
+"Hello, Nasser" = "مرحبًا، ناصر";
+"Label" = "تسمية";
+"Website" = "الموقع الالكتروني";
+"Turkish lira 1 dollar = 20 lira" = "الليرة التركية 1 دولار = 20 ليرة";
+"Terms & Conditions" = "الشروط والأحكام";
+"English" = " English";
+"Contact Us" = "اتصل بنا";
+
+"Map Name" = "اسم الخريطة";
+"Search" = "بحث";
+"Monthly" = "شهريا";
+"Save" = "حفظ";
+"Maps" = " الخرائط";
+"Subscriptions" = "الاشتراكات";
+"Currency" = "العملة";
+"Choose Your Language" = "اختر اللغة";
+"Last Name" = "اسم العائلة";
+"Turkey, Istanbul" = "تركيا، اسطنبول";
+"Email Address" = "عنوان البريد الإلكتروني";
+"Find Your Address" = "ابحث عن عنوانك";
+"Enter expiry date" = "أدخل تاريخ الانتهاء";
+"Electrical Socket:" = "المقبس الكهربائي:";
+"Turkish Technology Company" = "شركة التكنولوجيا التركية";
+"Phone Number" = "رقم الجوال ";
+"Label" = "تصنيف";
+" Make the schedule public for all " = " اجعل الجدول متاحًا لجميع المشتركين ";
+"Logout" = "تسجيل الخروج";
+"SUBMIT" = " إرسال";
+"Card Number" = "رقم البطاقة";
+"Continue with Google" = "المتابعة بواسطة جوجل";
+"Free trip schedule when planning" = " جداول الرحلات مجانية للمشتركين";
+"Subscribe Now" = "اشترك الآن";
+"First Name" = "الاسم الأول";
+"Create" = "إنشاء";
+"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut " = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut ";
+"Select Map Name:" = "حدد اسم الخريطة:";
+"Best times to visit:" = "أفضل الأوقات للزيارة:";
+"Reviews" = "المراجعات";
+"Go to the Map" = "اذهب إلى الخريطة";
+
+"Reviews" = "المراجعات";
+"Create" = "إنشاء";
+"Pay and Continue" = "الدفع والاستمرار";
+"Naser Khaled" = "Naser Khaled";
+"Name On Card" = "الاسم على البطاقة";
+"More" = "المزيد";
+"Turkey Maps" = "خرائط تركيا";
+" Mobile number without 0" = "رقم الجوال بدون (صفر)  ";
+"Terms & Conditions" = "الشروط والأحكام";
+"Address" = " العنوان";
+"All Maps" = "جميع الخرائط";
+"Edit" = "تحرير";
+"Button" = "Button";
+"Don't Receive a Code?" = "لم تستلم الرمز؟";
+" We have sent you a verification code on WhatsApp." = " لقد أرسلنا لك رمز التحقق على الواتس آب
+";
+"Successfully Subcribed" = "تم الاشتراك بنجاح";
+"Do you have any suggestions for maps?" = "هل لديك أي اقتراحات للخرائط ؟";
+"Istanbul Map 1" = "خريطة اسطنبول 1";
+"4.0" = "4.0";
+"Dewas" = "ديواس";
+"Country Name" = "اسم الدولة";
+"Provide review rating" = "شارك تقييمك معنا";
+"Add place to table" = "إضافة مكان إلى الجدول";
+"Police" = "الشرطة ";
+"1 Worth a visit" = "1 تستحق الزيارة";
+"Select Map Type" = "حدد نوع الخريطة";
+"Choose this location" = "اختر هذا الموقع";
+"Search Location" = "بحث عن الموقع";
+"Total Days" = "مجموع الأيام";
+"Service Details" = "تفاصيل الخدمة";
+"Health:" = "الصحة:";
+"Cars Police" = "شرطة السيارات";
+
+
+"Home" = "الرئيسية";
+"In Morning" = "في الصباح";
+"How can we help you?" = "كيف يمكننا مساعدتك؟";
+"Map type:" = "نوع الخريطة:";
+"Gender" = "الجنس";
+"City maps  in Turkey." = "خرائط المدن في تركيا.";
+"Free trip schedule when planning" = "جداول الرحلات مجانية للمشتركين";
+"Select Language" = "اختر اللغة";
+"Add Promo Code" = "أضف رمز ترويجي";
+"+029008577866" = "+029008577866";
+"List" = "القائمة";
+"Search" = "بحث";
+"Away from you 3,6556 km" = "  يبعد عنك 3,6556 كم";
+"Enter Map Name" = "أدخل اسم الخريطة";
+"Temperature 22 degree celsius" = "22 درجة مئوية";
+"Delete Account" = "حذف الحساب";
+"Select date of birth" = "اختر تاريخ الميلاد";
+"All Maps" = "جميع الخرائط";
+"Save" = "حفظ";
+"Choose your suitable plan in Istanbul Map 1" = "اختر خطتك المناسبة في اسطنبول الخريطة 1";
+"Standard" = "الأساسية";
+"REVIEW" = "المراجعات";
+"Subscribe Now" = "اشترك الآن";
+"Nasser Khalid" = "Nasser Khalid";
+"ABOUT THE MAP" = "حول الخريطة";
+"Companies" = "الــشـركـــات";
+"Change the language" = "تغيير اللغة";
+"Skip" = "تخطى";
+"PRH5+M42, Depalpur Rd, Devi Ahillyabai Holkar Airport Area, Indore, Madhya Pradesh 452005, India" = "PRH5+M42, Depalpur Rd, Devi Ahillyabai Holkar Airport Area, Indore, Madhya Pradesh 452005, India";
+
+"Istanbul Map 1" = "خريطة اسطنبول 1";
+" Where do you want to go?" = "أين تريد أن تذهب ؟";
+"Type" = "نوع";
+"Free trip schedule when planning" = "جداول الرحلات مجانية للمشتركين";
+"Select Gender" = "اختر الجنس";
+"rewer" = "مُجدد";
+"Advertisement" = "إعلان";
+"Services" = "الخدمات";
+"C type 200V - 10A" = "نوع C 200 فولت - 10 أمبير";
+"39 riyals per month" = "39 ريال شهريا";
+"+919424677784" = "+919424677784";
+"Contact" = "اتصال";
+"Your Mobile Number" = "رقم هاتفك المحمول";
+"Email" = "البريد الكتروني ";
+"Road name, Istanbul" = "اسم الطريق، اسطنبول";
+"Map" = "الخريطة";
+"Flu Vaccination COVID" = "تطعيم الانفلونزا كوفيد";
+"39 Sr monthly" = "39 ريال شهريا";
+"+919407128717" = "+919407128717";
+"Service Evaluation" = "تقييم الخدمة";
+"Button" = "Button";
+"The name of the map:" = "اسم الخريطة:";
+"Turkish Language" = "اللغة التركية";
+"Enter name on card" = "أدخل الاسم على البطاقة";
+"Apply" = "تقديم ";
+"My Maps" = "خرائطي";
+"IMAGES" = "الصور";
+"Last Name" = "اسم العائلة";
+"Payment" = "الدفع";
+"39 Sr monthly" = "39 ريال شهريا";
+"Resend" = "إعادة الإرسال";
+"Location" = "موقع";
+"Subscribe Maps" = "الاشتراك في الخرائط";
+"Application Rating" = "تقييم التطبيق";
+"Enter card number" = "أدخل رقم البطاقة";
+"How do you prepare your self for travelling ?" = "كيف تجهز نفسك للسفر؟";
+"Choose your country you would like to visit?" = "اختر البلد الذي ترغب بزيارته؟";
+"Favorites" = "المفضلة";
+"Terms & Conditions" = "الشروط والأحكام";
+"Offers" = "العروض";
+"Official Language" = "اللغة الرسمية";
+"Change the langauge" = "تغيير اللغة";
+
+"By registering, you will agree to our terms and conditions." = "عند تسجيلك فإنك توافق على شروطنا وأحكامنا.";
+"Trip schedule" = "جداول الرحلات ";
+"For suggestions and adding other maps for cities" = "حول إضافة مدن أو أماكن محددة Independence Streetيل";
+
+"We are with you every step of the way on your journey, taking care of all the details and providing support as your digital tour guide, meeting your needs and managing your bookings." = "نحن معك في كل خطوة على طريق رحلتك، نهتم بجميع التفاصيل ونقدم الدعم كدليلك السياحي الرقمي، لتلبية احتياجاتك وإدارة حجوزاتك.";
+
+"In Cinerama, there’s no hidden spot for tourists; all discovered and important places can be found on our maps." = "في سينيراما، لا توجد أماكن مخفية للسياح؛ جميع الأماكن المكتشفة والمهمة يمكن العثور عليها على خرائطنا.";
+
+"Your electronic tour guide we’ve created schedules of the best places based on your interests, with the option to create your own custom schedule." = "دليلك السياحي الإلكتروني، قمنا بإنشاء جداول لأفضل الأماكن بناءً على اهتماماتك، مع خيار إنشاء جدول مخصص خاص بك.";
+
+"Advertisement details" = "تفاصيل الإعلان";
+
+"Offer Details" = "تفاصيل العرض";
+"Paid amount after discount" = "المبلغ المدفوع بعد الخصم";
+"Check Offers" = "تحقق من العروض";
+"Please enter the promo code" = "يرجى إدخال رمز العرض الترويجي";
+"Continue with google" = "متابعة باستخدام جوجل";
+
+"Make memories that will stay with you forever" = "اصنع ذكريات ستبقى معك إلى الأبد";
+"Submit your review" = "أرسل مراجعتك";
+"Place List" = "قائمة الأماكن";
+"Terms And Condition" = "الشروط والأحكام";
+"Privacy Policy" = "سياسة الخصوصية";
+"About us" = " من نحن ؟";
+"Cancel Subscription" = "إلغاء الاشتراك";
+"No Place Found" = "لم يتم العثور على المكان";
+"km" = "كم";
+"KM away from you" = "يبعد عنك  كم";
+
+"Video" = "فيديو";
+"Place Rating" = "تقييم المكان";
+"Pay With Apple" = "ادفع باستخدام Apple";
+"SAR" = "ريال سعودي";
+"Electrical Sockat:" = "مقبس كهربائي";
+"Total" = "المجموع";
+"Please upload the profile image" = "يرجى تحميل صورة الملف الشخصي";
+"Kale outlet center" = "مركز كالي أوتليت";
+"(Recommendation Degree)" = "(درجة التوصية)";
+"place description" = "لوريم إيبسوم هو ببساطة نص شكلي يُستخدم في صناعة الطباعة والتنضيد. كان لوريم إيبسوم النص القياسي في هذه الصناعة منذ القرن السادس عشر، عندما قام طابع غير معروف بأخذ مجموعة من الأحرف وخلطها ليصنع منها كتاب نماذج. وقد صمد ليس فقط لخمسة قرون، بل أيضًا قفز إلى التنضيد الإلكتروني دون تغير يُذكر. وقد شاع استخدامه في الستينيات مع إصدار أوراق ليتراسيت التي تحتوي على مقاطع من لوريم إيبسوم، ومؤخرًا مع برامج النشر المكتبي مثل ألدوس بيج ميكر التي تحتوي على نسخ من لوريم إيبسوم.";
+"Food" = "طعام";
+"Coffee" = "قهوة";
+"France" = "فرنسا";
+"Tag frame" = "إطار الوسم";
+"Suggested time" = "الوقت المقترح";
+"Video" = "فيديو";
+"Watch video >" = "شاهد الفيديو >";
+"Discount" = "خصم";
+"Advice" = "نصيحة";
+"Lorem ipsum dolor sit amet consectetur." = "لوريم إيبسوم دولور سيت أميت كونسكتتور.";
+"Location" = "الموقع";
+"Place Address" = "بيازيت، 34126 فاتح/إسطنبول";
+"See more" = "عرض المزيد";
+"Lorem ipsum dolor sit amet consectetur. Nisl aenean dui viverra." = "لوريم إيبسوم دولور سيت أميت كونسكتتور. نيسل آنين دوي فيفيرا.";
+"Away from you 200km" = "يبعد عنك 200 كم";
+"Reviews" = "المراجعات";
+"Farooq" = "فاروق";
+"Visit recommendations" = "توصيات الزيارة";
+"Search here" = "ابحث هنا";
+"All" = "الكل";
+"paris France" = "باريس، فرنسا";
+"new frame" = "إطار جديد";
+"Nearest Restaurants" = "أقرب المطاعم";
+"Sort by :" = "الترتيب حسب :";
+"Lorem Ipsum is simply dummy text of the printing and typesetting industry" = "لوريم إيبسوم هو نص شكلي يستخدم في صناعة الطباعة والتنضيد";
+"2 - 4 hours" = "2-4 ساعات";
+"Recommendation" = "توصية" ;
+"learn more..." = "اعرف المزيد..." ;
+"Favourite_Places" = "الأماكن المفضلة" ;
+"Tags" = "العلامات" ;
+
+"Visit recommendations" = "توصيات الزيارة";
+"Verification code or entered OTP is missing" = "رمز التحقق أو رمز OTP المُدخل مفقود";
+"Promo Code:" = "رمز العرض:";
+"Start" = "ابدأ";
+"End" = "انتهى";
+"City maps in the Republic of" = "خرائط المدن في جمهورية";
+"Promo Code Apply Successfully" = "تم تطبيق الرمز الترويجي بنجاح";
+
+"For add place first you need to subscribe your city map." = "لإضافة مكان، يجب أولاً الاشتراك في خريطة مدينتك.";
+"Expiry Date:" = "تاريخ الانتهاء:";
+"Popular" = "الأكثر شيوعًا";
+"Oldest" = "الأقدم";
+"Distance" = "المسافة";
+"USERID" = "معرّف المستخدم";
+"Read More" = "اقرأ المزيد";
+"Read Less" = "اقرأ أقل";

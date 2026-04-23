@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "441E3B27-DC4F-40DB-8E5A-7081E1E8CE0E"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "441FC886-F388-466A-8D8B-4FFEC21A0FDE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cinerama Maps/Controller/Secondary/Tab Bar/Map/ViewModel/PurchasedCityVM.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "fetchPurchaseCityMap(vC:tableHeight:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "441FC886-F388-466A-8D8B-4FFEC21A0FDE - 9cad0cb956d632a9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Cinerama_Maps.PurchasedCityViewModel.fetchPurchaseCityMap(vC: __C.UIViewController, tableHeight: __C.NSLayoutConstraint) -&gt; ()"
+                  moduleName = "Cinerama Maps"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sheikharbaz/Downloads/Cinerama%20Maps/Cinerama%20Maps/Controller/Secondary/Tab%20Bar/Map/ViewModel/PurchasedCityVM.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18">
+               </Location>
+               <Location
+                  uuid = "441FC886-F388-466A-8D8B-4FFEC21A0FDE - 63d77fb003c259b7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Array&lt;Cinerama_Maps.Res_PurchasedCityMap&gt;) -&gt; () in Cinerama_Maps.PurchasedCityViewModel.fetchPurchaseCityMap(vC: __C.UIViewController, tableHeight: __C.NSLayoutConstraint) -&gt; ()"
+                  moduleName = "Cinerama Maps"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sheikharbaz/Downloads/Cinerama%20Maps/Cinerama%20Maps/Controller/Secondary/Tab%20Bar/Map/ViewModel/PurchasedCityVM.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C85EB2DA-FABF-4E39-AE66-914DB6A10A81"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cinerama Maps/Controller/Secondary/Tab Bar/Map Subcription/View Model/SubscriptionMapVM.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "requestCountryMapDetails(vC:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F62025CD-3D24-4F22-94C4-ED01786610DF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cinerama Maps/Controller/Secondary/Tab Bar/TripSchedule/View/TripScheduleVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "setupBinding()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="PlaceDetail" representedClassName="PlaceDetail" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="avg_rating" optional="YES" attributeType="String"/>
+        <attribute name="city_id" optional="YES" attributeType="String"/>
+        <attribute name="city_name" optional="YES" attributeType="String"/>
+        <attribute name="city_name_ar" optional="YES" attributeType="String"/>
+        <attribute name="country_id" optional="YES" attributeType="String"/>
+        <attribute name="country_name" optional="YES" attributeType="String"/>
+        <attribute name="country_name_ar" optional="YES" attributeType="String"/>
+        <attribute name="currentUserFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="date_time" optional="YES" attributeType="String"/>
+        <attribute name="descriptio" optional="YES" attributeType="String"/>
+        <attribute name="description_ar" optional="YES" attributeType="String"/>
+        <attribute name="distance" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="end_date" optional="YES" attributeType="String"/>
+        <attribute name="fav_status" optional="YES" attributeType="String"/>
+        <attribute name="favoriteCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="google_map_link" optional="YES" attributeType="String"/>
+        <attribute name="icon" optional="YES" attributeType="String"/>
+        <attribute name="icon_background_color" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="lat" optional="YES" attributeType="String"/>
+        <attribute name="lon" optional="YES" attributeType="String"/>
+        <attribute name="mobile" optional="YES" attributeType="String"/>
+        <attribute name="place_name" optional="YES" attributeType="String"/>
+        <attribute name="place_name_ar" optional="YES" attributeType="String"/>
+        <attribute name="placeid" optional="YES" attributeType="String"/>
+        <attribute name="plan_purchase_status" optional="YES" attributeType="String"/>
+        <attribute name="promo_code_and_discount" optional="YES" attributeType="String"/>
+        <attribute name="show_only_icon" optional="YES" attributeType="String"/>
+        <attribute name="site_url" optional="YES" attributeType="String"/>
+        <attribute name="tag" optional="YES" attributeType="String"/>
+        <attribute name="tag_ar" optional="YES" attributeType="String"/>
+        <attribute name="tag_id" optional="YES" attributeType="String"/>
+        <attribute name="total_fav_place" optional="YES" attributeType="String"/>
+        <attribute name="total_unfav_place" optional="YES" attributeType="String"/>
+        <attribute name="user_id" optional="YES" attributeType="String"/>
+        <attribute name="video_link_ar" optional="YES" attributeType="String"/>
+        <attribute name="video_link_en" optional="YES" attributeType="String"/>
+        <relationship name="tags_detail" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagDetail" inverseName="place" inverseEntity="TagDetail"/>
+    </entity>
+    <entity name="PlaceImage" representedClassName="PlaceImage" syncable="YES" codeGenerationType="class">
+        <attribute name="date_time" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="place_id" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Review" representedClassName="Review" syncable="YES" codeGenerationType="class">
+        <attribute name="city_id" optional="YES" attributeType="String"/>
+        <attribute name="date_time" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="place_id" optional="YES" attributeType="String"/>
+        <attribute name="rating" optional="YES" attributeType="String"/>
+        <attribute name="review" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="user_id" optional="YES" attributeType="String"/>
+        <attribute name="user_name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Tag" representedClassName="Tag" syncable="YES" codeGenerationType="class">
+        <attribute name="city_id" optional="YES" attributeType="String"/>
+        <attribute name="color_code" optional="YES" attributeType="String"/>
+        <attribute name="country_id" optional="YES" attributeType="String"/>
+        <attribute name="date_time" optional="YES" attributeType="String"/>
+        <attribute name="icon" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="tag_name" optional="YES" attributeType="String"/>
+        <attribute name="tag_name_ar" optional="YES" attributeType="String"/>
+        <attribute name="total_tag_place_count" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="TagDetail" representedClassName="TagDetail" syncable="YES" codeGenerationType="class">
+        <attribute name="city_id" optional="YES" attributeType="String"/>
+        <attribute name="color_code" optional="YES" attributeType="String"/>
+        <attribute name="country_id" optional="YES" attributeType="String"/>
+        <attribute name="date_time" optional="YES" attributeType="String"/>
+        <attribute name="icon" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="tag_name" optional="YES" attributeType="String"/>
+        <attribute name="tag_name_ar" optional="YES" attributeType="String"/>
+        <attribute name="total_tag_place_count" optional="YES" attributeType="String"/>
+        <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceDetail" inverseName="tags_detail" inverseEntity="PlaceDetail"/>
+    </entity>
+</model>

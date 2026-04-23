@@ -1,0 +1,62 @@
+[
+  {
+    "countryCode": "SA",
+    "currencyCode": "SAR",
+    "currencySymbol": "ر.س",
+    "flagUrl": "https://flagcdn.com/w320/sa.png"
+  },
+  {
+    "countryCode": "US",
+    "currencyCode": "USD",
+    "currencySymbol": "$",
+    "flagUrl": "https://flagcdn.com/w320/us.png"
+  },
+  {
+    "countryCode": "AE",
+    "currencyCode": "AED",
+    "currencySymbol": "د.إ",
+    "flagUrl": "https://flagcdn.com/w320/ae.png"
+  },
+  {
+    "countryCode": "QA",
+    "currencyCode": "QAR",
+    "currencySymbol": "ر.ق",
+    "flagUrl": "https://flagcdn.com/w320/qa.png"
+  },
+  {
+    "countryCode": "KW",
+    "currencyCode": "KWD",
+    "currencySymbol": "د.ك",
+    "flagUrl": "https://flagcdn.com/w320/kw.png"
+  },
+  {
+    "countryCode": "BH",
+    "currencyCode": "BHD",
+    "currencySymbol": ".د.ب",
+    "flagUrl": "https://flagcdn.com/w320/bh.png"
+  },
+  {
+    "countryCode": "OM",
+    "currencyCode": "OMR",
+    "currencySymbol": ".د.ب",
+    "flagUrl": "https://flagcdn.com/w320/om.png"
+  },
+  {
+    "countryCode": "EG",
+    "currencyCode": "EGP",
+    "currencySymbol": "ج.م",
+    "flagUrl": "https://flagcdn.com/w320/eg.png"
+  },
+  {
+    "countryCode": "EU",
+    "currencyCode": "EUR",
+    "currencySymbol": "€",
+    "flagUrl": "https://flagcdn.com/w320/eu.png"
+  },
+  {
+    "countryCode": "GB",
+    "currencyCode": "GBP",
+    "currencySymbol": "£",
+    "flagUrl": "https://flagcdn.com/w320/gb.png"
+  }
+]

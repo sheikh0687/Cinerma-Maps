@@ -57,6 +57,10 @@ extension OtpViewModel: OTPFieldViewDelegate {
         k.userDefault.set(true, forKey: k.session.status)
         k.userDefault.set(res_SendOtpModel.user_details?.id, forKey: k.session.userId)
         k.userDefault.set(res_SendOtpModel.user_details?.email ?? "", forKey: k.session.userEmail)
+        k.userDefault.set(res_SendOtpModel.user_details?.subscription_status ?? "", forKey: k.session.subcription)
+        k.userDefault.set(res_SendOtpModel.user_details?.image ?? "", forKey: k.session.userImg)
+        k.userDefault.set(res_SendOtpModel.user_details?.first_name ?? "", forKey: k.session.firstName)
+        k.userDefault.set(res_SendOtpModel.user_details?.last_name ?? "", forKey: k.session.lastName)
         Switcher.updateRootVC()
     }
 

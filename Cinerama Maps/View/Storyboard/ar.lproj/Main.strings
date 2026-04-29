@@ -817,3 +817,6 @@
 
 /* Class = "UITextField"; placeholder = "Email Address"; ObjectID = "Isv-xF-uxs"; */
 "Isv-xF-uxs.placeholder" = "عنوان البريد الإلكتروني";
+
+/* Class = "UILabel"; text = "Verification code will be sent to your email"; ObjectID = "f2a-z1-OyJ"; */
+"f2a-z1-OyJ.text" = "سوف يصلك رمز التحقق على البريد الكتروني";

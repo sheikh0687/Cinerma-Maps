@@ -65,6 +65,8 @@ struct k {
         static let currentCompanyId                         =      ""
         static let firstName                                =      "firstName"
         static let lastName                                 =      "lastName"
+        static let subcription                              =      "subcription"
+        static let userImg                                  =      "userImg"
     }
     
     

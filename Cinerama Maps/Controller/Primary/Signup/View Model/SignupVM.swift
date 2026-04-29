@@ -130,6 +130,10 @@ extension SignupViewModel {
             k.userDefault.set(responseData.id ?? "", forKey: k.session.userId)
             k.userDefault.set(responseData.email ?? "", forKey: k.session.userEmail)
             k.userDefault.set(responseData.type ?? "", forKey: k.session.type)
+            k.userDefault.set(responseData.image ?? "", forKey: k.session.userImg)
+            k.userDefault.set(responseData.first_name ?? "", forKey: k.session.firstName)
+            k.userDefault.set(responseData.last_name ?? "", forKey: k.session.lastName)
+            k.userDefault.set(responseData.subcription ?? "", forKey: k.session.subcription)
             self.registerSuccess?()
         }
     }

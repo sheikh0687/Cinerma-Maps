@@ -54,20 +54,20 @@ class HomeVC: UIViewController {
         }
 
         // Apply the custom layout to the collection view
+        requestBanners()
+        requestCountryMap()
+        requestGuidelineTip()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fetchProfileDetail()
-        requestBanners()
-        requestCountryMap()
-        requestGuidelineTip()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = false
+        reUseProfile()
     }
     
     @IBAction func btn_Search(_ sender: UIButton) {
@@ -92,7 +92,7 @@ class HomeVC: UIViewController {
     }
     
     @IBAction func btn_AddTrip(_ sender: UIButton) {
-        if strSubscriptionStatus == "Yes" {
+        if (k.userDefault.value(forKey: k.session.subcription) as! String == "Yes") {
             viewModel.navigateToTripViewController(from: self.navigationController)
         } else {
             self.alert(alertmessage: L102Language.currentAppleLanguage() == "en" ? "For add place first you need to subscribe your city map." : "أولاً، عليك الاشتراك في خريطة مدينتك قبل إضافة المكان")
@@ -127,28 +127,43 @@ class HomeVC: UIViewController {
 // MARK: CALLING API
 extension HomeVC {
     
-    private func fetchProfileDetail()
-    {
-        viewModel.fetchUserProfileDetails(vC: self)
-        viewModel.fetchSuccessfully = { [weak self] in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                let obj = self.viewModel.arrayUserProfile
-                
-                self.lbl_UserName.text = "\(obj?.first_name ?? "") \(obj?.last_name ?? "")"
-                self.lbl_UseriD.text = "\(L102Language.currentAppleLanguage() == "en" ? "User ID" : "معرف المستخدم"): \(obj?.id ?? "")"
-                
-                k.userDefault.setValue(obj?.first_name, forKey: k.session.firstName)
-                k.userDefault.setValue(obj?.last_name, forKey: k.session.lastName)
-                
-                self.strSubscriptionStatus = obj?.subscription_status ?? ""
-                
-                if Router.BASE_IMAGE_URL != obj?.image {
-                    Utility.setImageWithSDWebImage(obj?.image ?? "", self.profile_Img)
-                } else {
-                    self.profile_Img.image = R.image.profile_ic()
-                }
-                
+    private func reUseProfile() {
+//        viewModel.fetchUserProfileDetails(vC: self)
+//        viewModel.fetchSuccessfully = { [weak self] in
+//            guard let self else { return }
+//            DispatchQueue.main.async {
+//                let obj = self.viewModel.arrayUserProfile
+//                
+//                self.lbl_UserName.text = "\(obj?.first_name ?? "") \(obj?.last_name ?? "")"
+//                self.lbl_UseriD.text = "\(L102Language.currentAppleLanguage() == "en" ? "User ID" : "معرف المستخدم"): \(obj?.id ?? "")"
+//                
+//                k.userDefault.setValue(obj?.first_name, forKey: k.session.firstName)
+//                k.userDefault.setValue(obj?.last_name, forKey: k.session.lastName)
+//                
+//                self.strSubscriptionStatus = obj?.subscription_status ?? ""
+//                
+//                if Router.BASE_IMAGE_URL != obj?.image {
+//                    Utility.setImageWithSDWebImage(obj?.image ?? "", self.profile_Img)
+//                } else {
+//                    self.profile_Img.image = R.image.profile_ic()
+//                }
+//            }
+//        }
+        DispatchQueue.main.async {
+            let uFirstName = k.userDefault.value(forKey: k.session.firstName) as? String
+            let uLastName = k.userDefault.value(forKey: k.session.lastName) as? String
+            let uiD = k.userDefault.value(forKey: k.session.userId) as? String
+            let uImage = k.userDefault.value(forKey: k.session.userImage) as? String
+            
+            print(uImage ?? "")
+            
+            self.lbl_UserName.text = "\(uFirstName ?? "") \(uLastName ?? "")"
+            self.lbl_UseriD.text = "\(L102Language.currentAppleLanguage() == "en" ? "User ID" : "معرف المستخدم"): \(uiD ?? "")"
+            
+            if Router.BASE_IMAGE_URL != uImage {
+                Utility.setImageWithSDWebImage(uImage ?? "", self.profile_Img)
+            } else {
+                self.profile_Img.image = R.image.profile_ic()
             }
         }
     }

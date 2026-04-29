@@ -103,8 +103,6 @@ class ProfileViewModel {
             self.uLastName = obj.last_name ?? ""
             self.uMobile = obj.mobile_with_code ?? ""
             self.uEmail = obj.email ?? ""
-//            let onlyPhoneKey = obj.mobile_with_code ?? ""
-//            self.phoneKey = String(onlyPhoneKey.prefix(2))
             self.uGender = obj.gender ?? ""
             self.uDob = obj.dob ?? ""
             self.profileImage = obj.image ?? ""
@@ -139,6 +137,9 @@ class ProfileViewModel {
         print(paramImg)
         
         Api.shared.updateUserProfile(vC, param, images: paramImg, videos: [:]) { responseData in
+            k.userDefault.set(responseData.image ?? "", forKey: k.session.userImg)
+            k.userDefault.set(responseData.first_name ?? "", forKey: k.session.firstName)
+            k.userDefault.set(responseData.last_name ?? "", forKey: k.session.lastName)
             self.profileUpdatedSuccessfull?()
         }
     }

@@ -104,6 +104,7 @@ struct User_details : Codable {
     let radius : String?
     let cat_id : String?
     let cat_name : String?
+    let subscription_status: String?
 
     enum CodingKeys: String, CodingKey {
 
@@ -162,6 +163,7 @@ struct User_details : Codable {
         case radius = "radius"
         case cat_id = "cat_id"
         case cat_name = "cat_name"
+        case subscription_status = "subscription_status"
     }
 
     init(from decoder: Decoder) throws {
@@ -221,6 +223,7 @@ struct User_details : Codable {
         radius = try values.decodeIfPresent(String.self, forKey: .radius)
         cat_id = try values.decodeIfPresent(String.self, forKey: .cat_id)
         cat_name = try values.decodeIfPresent(String.self, forKey: .cat_name)
+        subscription_status = try values.decodeIfPresent(String.self, forKey: .subscription_status)
     }
 
 }

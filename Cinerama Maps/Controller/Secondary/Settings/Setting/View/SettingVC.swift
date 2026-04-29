@@ -22,23 +22,37 @@ class SettingVC: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
-        fetchProfileDetail()
+        reUseProfile()
     }
     
-    private func fetchProfileDetail()
-    {
-        viewModel.fetchUserProfileDetails(vC: self)
-        viewModel.fetchSuccessfully = { [] in
-            DispatchQueue.main.async { [self] in
-                let obj = self.viewModel.arrayUserProfile
-                self.lbl_UserName.text = "\(obj?.first_name ?? "") \(obj?.last_name ?? "")"
-                
-                if Router.BASE_IMAGE_URL != obj?.image {
-                    Utility.setImageWithSDWebImage(obj?.image ?? "", self.profile_Img)
-                } else {
-                    self.profile_Img.image = R.image.profile_ic()
-                }
+    private func reUseProfile() {
+        //        viewModel.fetchUserProfileDetails(vC: self)
+        //        viewModel.fetchSuccessfully = { [] in
+        //            DispatchQueue.main.async { [self] in
+        //                let obj = self.viewModel.arrayUserProfile
+        //                self.lbl_UserName.text = "\(obj?.first_name ?? "") \(obj?.last_name ?? "")"
+        //
+        //                if Router.BASE_IMAGE_URL != obj?.image {
+        //                    Utility.setImageWithSDWebImage(obj?.image ?? "", self.profile_Img)
+        //                } else {
+        //                    self.profile_Img.image = R.image.profile_ic()
+        //                }
+        //            }
+        //        }
+    
+        DispatchQueue.main.async { [self] in
+            let uFirstName = k.userDefault.value(forKey: k.session.firstName) as? String
+            let uLastName = k.userDefault.value(forKey: k.session.lastName) as? String
+            let uImage = k.userDefault.value(forKey: k.session.userImage) as? String
+
+            self.lbl_UserName.text = "\(uFirstName ?? "") \(uLastName ?? "")"
+            
+            if Router.BASE_IMAGE_URL != uImage {
+                Utility.setImageWithSDWebImage(uImage ?? "", self.profile_Img)
+            } else {
+                self.profile_Img.image = R.image.profile_ic()
             }
+            
         }
     }
     

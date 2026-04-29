@@ -9,8 +9,8 @@ import Foundation
 
 enum Router: String {
     
-    static let BASE_SERVICE_URL = "http://www.ci-maps.com/CineramaMaps/webservice/"
-    static let BASE_IMAGE_URL = "http://www.ci-maps.com/CineramaMaps/uploads/images/"
+    static let BASE_SERVICE_URL = "https://www.ci-maps.com/CineramaMaps/webservice/"
+    static let BASE_IMAGE_URL = "https://www.ci-maps.com/CineramaMaps/uploads/images/"
     
     case send_otp_mail
     case signup

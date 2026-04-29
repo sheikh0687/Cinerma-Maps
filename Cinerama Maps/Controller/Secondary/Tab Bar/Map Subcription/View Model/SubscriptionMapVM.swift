@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 import CoreData
+import SDWebImage
 
 enum OpenType {
     case direct, filter
@@ -24,6 +25,9 @@ class SubscriptionMapViewModel: ObservableObject {
     @Published var selectedTag: String? = nil
     @Published var searchText: String = ""
     @Published var showingFavorites: Bool = false
+    @Published var isDataLoaded: Bool = false
+    @Published var cityLat = 0.0
+    @Published var cityLon = 0.0
     
     var openType = OpenType.direct
     var message: String? = nil
@@ -78,6 +82,12 @@ class SubscriptionMapViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: \.newFilter, on: self)
             .store(in: &cancellables)
+        
+        
+    }
+    
+    init(cityiD: String) {
+        self.cityId = cityiD
     }
     
     func toggleFavoriteLocally(placeId: String, isRemoving: Bool) {
@@ -313,10 +323,9 @@ class SubscriptionMapViewModel: ObservableObject {
                 placeImage.append(image)
             }
             
-                DispatchQueue.main.sync {
-                    self.arrayImageDetail = placeImage
-
-                }
+            DispatchQueue.main.sync {
+               self.arrayImageDetail = placeImage
+            }
 
             let fetchRequestForTags: NSFetchRequest<TagDetail> = TagDetail.fetchRequest()
             fetchRequestForTags.predicate = NSPredicate(format: "city_id == %@", cityId)
@@ -420,18 +429,19 @@ class SubscriptionMapViewModel: ObservableObject {
                         //                    self.arrayImageDetail = placeImage
                         self.arrayOfPlaceDetails = placesDetail
                         self.arrayOfPlaceDetails1 = placesDetail
+                        self.prefetchIcons() // Enable prefetching
                         self.fetchedFromDbSuccessfully?()
                     }
                 
             }
         }
+        
         DispatchQueue.global(qos: .background).async { [weak self] in
             self?.requestCountryMapDetails(vC: UIApplication.shared.topmostViewController() ?? UIViewController())
         }
     }
     
-    func requestCountryMapDetails(vC: UIViewController)
-    {
+    func requestCountryMapDetails(vC: UIViewController) {
         let user_id = UserDefaults.standard.value(forKey: "user_id")
         var param: [String : AnyObject] = [:]
         param["city_id"] = cityId as AnyObject
@@ -443,17 +453,19 @@ class SubscriptionMapViewModel: ObservableObject {
             print(responseData)
             DispatchQueue.global(qos: .utility).async {
                 self.cityName = L102Language.currentAppleLanguage() == "en" ? responseData.name ?? "" : responseData.name_ar ?? ""
-                
+            
                 self.saveAllCoreData (
                     images: responseData.places_images,
                     tags: responseData.tags,
                     places: responseData.place_details
                 ) {
+                    self.cityLat = Double(responseData.lat ?? "") ?? 0.0
+                    self.cityLon = Double(responseData.lon ?? "") ?? 0.0
                     self.arrayImageDetail = responseData.places_images ?? []
                     self.arrayTagDetails = responseData.tags ?? []
                     self.arrayOfPlaceDetails = responseData.place_details ?? []
                     self.arrayOfPlaceDetails1 = responseData.place_details ?? []
-                    
+                    self.prefetchIcons()
                     self.fetchedFromDbSuccessfully?()
                 }
             }
@@ -622,19 +634,14 @@ extension SubscriptionMapViewModel {
                     detail.city_name_ar = place.city_name_ar
                     detail.avg_rating = place.avg_rating
                     detail.plan_purchase_status = place.plan_purchase_status
+                    
                     if let tags = place.tag_details {
                         for tag in tags {
                             let tagFetch: NSFetchRequest<TagDetail> = TagDetail.fetchRequest()
                             tagFetch.predicate = NSPredicate(format: "id == %@", tag.id ?? "")
                             tagFetch.fetchLimit = 1
-                            
-        //                    let tagEntity = TagDetail(context: context)
-        //                    if let existingTag = try? context.fetch(tagFetch).first {
-        //                        tagEntity = existingTag
-        //                    } else {
                             let tagEntity = TagDetail(context: context)
                             tagEntity.id = tag.id
-        //                    }
                             tagEntity.tag_name = tag.tag_name
                             tagEntity.tag_name_ar = tag.tag_name_ar
                             tagEntity.city_id = tag.city_id
@@ -644,49 +651,8 @@ extension SubscriptionMapViewModel {
                             tagEntity.total_tag_place_count = tag.total_tag_place_count
                             tagEntity.color_code = tag.color_code
                             tagEntity.place = detail
-        //                    if let imageUrlString = tag.icon,
-        //                       let url = URL(string: imageUrlString) {
-        //
-        //                        DispatchQueue.global(qos: .background).async {
-        //                            if let imageData = try? Data(contentsOf: url) {
-        //                                let base64String = imageData.base64EncodedString()
-        //                                tagEntity.icon = base64String
-        //                                try? context.save()
-        //                            } else {
-        //                                DispatchQueue.main.async {
-        //                                    tagEntity.icon = imageUrlString
-        //                                    try? context.save()
-        //                                }
-        //                            }}
-        //                        }
-        //
                         }
                     }
-//                    if let placeTags = place.tag_details {
-//                        for tag in placeTags {
-//                            let tagFetch: NSFetchRequest<TagDetail> = TagDetail.fetchRequest()
-//                            tagFetch.predicate = NSPredicate(format: "id == %@", tag.id ?? "")
-//                            tagFetch.fetchLimit = 1
-//                            
-//                            let tagEntity: TagDetail
-//                            if let existingTag = try? context.fetch(tagFetch).first {
-//                                tagEntity = existingTag
-//                            } else {
-//                                tagEntity = TagDetail(context: context)
-//                            }
-//                            
-//                            tagEntity.id = tag.id
-//                            tagEntity.tag_name = tag.tag_name
-//                            tagEntity.tag_name_ar = tag.tag_name_ar
-//                            tagEntity.city_id = tag.city_id
-//                            tagEntity.country_id = tag.country_id
-//                            tagEntity.date_time = tag.date_time
-//                            tagEntity.icon = tag.icon
-//                            tagEntity.total_tag_place_count = tag.total_tag_place_count
-//                            tagEntity.color_code = tag.color_code
-//                            tagEntity.place = detail
-//                        }
-//                    }
                 }
             }
             
@@ -702,5 +668,12 @@ extension SubscriptionMapViewModel {
             }
         }
     }
+}
 
+extension SubscriptionMapViewModel {
+    func prefetchIcons() {
+        let allIcons = arrayOfPlaceDetails.compactMap { $0.icon }
+        let urls = allIcons.compactMap { URL(string: $0) }
+        SDWebImagePrefetcher.shared().prefetchURLs(urls)
+    }
 }

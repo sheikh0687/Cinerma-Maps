@@ -7,6 +7,7 @@
 
 import UIKit
 import Cosmos
+import SkeletonView
 
 class ReviewCell: UITableViewCell {
 
@@ -20,6 +21,20 @@ class ReviewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        isSkeletonable = true
+        lbl_Name.isSkeletonable = true
+        lbl_Date.isSkeletonable = true
+        lbl_Message.isSkeletonable = true
+        ratingCount.isSkeletonable = true
+        
+        lbl_Name.linesCornerRadius = 4
+        lbl_Date.linesCornerRadius = 4
+        lbl_Message.linesCornerRadius = 4
+        ratingCount.linesCornerRadius = 4
+        
+        user_Img.isSkeletonable = true
+        
+        contentView.isSkeletonable = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

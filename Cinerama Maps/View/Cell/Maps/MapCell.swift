@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MapCell: UICollectionViewCell {
 
@@ -16,5 +17,10 @@ class MapCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        CountryImage.isSkeletonable = true
+        countryMap.isSkeletonable = true
+        lbl_CountryName.isSkeletonable = true
+        lbl_CountryName.linesCornerRadius = 4
+        contentView.isSkeletonable = true
     }
 }

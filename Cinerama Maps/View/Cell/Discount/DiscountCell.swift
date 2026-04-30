@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class DiscountCell: UITableViewCell {
 
@@ -17,6 +18,14 @@ class DiscountCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        isSkeletonable = true
+        
+        offer_Img.isSkeletonable = true
+        offer_CodeAndPercent.isSkeletonable = true
+        lbl_OfferDescription.isSkeletonable = true
+        lbl_OfferDescription.linesCornerRadius = 4
+        contentView.isSkeletonable = true
         offer_Img.roundCorners(corners: [.topLeft, .topRight], radius: 10)
     }
 

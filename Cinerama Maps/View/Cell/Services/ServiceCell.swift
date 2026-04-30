@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class ServiceCell: UICollectionViewCell {
 
@@ -14,6 +15,9 @@ class ServiceCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        isSkeletonable = true
+        service_Img.isSkeletonable = true
+        contentView.isSkeletonable = true
     }
 
 }

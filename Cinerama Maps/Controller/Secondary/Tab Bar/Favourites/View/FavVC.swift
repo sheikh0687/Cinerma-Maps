@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class FavVC: UIViewController {
 
@@ -16,8 +17,13 @@ class FavVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fav_TableVw.isSkeletonable = true
+        
         setupSearchBar()
+        
         self.fav_TableVw.register(UINib(nibName: "CityMapCell", bundle: nil), forCellReuseIdentifier: "CityMapCell")
+        
         self.setUpBindViewModel()
     }
     
@@ -44,11 +50,18 @@ class FavVC: UIViewController {
         self.search_Bar.returnKeyType = .done
     }
     
-    func setUpBindViewModel()
-    {
-        viewModel.fetchFavCityMap(vC: self)
-        viewModel.fetchedSuccessfull = { [] in
+    func setUpBindViewModel() {
+        viewModel.isLoading = true
+        fav_TableVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
+        
+        self.viewModel.fetchFavCityMap(vC: self)
+        self.viewModel.fetchedSuccessfull = { [weak self] in
             DispatchQueue.main.async {
+                guard let self else { return }
+                self.viewModel.isLoading = false
+                
+                self.fav_TableVw.stopSkeletonAnimation()
+                self.fav_TableVw.hideSkeleton(reloadDataAfter: true)
                 self.fav_TableVw.reloadData()
             }
         }
@@ -65,7 +78,7 @@ extension FavVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CityMapCell", for: indexPath) as! CityMapCell
         
         let obj = self.viewModel.arrayOfFavCityMap[indexPath.row]
-        
+                
         if L102Language.currentAppleLanguage() == "en" {
             cell.lbl_CountryName.text = obj.name ?? ""
         } else {
@@ -126,5 +139,16 @@ extension FavVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.search_Bar.endEditing(true)
+    }
+}
+
+extension FavVC: SkeletonTableViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "CityMapCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4 // ✅ Show 4 shimmer placeholders while loading
     }
 }

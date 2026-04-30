@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class CityImagesCell: UICollectionViewCell {
 
@@ -14,6 +15,9 @@ class CityImagesCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        isSkeletonable = true
+        cityImg.isSkeletonable = true
+        contentView.isSkeletonable = true
     }
 
 }

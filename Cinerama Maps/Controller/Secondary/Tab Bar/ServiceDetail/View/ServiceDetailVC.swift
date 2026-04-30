@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import SkeletonView
 
 class ServiceDetailImageCell: UICollectionViewCell {
     
@@ -44,6 +45,7 @@ class ServiceDetailVC: UIViewController, WKNavigationDelegate, UIGestureRecogniz
         setupWebView()
         setupBackGesture()
         setUpBinding()
+        setupSkeletons()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -95,8 +97,13 @@ extension ServiceDetailVC {
                         self.view.layoutIfNeeded()
                     }
                 }
+                self.wv_Container.hideSkeleton()
             }
         }
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        wv_Container.hideSkeleton()
     }
 }
 
@@ -196,6 +203,8 @@ extension ServiceDetailVC {
                 }
                 self.servicePlace_ImgCollection.reloadData()
                 self.review_TableVw.reloadData()
+                
+                self.stopSkeletons()
             }
         }
     }
@@ -218,8 +227,16 @@ extension ServiceDetailVC {
 }
 
 // MARK: - TableView
-extension ServiceDetailVC: UITableViewDataSource, UITableViewDelegate {
+extension ServiceDetailVC: UITableViewDataSource, UITableViewDelegate, SkeletonTableViewDataSource {
 
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "ReviewCell"
+    }
+
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3    // Placeholder rows during loading
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.arrayRatingReview.count
     }
@@ -245,8 +262,16 @@ extension ServiceDetailVC: UITableViewDataSource, UITableViewDelegate {
 }
 
 // MARK: - CollectionView
-extension ServiceDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension ServiceDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SkeletonCollectionViewDataSource {
 
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "Cell"
+    }
+
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3    // Placeholder cells during loading
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.arrayOfImages.count
     }
@@ -262,3 +287,41 @@ extension ServiceDetailVC: UICollectionViewDataSource, UICollectionViewDelegateF
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
 }
+
+extension ServiceDetailVC {
+
+    func setupSkeletons() {
+        let skeletonableViews: [UIView?] = [
+            lbl_ServiceName, lbl_ContactNum, lbl_Address,
+            wv_Container, servicePlace_ImgCollection, review_TableVw
+        ]
+        skeletonableViews.forEach { $0?.isSkeletonable = true }
+
+        wv_Container.skeletonCornerRadius = 8
+        servicePlace_ImgCollection.skeletonCornerRadius = 10
+
+        startSkeletons()
+    }
+
+    func startSkeletons() {
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        let gradient = SkeletonGradient(baseColor: .clouds)
+
+        lbl_ServiceName.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_ContactNum.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_Address.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        wv_Container.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        servicePlace_ImgCollection.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        review_TableVw.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+    }
+
+    func stopSkeletons() {
+        lbl_ServiceName.hideSkeleton()
+        lbl_ContactNum.hideSkeleton()
+        lbl_Address.hideSkeleton()
+        wv_Container.hideSkeleton()
+        servicePlace_ImgCollection.hideSkeleton(reloadDataAfter: true)
+        review_TableVw.hideSkeleton(reloadDataAfter: true)
+    }
+}
+

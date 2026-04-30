@@ -1400,12 +1400,13 @@
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <real key="value" value="25"/>
                                                                     </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </imageView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ezj-na-cac">
                                                                 <rect key="frame" x="60" y="20" width="304" height="40"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, Nasser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nbh-pb-wlN" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, Nasser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nbh-pb-wlN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="304" height="19.333333333333332"/>
                                                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
                                                                         <nil key="textColor"/>
@@ -1415,6 +1416,10 @@
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                 <real key="value" value="14"/>
                                                                             </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonLineSpacing">
+                                                                                <real key="value" value="1"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USER ID: 26" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLE-pg-pHv">
@@ -1427,6 +1432,10 @@
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                 <real key="value" value="12"/>
                                                                             </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonLineSpacing">
+                                                                                <real key="value" value="1"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                 </subviews>
@@ -6196,6 +6205,9 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <outlet property="dataSource" destination="oMH-fJ-yiY" id="Ols-kQ-WJw"/>
                                                             <outlet property="delegate" destination="oMH-fJ-yiY" id="gcg-1C-WyS"/>
@@ -6205,6 +6217,9 @@
                                                         <rect key="frame" x="0.0" y="368" width="413.33333333333331" height="25.666666666666686"/>
                                                         <color key="pageIndicatorTintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <color key="currentPageIndicatorTintColor" name="Main"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
                                                     </pageControl>
                                                 </subviews>
                                             </stackView>
@@ -6233,7 +6248,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYR-Me-g6x">
                                                         <rect key="frame" x="15" y="15" width="384" height="26"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Istanbul Map 1" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNk-Ec-bPW" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Istanbul Map 1" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNk-Ec-bPW">
                                                                 <rect key="frame" x="0.0" y="2.6666666666666856" width="104.66666666666667" height="20.666666666666668"/>
                                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                                                 <nil key="textColor"/>
@@ -6243,6 +6258,7 @@
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                         <real key="value" value="15"/>
                                                                     </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="39 riyals per month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwh-Ky-wiz">
@@ -6255,6 +6271,7 @@
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                         <real key="value" value="16"/>
                                                                     </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                         </subviews>
@@ -6304,7 +6321,7 @@
                                                                             </userDefinedRuntimeAttribute>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </view>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOy-fh-oox" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOy-fh-oox">
                                                                         <rect key="frame" x="108" y="-1.6666666666666856" width="21" height="19.333333333333332"/>
                                                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
                                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6314,6 +6331,7 @@
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                 <real key="value" value="14"/>
                                                                             </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                 </subviews>
@@ -6328,7 +6346,7 @@
                                                                     <constraint firstAttribute="height" constant="16" id="xis-l4-0x8"/>
                                                                 </constraints>
                                                             </view>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turkey, Istanbul" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6X-3L-jJp" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turkey, Istanbul" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6X-3L-jJp">
                                                                 <rect key="frame" x="160" y="0.0" width="200" height="36"/>
                                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6338,6 +6356,7 @@
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                         <real key="value" value="12"/>
                                                                     </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_pin1" translatesAutoresizingMaskIntoConstraints="NO" id="YDs-kV-PKB">
@@ -6598,7 +6617,7 @@
                                                                             </userDefinedRuntimeAttribute>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City maps in the Republic of Turkey." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fz3-bn-Iy6" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City maps in the Republic of Turkey." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fz3-bn-Iy6">
                                                                         <rect key="frame" x="0.0" y="59.999999999999993" width="374" height="16.666666666666664"/>
                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                         <nil key="textColor"/>
@@ -6608,6 +6627,7 @@
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                 <real key="value" value="12"/>
                                                                             </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="General Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ra-8q-PmZ" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
@@ -6656,7 +6676,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turkish lira 1 dollar = 20 lira" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwQ-Z2-mFi" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turkish lira 1 dollar = 20 lira" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwQ-Z2-mFi">
                                                                                                         <rect key="frame" x="0.0" y="22.666666666666742" width="133" height="45"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6666,6 +6686,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -6709,7 +6730,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Turkish Language" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uM2-4e-n3Q" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Turkish Language" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uM2-4e-n3Q">
                                                                                                         <rect key="frame" x="0.0" y="21.999999999999996" width="133" height="45.666666666666657"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6719,6 +6740,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -6767,7 +6789,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No cover allow" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0dI-4y-0Vg" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No cover allow" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0dI-4y-0Vg">
                                                                                                         <rect key="frame" x="0.0" y="22" width="133" height="22.666666666666671"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6777,6 +6799,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -6820,7 +6843,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Morning" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f24-PT-KZf" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Morning" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f24-PT-KZf">
                                                                                                         <rect key="frame" x="0.0" y="22" width="133" height="22.666666666666671"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6830,6 +6853,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -6878,7 +6902,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flu Vaccination COVID" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQl-RP-Pve" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flu Vaccination COVID" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQl-RP-Pve">
                                                                                                         <rect key="frame" x="0.0" y="22" width="133" height="22.666666666666671"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6888,6 +6912,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -6931,7 +6956,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C type 200V - 10A" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qM8-gX-SN3" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C type 200V - 10A" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qM8-gX-SN3">
                                                                                                         <rect key="frame" x="0.0" y="22" width="133" height="22.666666666666671"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6941,6 +6966,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -6989,7 +7015,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turkish Technology Company" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTH-nh-3kb" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turkish Technology Company" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTH-nh-3kb">
                                                                                                         <rect key="frame" x="0.0" y="22.666666666666629" width="133" height="45"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6999,6 +7025,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -7042,7 +7069,7 @@
                                                                                                             </userDefinedRuntimeAttribute>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
-                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tempreture 22 degree celsius" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEz-nq-k3D" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tempreture 22 degree celsius" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEz-nq-k3D">
                                                                                                         <rect key="frame" x="0.0" y="22.666666666666629" width="133" height="45"/>
                                                                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -7052,6 +7079,7 @@
                                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                                 <real key="value" value="12"/>
                                                                                                             </userDefinedRuntimeAttribute>
+                                                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                         </userDefinedRuntimeAttributes>
                                                                                                     </label>
                                                                                                 </subviews>
@@ -7114,7 +7142,7 @@
                                                                                                     </userDefinedRuntimeAttribute>
                                                                                                 </userDefinedRuntimeAttributes>
                                                                                             </label>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+029008577866" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8p-2I-gMn" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+029008577866" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8p-2I-gMn">
                                                                                                 <rect key="frame" x="0.0" y="22.666666666666742" width="149" height="22.666666666666671"/>
                                                                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="12"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -7124,6 +7152,7 @@
                                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                         <real key="value" value="12"/>
                                                                                                     </userDefinedRuntimeAttribute>
+                                                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                 </userDefinedRuntimeAttributes>
                                                                                             </label>
                                                                                         </subviews>
@@ -7167,7 +7196,7 @@
                                                                                                     </userDefinedRuntimeAttribute>
                                                                                                 </userDefinedRuntimeAttributes>
                                                                                             </label>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="+919407128717" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0J-uy-4Kv" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="+919407128717" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0J-uy-4Kv">
                                                                                                 <rect key="frame" x="0.0" y="22" width="149" height="23.333333333333329"/>
                                                                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="12"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -7177,6 +7206,7 @@
                                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                                                                         <real key="value" value="12"/>
                                                                                                     </userDefinedRuntimeAttribute>
+                                                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                                                                 </userDefinedRuntimeAttributes>
                                                                                             </label>
                                                                                         </subviews>
@@ -7217,6 +7247,9 @@
                                                                     <constraint firstItem="7ra-8q-PmZ" firstAttribute="leading" secondItem="LS1-MA-Ies" secondAttribute="leading" id="tZe-e7-G0R"/>
                                                                     <constraint firstItem="fz3-bn-Iy6" firstAttribute="leading" secondItem="LS1-MA-Ies" secondAttribute="leading" id="x9k-NI-7n2"/>
                                                                 </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2C-8j-dpT">
                                                                 <rect key="frame" x="0.0" y="590.66666666666674" width="374" height="282.33333333333326"/>
@@ -7269,6 +7302,9 @@
                                                                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                                 </collectionViewFlowLayout>
                                                                                                 <cells/>
+                                                                                                <userDefinedRuntimeAttributes>
+                                                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                                                                </userDefinedRuntimeAttributes>
                                                                                                 <connections>
                                                                                                     <outlet property="dataSource" destination="oMH-fJ-yiY" id="Eak-EK-yCf"/>
                                                                                                     <outlet property="delegate" destination="oMH-fJ-yiY" id="bsh-Ew-5Xg"/>
@@ -7359,6 +7395,9 @@
                                                                     <constraint firstItem="62v-dj-3oB" firstAttribute="top" secondItem="g2C-8j-dpT" secondAttribute="top" constant="0.10000000000000001" id="mX9-Rz-GLN"/>
                                                                     <constraint firstAttribute="trailing" secondItem="62v-dj-3oB" secondAttribute="trailing" constant="0.10000000000000001" id="zKA-fv-5M2"/>
                                                                 </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eo0-iz-UHo">
                                                                 <rect key="frame" x="0.0" y="873" width="374" height="310"/>
@@ -7393,6 +7432,9 @@
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="250" id="NQm-hj-TaT"/>
                                                                         </constraints>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                                        </userDefinedRuntimeAttributes>
                                                                         <connections>
                                                                             <outlet property="dataSource" destination="oMH-fJ-yiY" id="zfi-wp-WWt"/>
                                                                             <outlet property="delegate" destination="oMH-fJ-yiY" id="md4-ot-cth"/>
@@ -7409,6 +7451,9 @@
                                                                     <constraint firstItem="fBq-z6-Ok2" firstAttribute="leading" secondItem="eo0-iz-UHo" secondAttribute="leading" constant="40" id="WXJ-Mq-Fxe"/>
                                                                     <constraint firstItem="f8i-Fa-CCo" firstAttribute="leading" secondItem="eo0-iz-UHo" secondAttribute="leading" constant="0.10000000000000001" id="rDO-Vc-SIu"/>
                                                                 </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LyV-Ew-rRe">
                                                                 <rect key="frame" x="0.0" y="1183" width="374" height="200"/>
@@ -7432,6 +7477,9 @@
                                                                     <constraint firstItem="n9t-dU-WKP" firstAttribute="centerX" secondItem="LyV-Ew-rRe" secondAttribute="centerX" id="hWT-aR-ppR"/>
                                                                     <constraint firstAttribute="height" constant="200" id="z2F-p9-5Fk"/>
                                                                 </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F1v-kf-NJW">
                                                                 <rect key="frame" x="0.0" y="1383" width="374" height="250"/>
@@ -8067,9 +8115,10 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="8"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How do you prepare your self for travelling ?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yVU-mu-6DH" customClass="DesignableLabel1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How do you prepare your self for travelling ?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yVU-mu-6DH">
                                         <rect key="frame" x="0.0" y="211" width="394" height="22"/>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                         <color key="textColor" name="Main"/>
@@ -8079,6 +8128,7 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                 <real key="value" value="16"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The writing date is 10/08/2024" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vg-4C-Tps">
@@ -8090,11 +8140,14 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPe-uR-ncv">
                                         <rect key="frame" x="0.0" y="244" width="394" height="351"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Xm-YT-eYP">
                                         <rect key="frame" x="0.0" y="606" width="394" height="40"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqF-HD-5Ut" customClass="DesignableButton1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqF-HD-5Ut">
                                                 <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemYellowColor"/>
                                                 <constraints>
@@ -8113,6 +8166,7 @@
                                                     <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
                                                         <real key="value" value="12"/>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                         </subviews>
@@ -8123,8 +8177,14 @@
                                             <constraint firstItem="fqF-HD-5Ut" firstAttribute="leading" secondItem="5Xm-YT-eYP" secondAttribute="leading" id="yN8-bL-yu2"/>
                                             <constraint firstItem="fqF-HD-5Ut" firstAttribute="top" secondItem="5Xm-YT-eYP" secondAttribute="top" id="zvs-He-Tt4"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="efg-VF-id4"/>
@@ -10779,7 +10839,7 @@
                                                                     <constraint firstAttribute="width" constant="24" id="0MT-5l-47i"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0l-BM-b5x" customClass="DesignableButton1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0l-BM-b5x">
                                                                 <rect key="frame" x="24" y="0.0" width="66" height="24"/>
                                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -10826,12 +10886,12 @@
                                                                     <constraint firstAttribute="width" constant="24" id="n9J-mZ-jed"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jU2-fg-rtm" customClass="DesignableButton1" customModule="Cinerama_Maps" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jU2-fg-rtm">
                                                                 <rect key="frame" x="24" y="0.0" width="66" height="24"/>
                                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <state key="normal" title="Arabic">
+                                                                <state key="normal" title="العربية">
                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
                                                                 <userDefinedRuntimeAttributes>
@@ -12514,37 +12574,37 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
-            <color red="1" green="0.55294117649999996" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.55294117647058827" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

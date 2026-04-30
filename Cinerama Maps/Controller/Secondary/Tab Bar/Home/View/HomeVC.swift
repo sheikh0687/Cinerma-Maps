@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SkeletonView
 
 class HomeVC: UIViewController {
     
@@ -38,10 +39,19 @@ class HomeVC: UIViewController {
     
     //  MARK: Variable
     var strSubscriptionStatus: String?
+    var isLoadingBanners = true
+    var isLoadingCountryMaps = true
+    var isLoadingGuidelines = true
+    var isLoadingProfile = true
+    var isLoadingServices = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         registerResuableCellIdentifier()
+        
+        advertisementCollection.isSkeletonable = true
+        map_CollectionVw.isSkeletonable = true
+        guideline_CollectionVw.isSkeletonable = true
         
         self.btnCurrency.setTitle(CurrencyHandler.shared.selectedCurrency?["currencyCode"].stringValue, for: .normal)
         self.map_CollectionVw.isPagingEnabled = false
@@ -53,10 +63,23 @@ class HomeVC: UIViewController {
             advertisementPage.semanticContentAttribute = .forceRightToLeft
         }
 
+        startProfileShimmering()
         // Apply the custom layout to the collection view
         requestBanners()
         requestCountryMap()
         requestGuidelineTip()
+    }
+    
+    private func startProfileShimmering() {
+        self.profile_Img.showAnimatedSkeleton()
+        self.lbl_UserName.showAnimatedSkeleton()
+        self.lbl_UseriD.showAnimatedSkeleton()
+    }
+    
+    private func stopProfileShimmering() {
+        self.profile_Img.hideSkeleton()
+        self.lbl_UserName.hideSkeleton()
+        self.lbl_UseriD.hideSkeleton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,7 +115,7 @@ class HomeVC: UIViewController {
     }
     
     @IBAction func btn_AddTrip(_ sender: UIButton) {
-        if (k.userDefault.value(forKey: k.session.subcription) as! String == "Yes") {
+        if k.userDefault.value(forKey: k.session.subcription) as? String == "Yes" {
             viewModel.navigateToTripViewController(from: self.navigationController)
         } else {
             self.alert(alertmessage: L102Language.currentAppleLanguage() == "en" ? "For add place first you need to subscribe your city map." : "أولاً، عليك الاشتراك في خريطة مدينتك قبل إضافة المكان")
@@ -120,6 +143,7 @@ class HomeVC: UIViewController {
             self.btnCurrency.setTitle(json["currencyCode"].stringValue, for: .normal)
             CurrencyHandler.shared.selectedCurrency = json
         }
+        
         self.present(vC, animated: true)
     }
 }
@@ -128,28 +152,9 @@ class HomeVC: UIViewController {
 extension HomeVC {
     
     private func reUseProfile() {
-//        viewModel.fetchUserProfileDetails(vC: self)
-//        viewModel.fetchSuccessfully = { [weak self] in
-//            guard let self else { return }
-//            DispatchQueue.main.async {
-//                let obj = self.viewModel.arrayUserProfile
-//                
-//                self.lbl_UserName.text = "\(obj?.first_name ?? "") \(obj?.last_name ?? "")"
-//                self.lbl_UseriD.text = "\(L102Language.currentAppleLanguage() == "en" ? "User ID" : "معرف المستخدم"): \(obj?.id ?? "")"
-//                
-//                k.userDefault.setValue(obj?.first_name, forKey: k.session.firstName)
-//                k.userDefault.setValue(obj?.last_name, forKey: k.session.lastName)
-//                
-//                self.strSubscriptionStatus = obj?.subscription_status ?? ""
-//                
-//                if Router.BASE_IMAGE_URL != obj?.image {
-//                    Utility.setImageWithSDWebImage(obj?.image ?? "", self.profile_Img)
-//                } else {
-//                    self.profile_Img.image = R.image.profile_ic()
-//                }
-//            }
-//        }
         DispatchQueue.main.async {
+            self.isLoadingProfile = false
+            self.stopProfileShimmering()
             let uFirstName = k.userDefault.value(forKey: k.session.firstName) as? String
             let uLastName = k.userDefault.value(forKey: k.session.lastName) as? String
             let uiD = k.userDefault.value(forKey: k.session.userId) as? String
@@ -169,37 +174,51 @@ extension HomeVC {
     }
     
     private func requestCountryMap() {
+        map_CollectionVw.showAnimatedSkeleton()
+        
         countryMapVM.fetchCountryMaps(vC: self)
         countryMapVM.fethcedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
                 guard let self else { return }
+                self.isLoadingCountryMaps = false
                 if L102Language.currentAppleLanguage() == "ar" {
                     self.mapRTLLayout.scrollDirection = .horizontal
-//                    self.map_CollectionVw.collectionViewLayout = self.mapRTLLayout
                     self.map_CollectionVw.semanticContentAttribute = .forceLeftToRight
                 }
+                
+                self.map_CollectionVw.stopSkeletonAnimation()
+                self.map_CollectionVw.hideSkeleton()
+                
                 self.map_CollectionVw.reloadData()
             }
         }
     }
     
     private func requestGuidelineTip() {
+        guideline_CollectionVw.showAnimatedSkeleton()
+        
         guidelinesTipVM.fetchGuidelineTips(vC: self)
         guidelinesTipVM.fethcedSuccessfully = { [weak self] in
-            guard let self else { return }
             DispatchQueue.main.async {
+                guard let self else { return }
+                
+                self.isLoadingGuidelines = false
                 if L102Language.currentAppleLanguage() == "ar" {
                     self.guidelineRTLLayout.scrollDirection = .horizontal
-//                    self.guideline_CollectionVw.collectionViewLayout = self.guidelineRTLLayout
                     self.guideline_CollectionVw.semanticContentAttribute = .forceLeftToRight
                 }
+                
+                self.guideline_CollectionVw.stopSkeletonAnimation()
+                self.guideline_CollectionVw.hideSkeleton()
+                
                 self.guideline_CollectionVw.reloadData()
             }
         }
     }
     
-    private func requestBanners()
-    {
+    private func requestBanners() {
+        advertisementCollection.showAnimatedSkeleton()
+        
         advertisementVM.requestToFetchAdvertisement(vC: self)
         advertisementVM.fetchedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
@@ -209,6 +228,10 @@ extension HomeVC {
                     self.advertisementRTLLayout.scrollDirection = .horizontal
                     self.advertisementCollection.semanticContentAttribute = .forceLeftToRight
                 }
+                
+                self.advertisementCollection.stopSkeletonAnimation()
+                self.advertisementCollection.hideSkeleton()
+                
                 self.advertisementCollection.reloadData()
             }
         }
@@ -219,8 +242,7 @@ extension HomeVC {
 // MARK: COLLECTIONVIEW DATASOURCE, DELEGATE
 extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    func registerResuableCellIdentifier()
-    {
+    func registerResuableCellIdentifier() {
         self.service_CollectionVw.register(UINib(nibName: "ServiceCell", bundle: nil), forCellWithReuseIdentifier: "ServiceCell")
         self.advertisementCollection.register(UINib(nibName: "ServiceCell", bundle: nil), forCellWithReuseIdentifier: "ServiceCell")
         self.map_CollectionVw.register(UINib(nibName: "MapCell", bundle: nil), forCellWithReuseIdentifier: "MapCell")
@@ -242,6 +264,7 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == advertisementCollection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ServiceCell", for: indexPath) as! ServiceCell
+                        
             let obj = self.advertisementVM.arrayOfBanners[indexPath.row]
             
             if Router.BASE_IMAGE_URL != obj.image {
@@ -253,13 +276,14 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             return cell
         } else if collectionView == service_CollectionVw {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ServiceCell", for: indexPath) as! ServiceCell
+                        
             let obj_Image = serviceVM.arrayOfImages[indexPath.row]
             print(obj_Image)
             Utility.setImageWithSDWebImage(obj_Image, cell.service_Img)
             return cell
         } else if collectionView == map_CollectionVw {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MapCell", for: indexPath) as! MapCell
-            
+                        
             let obj = countryMapVM.arrayCountryMaps[indexPath.row]
             
             if L102Language.currentAppleLanguage() == "en" {
@@ -318,6 +342,7 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             self.viewModel.navigateToCityMapsViewController(from: self.navigationController, countryId: obj.id ?? "")
             
         } else if collectionView == guideline_CollectionVw {
+
             let obj = self.guidelinesTipVM.arrayGuidelinesTip[indexPath.row]
             self.viewModel.navigateToGuidlineViewController(from: self.navigationController, title: obj.title ?? "", dateTime: obj.date_time ?? "", description: obj.description ?? "", image: obj.image ?? "", isFrom: "Guideline",titleArabic: obj.title_ar ?? "", descriptionArabic: obj.description_ar ?? "")
             
@@ -340,23 +365,18 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     }
 }
 
-
-//    private func requestServices()
-//    {
-//        serviceVM.requestToServices(vC: self, pageControl)
-//        serviceVM.fetchedSuccesfully = { [weak self] in
-//            DispatchQueue.main.async {
-//                guard let self = self else { return }
-//                if L102Language.currentAppleLanguage() == "ar" {
-//                    self.serviceRTLLayout.scrollDirection = .horizontal
-//                    self.service_CollectionVw.semanticContentAttribute = .forceLeftToRight
-//                    self.pageControl.numberOfPages = self.serviceVM.arrayOfImages.count
-//                } else {
-//                    self.serviceRTLLayout.scrollDirection = .horizontal
-//                    self.service_CollectionVw.semanticContentAttribute = .forceRightToLeft
-//                    self.pageControl.numberOfPages = self.serviceVM.arrayOfImages.count
-//                }
-//                self.service_CollectionVw.reloadData()
-//            }
-//        }
-//    }
+extension HomeVC: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if skeletonView == advertisementCollection {
+            return "ServiceCell"
+        } else if skeletonView == map_CollectionVw {
+            return "MapCell"
+        } else {
+            return "GuidelineCell"
+        }
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6 // ✅ Show 6 shimmer placeholders while loading
+    }
+}

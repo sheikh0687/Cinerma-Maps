@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class CityMapsVC: UIViewController {
 
@@ -21,6 +22,8 @@ class CityMapsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.setupSearchBar(for: search_Bar)
+        city_MapTableVw.isSkeletonable = true
+        
         self.city_MapTableVw.register(UINib(nibName: "CityMapCell", bundle: nil), forCellReuseIdentifier: "CityMapCell")
         self.lbl_CountryMapHeading.text = "\(countryName) \(R.string.localizable.maps())"
         self.lbl_CountryRepublicText.text = "\(R.string.localizable.cityMapsInTheRepublicOf()) \(countryName)"
@@ -40,11 +43,17 @@ class CityMapsVC: UIViewController {
         viewModel.returnBackk(from: self.navigationController)
     }
     
-     func fetchCityMapDetails()
-    {
+    func fetchCityMapDetails() {
+        city_MapTableVw.showAnimatedSkeleton()
+        
         viewModel.requestCityMapDetails(vC: self)
-        viewModel.requestSuccessfull = { [] in
+        viewModel.requestSuccessfull = { [weak self] in
             DispatchQueue.main.async {
+                guard let self else { return }
+                
+                self.city_MapTableVw.stopSkeletonAnimation()
+                self.city_MapTableVw.hideSkeleton()
+                
                 self.city_MapTableVw.reloadData()
             }
         }
@@ -115,5 +124,20 @@ extension CityMapsVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.search_Bar.endEditing(true)
+    }
+}
+
+extension CityMapsVC: SkeletonTableViewDataSource {
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "CityMapCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4 // ✅ Show 4 shimmer placeholders while loading
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class GuidelineCell: UICollectionViewCell {
 
@@ -18,6 +19,13 @@ class GuidelineCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        isSkeletonable = true
+        
+        img.isSkeletonable = true
+        lbl_Text.isSkeletonable = true
+        lbl_Text.linesCornerRadius = 4
+        btn_MoreOt.isSkeletonable = true
+        contentView.isSkeletonable = true
         self.img.roundCorners(corners: [.topLeft, .topRight], radius: 10)
     }
     

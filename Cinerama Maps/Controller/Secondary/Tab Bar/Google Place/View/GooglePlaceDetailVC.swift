@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import SkeletonView
 
 class GooglePlaceDetailVC: UIViewController {
     
@@ -56,8 +57,6 @@ class GooglePlaceDetailVC: UIViewController {
         super.init(coder: coder)
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tag_Collection.register(UINib(nibName: "TagCell", bundle: nil), forCellWithReuseIdentifier: "TagCell")
@@ -67,8 +66,9 @@ class GooglePlaceDetailVC: UIViewController {
         favImg.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(favoriteButtonTapped))
         favImg.addGestureRecognizer(tapGesture)
+        
+        setupSkeletons()
     }
-    
     
     private func bindDataToVC() {
         viewModel.fetchPlaceId(vC: self)
@@ -128,6 +128,8 @@ class GooglePlaceDetailVC: UIViewController {
                     tag_Collection.reloadData()
                     timeSchedule_Collection.reloadData()
                     rating_TableVw.reloadData()
+                    
+                    stopSkeletons()
                     
                     // Fetch and update photos
                     DispatchQueue.main.async { [self] in
@@ -215,7 +217,15 @@ class GooglePlaceDetailVC: UIViewController {
     }
 }
 
-extension GooglePlaceDetailVC: UITableViewDataSource, UITableViewDelegate {
+extension GooglePlaceDetailVC: UITableViewDataSource, UITableViewDelegate, SkeletonTableViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "ReviewCell"
+    }
+
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3   // Placeholder count during loading
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.arrayRatingReview.count
@@ -241,8 +251,17 @@ extension GooglePlaceDetailVC: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension GooglePlaceDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-{
+extension GooglePlaceDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SkeletonCollectionViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if skeletonView == placeImg_Collection { return "Cell" }
+        return "TagCell"   // covers both tag_Collection and timeSchedule_Collection
+    }
+
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4   // Placeholder count during loading
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == placeImg_Collection {
             self.arrayOfBothImages.count
@@ -310,4 +329,61 @@ extension GooglePlaceDetailVC: UICollectionViewDataSource, UICollectionViewDeleg
     }
 }
 
+extension GooglePlaceDetailVC {
+
+    private func setupSkeletons() {
+        let skeletonableViews: [UIView?] = [
+            lbl_PlaceName, lbl_OpenCloseStatus, lbl_Km,
+            lbl_PhoneNum, lbl_WebsiteLink,
+            lbl_WorthVisit, lbl_WorthNotVisit, lbl_PromoCode,
+            wv_PlaceDescription,
+            placeImg_Collection, tag_Collection,
+            timeSchedule_Collection, rating_TableVw
+        ]
+        skeletonableViews.forEach {
+            $0?.isSkeletonable = true
+        }
+
+        // Rounded skeleton for image collection
+        placeImg_Collection.skeletonCornerRadius = 10
+        wv_PlaceDescription.skeletonCornerRadius = 8
+
+        startSkeletons()
+    }
+
+    private func startSkeletons() {
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        let gradient = SkeletonGradient(baseColor: .clouds)
+
+        lbl_PlaceName.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_OpenCloseStatus.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_Km.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_PhoneNum.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_WebsiteLink.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_WorthVisit.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_WorthNotVisit.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_PromoCode.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        wv_PlaceDescription.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        placeImg_Collection.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        tag_Collection.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        timeSchedule_Collection.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        rating_TableVw.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+    }
+
+    func stopSkeletons() {
+        lbl_PlaceName.hideSkeleton()
+        lbl_OpenCloseStatus.hideSkeleton()
+        lbl_Km.hideSkeleton()
+        lbl_PhoneNum.hideSkeleton()
+        lbl_WebsiteLink.hideSkeleton()
+        lbl_WorthVisit.hideSkeleton()
+        lbl_WorthNotVisit.hideSkeleton()
+        lbl_PromoCode.hideSkeleton()
+        wv_PlaceDescription.hideSkeleton()
+        placeImg_Collection.hideSkeleton(reloadDataAfter: true)
+        tag_Collection.hideSkeleton(reloadDataAfter: true)
+        timeSchedule_Collection.hideSkeleton(reloadDataAfter: true)
+        rating_TableVw.hideSkeleton(reloadDataAfter: true)
+    }
+}
 

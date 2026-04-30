@@ -290,12 +290,6 @@
 /* Class = "UILabel"; text = "Terms & Conditions"; ObjectID = "OwT-lf-m4L"; */
 "OwT-lf-m4L.text" = "الشروط والأحكام";
 
-/* Class = "UIButton"; configuration.title = "English"; ObjectID = "P0l-BM-b5x"; */
-"P0l-BM-b5x.configuration.title" = "الإنجليزية";
-
-/* Class = "UIButton"; normalTitle = "English"; ObjectID = "P0l-BM-b5x"; */
-"P0l-BM-b5x.normalTitle" = "الإنجليزية";
-
 /* Class = "UILabel"; text = "Contact Us"; ObjectID = "P4V-BO-WZ3"; */
 "P4V-BO-WZ3.text" = "اتصل بنا";
 
@@ -733,9 +727,6 @@
 
 /* Class = "UIButton"; normalTitle = "More"; ObjectID = "7Y4-7N-JvU"; */
 "7Y4-7N-JvU.normalTitle" = "المزيد";
-
-/* Class = "UIButton"; normalTitle = "Arabic"; ObjectID = "jU2-fg-rtm"; */
-"jU2-fg-rtm.normalTitle" = "العربية";
 
 /* Class = "UIButton"; normalTitle = "Submit your review"; ObjectID = "fBq-z6-Ok2"; */
 "fBq-z6-Ok2.normalTitle" = "أرسل تقييمك";

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SwiftUI
+import SkeletonView
 
 class MapVC: UIViewController {
     
@@ -35,7 +37,12 @@ class MapVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.setupSearchBar(for: search_Bar)
+        
+        map_Collection.isSkeletonable = true
+        cityMap_Table.isSkeletonable = true
+
+        self.viewModel.setupSearchBar(for: search_Bar)
+        
         self.map_Collection.register(UINib(nibName: "MapCell", bundle: nil), forCellWithReuseIdentifier: "MapCell")
         self.cityMap_Table.register(UINib(nibName: "CityMapCell", bundle: nil), forCellReuseIdentifier: "CityMapCell")
         self.map_Collection.isHidden = false
@@ -49,11 +56,11 @@ class MapVC: UIViewController {
             self.search_HeadingVw.isHidden = true
         }
         
-        search_Bar.delegate = self
+        self.search_Bar.delegate = self
         self.search_Bar.showsScopeBar = true
         self.search_Bar.returnKeyType = .done
         
-        requestCountryMap()
+        self.requestCountryMap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,21 +77,35 @@ class MapVC: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    private func requestCountryMap()
-    {
+    private func requestCountryMap() {
+        countryMapVM.countryLoading = true
+        map_Collection.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
+        
         countryMapVM.fetchCountryMaps(vC: self)
-        countryMapVM.fethcedSuccessfully = { [] in
+        countryMapVM.fethcedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
+                guard let self else { return }
+                self.countryMapVM.countryLoading = false
+                
+                self.map_Collection.stopSkeletonAnimation()
+                self.map_Collection.hideSkeleton(reloadDataAfter: true)
                 self.map_Collection.reloadData()
             }
         }
     }
     
-    func requestCityMaps()
-    {
+    func requestCityMaps() {
+        cityMapVM.cityLoading = true
+        cityMap_Table.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
+        
         cityMapVM.fetchPurchaseCityMap(vC: self, tableHeight: tableVw_Height)
-        cityMapVM.requestSuccessfull = { [] in
+        cityMapVM.requestSuccessfull = { [weak self] in
             DispatchQueue.main.async {
+                guard let self else { return }
+                self.cityMapVM.cityLoading = false
+                
+                self.cityMap_Table.stopSkeletonAnimation()
+                self.cityMap_Table.hideSkeleton(reloadDataAfter: true)
                 self.cityMap_Table.reloadData()
             }
         }
@@ -128,7 +149,7 @@ extension MapVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 
         let numberOfRows = (self.countryMapVM.arrayCountryMaps.count + numberOfItemsInRow - 1) / numberOfItemsInRow
         let cellHeight: CGFloat = 160
         self.collection_Height.constant = CGFloat(numberOfRows) * cellHeight
-        
+                
         let obj = self.countryMapVM.arrayCountryMaps[indexPath.row]
         
         if L102Language.currentAppleLanguage() == "en" {
@@ -181,8 +202,9 @@ extension MapVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CityMapCell", for: indexPath) as! CityMapCell
-        
+                
         let obj = self.cityMapVM.arrayOfPurchasedCityMap[indexPath.row]
+        
         if L102Language.currentAppleLanguage() == "en" {
             cell.lbl_CountryName.text = obj.name ?? ""
         } else {
@@ -248,5 +270,29 @@ extension MapVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.search_Bar.endEditing(true)
+    }
+}
+
+extension MapVC: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "MapCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6 // ✅ Show 6 shimmer placeholders while loading
+    }
+}
+
+extension MapVC: SkeletonTableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return cityMapVM.arrayOfPurchasedCityMap.count
+//    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "CityMapCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4 // ✅ Show 4 shimmer placeholders while loading
     }
 }

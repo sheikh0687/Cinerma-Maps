@@ -7,73 +7,8 @@
 
 import UIKit
 import WebKit
-
-//class GuidelinesVC: UIViewController {
-//    
-//    @IBOutlet weak var lbl_Title: UILabel!
-//    @IBOutlet weak var lbl_Date: UILabel!
-//    @IBOutlet weak var wv_Container: UIView!
-//    @IBOutlet weak var img: UIImageView!
-//    
-//    @IBOutlet weak var lbl_Headline: UILabel!
-//    @IBOutlet weak var discountButtonVw: UIView!
-//    @IBOutlet weak var btn_DiscountOt: UIButton!
-//    
-//    var titleVal:String = ""
-//    var dateTime:String = ""
-//    var descriptionVal:String = ""
-//    var placeImg:String = ""
-//    
-//    var offerCode:String = ""
-//    
-//    var isFrom:String = ""
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setGuideTips()
-//    }
-//    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        self.tabBarController?.tabBar.isHidden = true
-//    }
-//    
-//    @IBAction func btn_Back(_ sender: UIButton) {
-//        self.navigationController?.popViewController(animated: true)
-//    }
-//    
-//    private func setGuideTips() {
-//        
-//        if isFrom == "Advertisement" {
-//            self.lbl_Date.isHidden = true
-//            self.lbl_Headline.text = R.string.localizable.advertisementDetails()
-//            self.lbl_Title.textColor = .black
-//            discountButtonVw.isHidden = true
-//        } else if isFrom == "Guideline" {
-//            self.lbl_Date.text = "\(R.string.localizable.theWritingDateIs()) \(self.dateTime)"
-//            self.lbl_Date.isHidden = false
-//            self.lbl_Headline.text = R.string.localizable.guidelinesAndTips()
-//            self.lbl_Title.textColor = R.color.main()
-//            discountButtonVw.isHidden = true
-//        } else {
-//            self.lbl_Headline.text = R.string.localizable.offerDetails()
-//            self.lbl_Date.isHidden = true
-//            self.btn_DiscountOt.setTitle(offerCode, for: .normal)
-//            discountButtonVw.isHidden = false
-//        }
-//        
-//        self.lbl_Title.text = self.titleVal
-//        
-//        let headerString = "<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>body { font-family: 'Avenir-Book'; font-size: 16px; color: black; }</style></header>"
-//        wv_Description.loadHTMLString(headerString + descriptionVal, baseURL: nil)
-//                
-//        if Router.BASE_IMAGE_URL != placeImg {
-//            Utility.setImageWithSDWebImage(placeImg, self.img)
-//        } else {
-//            self.img.image = R.image.blank()
-//        }
-//    }
-//}
+import SkeletonView
+import SDWebImage
 
 class GuidelinesVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerDelegate {
     
@@ -103,6 +38,7 @@ class GuidelinesVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerD
     override func viewDidLoad() {
         super.viewDidLoad()
         setupWebView()
+        setupSkeletons()
         setGuideTips()
         setupBackGesture()
     }
@@ -233,9 +169,12 @@ extension GuidelinesVC {
         loadHTML(descriptionVal) // ⭐️ Use the safe loadHTML method
         
         if Router.BASE_IMAGE_URL != placeImg {
-            Utility.setImageWithSDWebImage(placeImg, self.img)
+            img.sd_setImage(with: URL(string: placeImg), placeholderImage: nil) { [weak self] _, _, _, _ in
+                self?.img.hideSkeleton()
+            }
         } else {
             self.img.image = R.image.blank()
+            self.img.hideSkeleton()
         }
     }
 }
@@ -253,5 +192,51 @@ extension GuidelinesVC {
             return false
         }
         return true
+    }
+}
+
+extension GuidelinesVC {
+
+    private func setupSkeletons() {
+        // Mark views as skeletonable
+        [lbl_Title, lbl_Date, img, wv_Container].forEach {
+            $0?.isSkeletonable = true
+        }
+        img.isSkeletonable = true
+        img.skeletonCornerRadius = 8
+
+        startSkeletons()
+    }
+
+    private func startSkeletons() {
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        let gradient = SkeletonGradient(baseColor: .clouds)
+
+        lbl_Title.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        lbl_Date.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        img.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        wv_Container.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+    }
+
+    func stopSkeletons() {
+        lbl_Title.hideSkeleton()
+        lbl_Date.hideSkeleton()
+        img.hideSkeleton()
+        wv_Container.hideSkeleton()
+    }
+}
+
+extension GuidelinesVC {
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        stopSkeletons()   // ← Content is ready, hide shimmer
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        stopSkeletons()   // ← Also stop on failure to avoid infinite shimmer
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        stopSkeletons()
     }
 }

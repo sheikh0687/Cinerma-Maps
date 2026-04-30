@@ -28,6 +28,7 @@ class SubscriptionMapViewModel: ObservableObject {
     @Published var isDataLoaded: Bool = false
     @Published var cityLat = 0.0
     @Published var cityLon = 0.0
+    @Published var isLoading: Bool = true
     
     var openType = OpenType.direct
     var message: String? = nil
@@ -430,6 +431,7 @@ class SubscriptionMapViewModel: ObservableObject {
                         self.arrayOfPlaceDetails = placesDetail
                         self.arrayOfPlaceDetails1 = placesDetail
                         self.prefetchIcons() // Enable prefetching
+                        self.isLoading = false
                         self.fetchedFromDbSuccessfully?()
                     }
                 

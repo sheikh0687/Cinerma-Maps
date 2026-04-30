@@ -8,7 +8,7 @@
 import UIKit
 import Parchment
 import SnapKit
-import WebKit
+import SkeletonView
 
 class OfferVC: UIViewController {
     
@@ -43,10 +43,11 @@ class OfferVC: UIViewController {
     
     var dependonUi:String = "Tourism"
     
-    private let webProcessPool = WKProcessPool()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        serviceTableVw.isSkeletonable = true
+        
         self.viewModel.setupSearchBar(searchBar: search_Bar)
         self.serviceTableVw.register(UINib(nibName: "MoreServiceCell", bundle: nil), forCellReuseIdentifier: "MoreServiceCell")
         self.serviceTableVw.register(UINib(nibName: "DiscountCell", bundle: nil), forCellReuseIdentifier: "DiscountCell")
@@ -221,10 +222,16 @@ extension OfferVC {
     }
     
     private func setToursimService(strCatiD: String, subCatiD: String, strChildiD: String) {
+        serviceTableVw.showAnimatedSkeleton()
+        
         tourismViewModel.fetchToursimServiceDetails(vC: self, catiD: strCatiD, subCatiD: subCatiD, childiD: strChildiD, tableVw: serviceTableVw)
         tourismViewModel.cloTourismServiceSuccessfully = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             DispatchQueue.main.async {
+                
+                self.serviceTableVw.stopSkeletonAnimation()
+                self.serviceTableVw.hideSkeleton()
+
                 self.serviceTableVw.reloadData()
             }
         }
@@ -280,10 +287,16 @@ extension OfferVC {
     }
     
     private func setPartnerService(strCatiD: String, subCatiD: String, strChildiD: String) {
+        serviceTableVw.showAnimatedSkeleton()
+        
         partnerViewModel.fetchPartnerServiceDetails(vC: self, catiD: strCatiD, subCatiD: subCatiD, childiD: strChildiD, tableVw: serviceTableVw)
         partnerViewModel.fetchedPartnerServiceSuccessfully = { [weak self] in
-            guard let self = self else { return }
             DispatchQueue.main.async {
+                guard let self else { return }
+                
+                self.serviceTableVw.stopSkeletonAnimation()
+                self.serviceTableVw.hideSkeleton()
+                
                 self.serviceTableVw.reloadData()
             }
         }
@@ -337,11 +350,17 @@ extension OfferVC {
         }
     }
     
-    private func setUpComanyOffers(strCatiD: String, strSubCatiD: String, strChildiD: String)
-    {
+    private func setUpComanyOffers(strCatiD: String, strSubCatiD: String, strChildiD: String) {
+        serviceTableVw.showAnimatedSkeleton()
+        
         viewModel.requestCompanyOffer(vC: self, catiD: strCatiD,subCatiD: strSubCatiD, childiD: strChildiD, tableView: self.serviceTableVw)
-        viewModel.fetchedSuccessfully = { [] in
+        viewModel.fetchedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
+                guard let self else { return }
+                
+                self.serviceTableVw.stopSkeletonAnimation()
+                self.serviceTableVw.hideSkeleton()
+
                 self.serviceTableVw.reloadData()
             }
         }
@@ -883,6 +902,21 @@ extension OfferVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
+    }
+}
+
+extension OfferVC: SkeletonTableViewDataSource {
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "DiscountCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4 // ✅ Show 4 shimmer placeholders while loading
     }
 }
 

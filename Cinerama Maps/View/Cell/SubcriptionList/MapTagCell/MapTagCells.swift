@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MapTagCells: UICollectionViewCell {
 
@@ -16,6 +17,12 @@ class MapTagCells: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        isSkeletonable = true
+        
+        indexview.isSkeletonable = true
+        lbl_place.isSkeletonable = true
+        lbl_place.linesCornerRadius = 4
+        contentView.isSkeletonable = true
     }
 
 }

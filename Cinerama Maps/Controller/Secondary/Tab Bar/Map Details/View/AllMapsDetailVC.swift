@@ -12,6 +12,7 @@ import GoogleMapsUtils
 import AVKit
 import WebKit
 import SwiftUI
+import SkeletonView
 
 enum MapDetailTab: Int {
     case aboutMap = 0
@@ -134,6 +135,8 @@ class AllMapsDetailVC: UIViewController {
         if self.viewModel.arrayOfCityImages.isEmpty {
             self.imgPageControl.numberOfPages = 1
         }
+        
+        startSkeletons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -165,8 +168,7 @@ class AllMapsDetailVC: UIViewController {
         clusterManager.setDelegate(self, mapDelegate: self)
     }
     
-    func configureiUUpdates()
-    {
+    func configureiUUpdates() {
         self.lbl_MainHeadline.text = nameOfCity
         self.lbl_CityNAme.text = nameOfCity
         self.ratingVw.rating = Double(ratingOfCity) ?? 0.0
@@ -175,13 +177,6 @@ class AllMapsDetailVC: UIViewController {
         self.mapView.borderWidth = 1
         self.mapView.borderColor = .purple
         
-//        if Router.BASE_IMAGE_URL != imageOfCity {
-//            Utility.setImageWithSDWebImage(imageOfCity, self.img_DetailMap)
-//        } else {
-//            self.img_DetailMap.image = R.image.blank()
-//        }
-        
-        // Don't add marker here anymore, we'll add all markers from place_details
         selectTab(.aboutMap)
         bindDataFromVm()
         bindCityImages()
@@ -191,6 +186,56 @@ class AllMapsDetailVC: UIViewController {
         } else {
             self.btn_SubscribeOt.isHidden = false
         }
+    }
+    
+    private func startSkeletons() {
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: L102Language.currentAppleLanguage() == "en" ? .leftRight : .rightLeft)
+
+        // Text labels
+        lbl_AboutCity.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Currrency.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Language.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Clothing.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Timing.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Health.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_ElectricSocket.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Communication.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Weather.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_PoliceCarNum.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_PolicePhoneNum.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_CityNAme.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_Amount.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_RatingReview.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        lbl_CityAddress.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+
+        // Table & Collection views
+        rating_TableVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        images_CollectionVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        tag_CollectionVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+        cityImagesSlider.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+    }
+
+    private func stopSkeletons() {
+        lbl_AboutCity.hideSkeleton()
+        lbl_Currrency.hideSkeleton()
+        lbl_Language.hideSkeleton()
+        lbl_Clothing.hideSkeleton()
+        lbl_Timing.hideSkeleton()
+        lbl_Health.hideSkeleton()
+        lbl_ElectricSocket.hideSkeleton()
+        lbl_Communication.hideSkeleton()
+        lbl_Weather.hideSkeleton()
+        lbl_PoliceCarNum.hideSkeleton()
+        lbl_PolicePhoneNum.hideSkeleton()
+        lbl_CityNAme.hideSkeleton()
+        lbl_Amount.hideSkeleton()
+        lbl_RatingReview.hideSkeleton()
+        lbl_CityAddress.hideSkeleton()
+
+        rating_TableVw.hideSkeleton()
+        images_CollectionVw.hideSkeleton()
+        tag_CollectionVw.hideSkeleton()
+        cityImagesSlider.hideSkeleton()
     }
     
     @IBAction func allPlaceDetailButton(_ sender: UIButton) {
@@ -205,20 +250,17 @@ class AllMapsDetailVC: UIViewController {
         btn_AboutMap.setTitleColor(tab == .aboutMap ? selectedColor : defaultColor, for: .normal)
         btn_Place.setTitleColor(tab == .place ? selectedColor : defaultColor, for: .normal)
         btn_Review.setTitleColor(tab == .review ? selectedColor : defaultColor, for: .normal)
-//        btn_Images.setTitleColor(tab == .images ? selectedColor : defaultColor, for: .normal)
         btn_MoreFeature.setTitleColor(tab == .moreFeature ? selectedColor : defaultColor, for: .normal)
         
         labelLine1.backgroundColor = tab == .aboutMap ? selectedColor : .clear
         labelLine2.backgroundColor = tab == .place ? selectedColor : .clear
         labelLine3.backgroundColor = tab == .review ? selectedColor : .clear
         labelLine5.backgroundColor = tab == .moreFeature ? selectedColor : .clear
-//        labelLine4.backgroundColor = tab == .images ? selectedColor : .clears
         
         aboutCity_Vw.isHidden = tab != .aboutMap
         map_Vw.isHidden = tab != .place
         review_Vw.isHidden = tab != .review
         videoPlayerVW.isHidden = tab != .moreFeature
-//        images_Vw.isHidden = tab != .images
     }
     
     @IBAction func btn_SubmitReview(_ sender: UIButton) {
@@ -305,8 +347,10 @@ class AllMapsDetailVC: UIViewController {
     private func bindDataFromVm()
     {
         viewModel.requestCountryMapDetails(vC: self, tagHeight: tagHeight, collectionVw: tag_CollectionVw)
-        viewModel.fetchedSuccessfully = { [] in
+        viewModel.fetchedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
+                guard let self else { return }
+                
                 let obj = self.viewModel.arrayOfDetailCityMaps
                 
                 self.lbl_AboutCity.text = L102Language.currentAppleLanguage() == "en" ? obj?.about_city : obj?.about_city_ar ?? ""
@@ -329,8 +373,7 @@ class AllMapsDetailVC: UIViewController {
                 
                 self.lbl_PoliceCarNum.text = obj?.car_police_number
                 self.lbl_PolicePhoneNum.text = obj?.police_number
-                                  
-//                self.playVideo(videoLink: L102Language.currentAppleLanguage() == "en" ? obj?.youtube_video_link ?? "" : obj?.youtube_video_link_arabic ?? "")
+
                 let videoLink = L102Language.currentAppleLanguage() == "en"
                     ? obj?.youtube_video_link ?? ""
                     : obj?.youtube_video_link_arabic ?? ""
@@ -350,11 +393,14 @@ class AllMapsDetailVC: UIViewController {
                 self.mapZoom.maximumValue = 20
                 self.mapZoom.stepValue = 1
                 self.mapZoom.value = 12
+                
+                self.stopSkeletons()
             }
         }
     }
         
     private func bindCityImages() {
+        
         viewModel.fetchCityImages(vC: self)
         viewModel.fetchedImagesSuccess = { [weak self] in
             DispatchQueue.main.async {
@@ -364,6 +410,8 @@ class AllMapsDetailVC: UIViewController {
                     self.imgCollectionsRTLLayout.scrollDirection = .horizontal
                     self.cityImagesSlider.semanticContentAttribute = .forceLeftToRight
                 }
+                
+                self.stopSkeletons()
                 self.cityImagesSlider.reloadData()
             }
         }
@@ -445,7 +493,7 @@ class AllMapsDetailVC: UIViewController {
         
         // Set initial camera position
         if let firstCoordinate = viewModel.arrayOfDetailCityMaps.place_details?.first {
-            let camera = GMSCameraPosition(
+            let camera = GMSCameraPosition (
                 latitude: Double(firstCoordinate.lat ?? "") ?? 0.0,
                 longitude: Double(firstCoordinate.lon ?? "") ?? 0.0,
                 zoom: 8
@@ -484,12 +532,17 @@ class AllMapsDetailVC: UIViewController {
     }
     
     func renderMarkerViewAsImage(markerView: MapMarkerView) -> UIImage? {
+        
         UIGraphicsBeginImageContextWithOptions(markerView.bounds.size, false, UIScreen.main.scale)
+        
         if let context = UIGraphicsGetCurrentContext() {
             markerView.layer.render(in: context)
         }
+        
         let image = UIGraphicsGetImageFromCurrentImageContext()
+        
         UIGraphicsEndImageContext()
+        
         return image
     }
     
@@ -503,7 +556,7 @@ class AllMapsDetailVC: UIViewController {
 }
 
 // MARK: - UITableView DataSource & Delegate
-extension AllMapsDetailVC: UITableViewDataSource, UITableViewDelegate {
+extension AllMapsDetailVC: UITableViewDataSource, UITableViewDelegate, SkeletonTableViewDataSource {
     
     func registerIdentifiers() {
         self.rating_TableVw.register(UINib(nibName: "ReviewCell", bundle: nil), forCellReuseIdentifier: "ReviewCell")
@@ -534,10 +587,28 @@ extension AllMapsDetailVC: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "ReviewCell"
+    }
+
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3 // Placeholder skeleton row count
+    }
 }
 
 // MARK: - UICollectionView DataSource & Delegate
-extension AllMapsDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension AllMapsDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SkeletonCollectionViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if skeletonView == tag_CollectionVw { return "MapTagCells" }
+        if skeletonView == images_CollectionVw { return "MapCell" }
+        return "CityImagesCell"
+    }
+
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4 // Placeholder skeleton item count
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == tag_CollectionVw {
@@ -750,7 +821,6 @@ extension AllMapsDetailVC: GMSMapViewDelegate {
 }
 
 extension AllMapsDetailVC {
-    
     // MARK: - Video Setup
     func setupYouTubeThumbnail(_ urlString: String) {
         guard let videoID = extractYouTubeID(urlString) else {
@@ -857,98 +927,3 @@ extension AllMapsDetailVC {
         return nil
     }
 }
-
-//extension AllMapsDetailVC {
-//    
-//    // MARK: - Video Setup
-//    func setupYouTubeThumbnail(_ urlString: String) {
-//        guard let videoID = extractYouTubeID(urlString) else {
-//            print("Could not extract YouTube ID from: \(urlString)")
-//            return
-//        }
-//        
-//        currentVideoLink = urlString
-//        
-//        // Clear previous subviews
-//        videoPlayerVW.subviews.forEach { $0.removeFromSuperview() }
-//        
-//        let thumbnailURL = "https://img.youtube.com/vi/\(videoID)/hqdefault.jpg"
-//        
-//        // Thumbnail ImageView
-//        let imageView = UIImageView(frame: videoPlayerVW.bounds)
-//        imageView.contentMode = .scaleAspectFill
-//        imageView.clipsToBounds = true
-//        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        imageView.sd_setImage(with: URL(string: thumbnailURL), placeholderImage: UIImage(systemName: "video.fill"))
-//        videoPlayerVW.addSubview(imageView)
-//        
-//        // Dark overlay for better button visibility
-//        let overlayView = UIView(frame: videoPlayerVW.bounds)
-//        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-//        overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        videoPlayerVW.addSubview(overlayView)
-//        
-//        // Play Button
-//        let playButton = UIButton(type: .custom)
-//        playButton.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-//        playButton.center = CGPoint(x: videoPlayerVW.bounds.midX, y: videoPlayerVW.bounds.midY)
-//        playButton.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin,
-//                                       .flexibleLeftMargin, .flexibleRightMargin]
-//        
-//        let config = UIImage.SymbolConfiguration(pointSize: 50, weight: .regular)
-//        let playImage = UIImage(systemName: "play.circle.fill", withConfiguration: config)
-//        playButton.setImage(playImage, for: .normal)
-//        playButton.tintColor = .white
-//        playButton.addTarget(self, action: #selector(openYouTubeTapped(_:)), for: .touchUpInside)
-//        videoPlayerVW.addSubview(playButton)
-//    }
-//    
-//    // MARK: - Button Action
-//    @objc func openYouTubeTapped(_ sender: UIButton) {
-//        openYouTubeVideo(currentVideoLink)
-//    }
-//    
-//    // MARK: - Open YouTube
-//    func openYouTubeVideo(_ urlString: String) {
-//        guard !urlString.isEmpty else { return }
-//        
-//        // Try YouTube app first
-//        if let videoID = extractYouTubeID(urlString),
-//           let appURL = URL(string: "youtube://\(videoID)"),
-//           UIApplication.shared.canOpenURL(appURL) {
-//            UIApplication.shared.open(appURL)
-//        }
-//        // Fallback to Safari
-//        else if let webURL = URL(string: urlString) {
-//            UIApplication.shared.open(webURL)
-//        }
-//    }
-//    
-//    // MARK: - Extract YouTube ID
-//    func extractYouTubeID(_ urlString: String) -> String? {
-//        // Handle: https://www.youtube.com/watch?v=VIDEO_ID
-//        if let components = URLComponents(string: urlString),
-//           let videoID = components.queryItems?.first(where: { $0.name == "v" })?.value,
-//           !videoID.isEmpty {
-//            return videoID
-//        }
-//        
-//        // Handle: https://youtu.be/VIDEO_ID
-//        if urlString.contains("youtu.be/"),
-//           let videoID = urlString.components(separatedBy: "youtu.be/").last?
-//            .components(separatedBy: "?").first,
-//           !videoID.isEmpty {
-//            return videoID
-//        }
-//        
-//        // Handle: https://www.youtube.com/shorts/VIDEO_ID
-//        if urlString.contains("/shorts/"),
-//           let videoID = urlString.components(separatedBy: "/shorts/").last?
-//            .components(separatedBy: "?").first,
-//           !videoID.isEmpty {
-//            return videoID
-//        }
-//        
-//        return nil
-//    }
-//}

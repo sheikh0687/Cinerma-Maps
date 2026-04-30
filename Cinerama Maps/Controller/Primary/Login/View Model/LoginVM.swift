@@ -50,14 +50,8 @@ class LoginViewModel {
     {
         dropDown.anchorView = sender
         dropDown.show()
-        switch L102Language.currentAppleLanguage()  {
-        case "en":
-            dropDown.dataSource = ["English","Arabic"]
-            dropDown.bottomOffset = CGPoint(x: -60, y: 40)
-        default:
-            dropDown.dataSource = ["الإنجليزية","العربية"]
-            dropDown.bottomOffset = CGPoint(x: 280, y: 40)
-        }
+        dropDown.dataSource = ["English","العربية"]
+        dropDown.bottomOffset = L102Language.currentAppleLanguage() == "en" ? CGPoint(x: -60, y: 40) : CGPoint(x: 280, y: 40)
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             selectedVal = item
             if index == 0 {

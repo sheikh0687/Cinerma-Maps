@@ -293,12 +293,6 @@
 /* Class = "UILabel"; text = "Terms & Conditions"; ObjectID = "OwT-lf-m4L"; */
 "OwT-lf-m4L.text" = "Terms & Conditions";
 
-/* Class = "UIButton"; configuration.title = "English"; ObjectID = "P0l-BM-b5x"; */
-"P0l-BM-b5x.configuration.title" = "English";
-
-/* Class = "UIButton"; normalTitle = "English"; ObjectID = "P0l-BM-b5x"; */
-"P0l-BM-b5x.normalTitle" = "English";
-
 /* Class = "UILabel"; text = "Contact Us"; ObjectID = "P4V-BO-WZ3"; */
 "P4V-BO-WZ3.text" = "Contact Us";
 
@@ -736,9 +730,6 @@
 
 /* Class = "UIButton"; normalTitle = "More"; ObjectID = "7Y4-7N-JvU"; */
 "7Y4-7N-JvU.normalTitle" = "More";
-
-/* Class = "UIButton"; normalTitle = "Arabic"; ObjectID = "jU2-fg-rtm"; */
-"jU2-fg-rtm.normalTitle" = "Arabic";
 
 /* Class = "UIButton"; normalTitle = "Submit your review"; ObjectID = "fBq-z6-Ok2"; */
 "fBq-z6-Ok2.normalTitle" = "Submit your review";

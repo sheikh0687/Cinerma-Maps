@@ -22,6 +22,13 @@ class CityMapCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        img.isSkeletonable = true
+        lbl_CountryName.isSkeletonable = true
+        lbl_CountryName.linesCornerRadius = 4
+        lbl_Address.isSkeletonable = true
+        lbl_Address.linesCornerRadius = 4
+        lbl_Rating.isSkeletonable = true
+        contentView.isSkeletonable = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

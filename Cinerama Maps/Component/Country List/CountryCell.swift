@@ -8,63 +8,158 @@
 
 import UIKit
 
+//class CountryCell: UITableViewCell {
+//    
+//    var nameLabel: UILabel?
+//    var extensionLabel: UILabel?
+//    
+//    var country: Country? {
+//        didSet {
+//            if let country = country {
+//                nameLabel?.text = country.name ?? country.countryCode
+//                extensionLabel?.text = "+\(country.phoneExtension)"
+//                let isRTL = Locale.characterDirection(forLanguage: Locale.preferredLanguages.first ?? "en") == .rightToLeft
+//                nameLabel?.textAlignment = isRTL ? .right : .left
+//                extensionLabel?.textAlignment = isRTL ? .left : .right
+//            }
+//        }
+//    }
+//
+//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        setup()
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        setup()
+//    }
+//
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        self.nameLabel?.text = ""
+//        self.extensionLabel?.text = ""
+//    }
+//
+//    func setup() {
+//        nameLabel = UILabel()
+//        nameLabel?.textColor = UIColor.black
+//        nameLabel?.font = UIFont.systemFont(ofSize: 20)
+//        nameLabel?.translatesAutoresizingMaskIntoConstraints = false
+//        self.addSubview(nameLabel!)
+//
+//        extensionLabel = UILabel()
+//        extensionLabel?.textColor = UIColor.gray
+//        extensionLabel?.font = UIFont.systemFont(ofSize: 18)
+//        extensionLabel?.translatesAutoresizingMaskIntoConstraints = false
+//        self.addSubview(extensionLabel!)
+//
+//        // Constraints: RTL support!
+//        let isRTL = Locale.characterDirection(forLanguage: Locale.preferredLanguages.first ?? "en") == .rightToLeft
+//
+//        if isRTL {
+//            nameLabel?.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+//            extensionLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+//        } else {
+//            nameLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+//            extensionLabel?.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+//        }
+//        nameLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+//        extensionLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+//    }
+//}
+
 class CountryCell: UITableViewCell {
-    
+ 
+    var flagLabel: UILabel?       // ⭐️ Flag emoji
     var nameLabel: UILabel?
     var extensionLabel: UILabel?
-    
+ 
     var country: Country? {
         didSet {
-            if let country = country {
-                nameLabel?.text = country.name ?? country.countryCode
-                extensionLabel?.text = "+\(country.phoneExtension)"
-                let isRTL = Locale.characterDirection(forLanguage: Locale.preferredLanguages.first ?? "en") == .rightToLeft
-                nameLabel?.textAlignment = isRTL ? .right : .left
-                extensionLabel?.textAlignment = isRTL ? .left : .right
-            }
+            guard let country = country else { return }
+            flagLabel?.text = country.flag ?? ""
+            nameLabel?.text = country.name ?? country.countryCode
+            extensionLabel?.text = "+\(country.phoneExtension)"
+ 
+            let isRTL = Locale.characterDirection(forLanguage: Locale.preferredLanguages.first ?? "en") == .rightToLeft
+            nameLabel?.textAlignment = isRTL ? .right : .left
+            extensionLabel?.textAlignment = isRTL ? .left : .right
         }
     }
-
+ 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
     }
-
+ 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
-
+ 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.nameLabel?.text = ""
-        self.extensionLabel?.text = ""
+        flagLabel?.text = ""
+        nameLabel?.text = ""
+        extensionLabel?.text = ""
     }
-
+ 
     func setup() {
+        let isRTL = Locale.characterDirection(forLanguage: Locale.preferredLanguages.first ?? "en") == .rightToLeft
+ 
+        // ⭐️ Flag label
+        flagLabel = UILabel()
+        flagLabel?.font = UIFont.systemFont(ofSize: 28)
+        flagLabel?.translatesAutoresizingMaskIntoConstraints = false
+        flagLabel?.setContentHuggingPriority(.required, for: .horizontal)
+        flagLabel?.setContentCompressionResistancePriority(.required, for: .horizontal)
+        self.addSubview(flagLabel!)
+ 
+        // Name label
         nameLabel = UILabel()
-        nameLabel?.textColor = UIColor.black
-        nameLabel?.font = UIFont.systemFont(ofSize: 20)
+        nameLabel?.textColor = .black
+        nameLabel?.font = UIFont.systemFont(ofSize: 16)
         nameLabel?.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(nameLabel!)
-
+ 
+        // Extension label
         extensionLabel = UILabel()
         extensionLabel?.textColor = UIColor.gray
-        extensionLabel?.font = UIFont.systemFont(ofSize: 18)
+        extensionLabel?.font = UIFont.systemFont(ofSize: 15)
         extensionLabel?.translatesAutoresizingMaskIntoConstraints = false
+        extensionLabel?.setContentHuggingPriority(.required, for: .horizontal)
+        extensionLabel?.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.addSubview(extensionLabel!)
-
-        // Constraints: RTL support!
-        let isRTL = Locale.characterDirection(forLanguage: Locale.preferredLanguages.first ?? "en") == .rightToLeft
-
+ 
+        // ⭐️ Layout: [flag] [name] [+ext]  (LTR)
+        //            [+ext] [name] [flag]  (RTL)
         if isRTL {
-            nameLabel?.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+            // Flag on right
+            flagLabel?.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+            flagLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+ 
+            // Name after flag (to the left)
+            nameLabel?.rightAnchor.constraint(equalTo: flagLabel!.leftAnchor, constant: -10).isActive = true
+            nameLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+ 
+            // Extension on far left
             extensionLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+            extensionLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            nameLabel?.leftAnchor.constraint(greaterThanOrEqualTo: extensionLabel!.rightAnchor, constant: 8).isActive = true
         } else {
-            nameLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+            // Flag on left
+            flagLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+            flagLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+ 
+            // Name after flag
+            nameLabel?.leftAnchor.constraint(equalTo: flagLabel!.rightAnchor, constant: 10).isActive = true
+            nameLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+ 
+            // Extension on far right
             extensionLabel?.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+            extensionLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            nameLabel?.rightAnchor.constraint(lessThanOrEqualTo: extensionLabel!.leftAnchor, constant: -8).isActive = true
         }
-        nameLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        extensionLabel?.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 }

@@ -46,7 +46,6 @@ struct k {
         static let onlineStatus                             =      ""
         static let categoryId                               =      "category_id"
         static let subCategoryId                            =      "sub_cat_id"
-        static let userImage                                =      "user_image"
         static let interestedRestId                         =      "interested_rest_id"
         static let lat                                      =      "lat"
         static let lon                                      =      "lon"

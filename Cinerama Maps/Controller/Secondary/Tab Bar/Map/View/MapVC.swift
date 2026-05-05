@@ -95,14 +95,12 @@ class MapVC: UIViewController {
     }
     
     func requestCityMaps() {
-        cityMapVM.cityLoading = true
         cityMap_Table.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
         
-        cityMapVM.fetchPurchaseCityMap(vC: self, tableHeight: tableVw_Height)
+        cityMapVM.fetchPurchaseCityMap(vC: self, tableView: cityMap_Table, tableHeight: tableVw_Height)
         cityMapVM.requestSuccessfull = { [weak self] in
             DispatchQueue.main.async {
                 guard let self else { return }
-                self.cityMapVM.cityLoading = false
                 
                 self.cityMap_Table.stopSkeletonAnimation()
                 self.cityMap_Table.hideSkeleton(reloadDataAfter: true)

@@ -18,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2YQ-xt-25E">
-                        <rect key="frame" x="6" y="6" width="259" height="146"/>
+                        <rect key="frame" x="4" y="6" width="263" height="146"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map1" translatesAutoresizingMaskIntoConstraints="NO" id="01O-TS-fwR">
-                                <rect key="frame" x="0.0" y="0.0" width="259" height="146"/>
+                                <rect key="frame" x="0.0" y="0.0" width="263" height="146"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map1" translatesAutoresizingMaskIntoConstraints="NO" id="wFD-W8-f2V">
                                 <rect key="frame" x="10" y="10" width="44" height="28"/>
@@ -31,7 +31,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Republic of Turkey." textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9la-PN-wmX">
-                                <rect key="frame" x="20" y="118.66666666666667" width="231" height="19.333333333333329"/>
+                                <rect key="frame" x="20" y="118.66666666666667" width="235" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -60,8 +60,8 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="2YQ-xt-25E" secondAttribute="bottom" constant="6" id="4pI-Fp-faf"/>
-                <constraint firstAttribute="trailing" secondItem="2YQ-xt-25E" secondAttribute="trailing" constant="6" id="kuM-Ek-236"/>
-                <constraint firstItem="2YQ-xt-25E" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="6" id="mXO-NX-WkH"/>
+                <constraint firstAttribute="trailing" secondItem="2YQ-xt-25E" secondAttribute="trailing" constant="4" id="kuM-Ek-236"/>
+                <constraint firstItem="2YQ-xt-25E" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" id="mXO-NX-WkH"/>
                 <constraint firstItem="2YQ-xt-25E" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="6" id="yvP-Tu-oJK"/>
             </constraints>
             <size key="customSize" width="271" height="158"/>

@@ -7,12 +7,13 @@
 
 import UIKit
 import MapKit
-import SDWebImage
 import SafariServices
 //import Rswift
 import GoogleMaps
 import SVGKit
 import WebKit
+import SDWebImage
+import SDWebImageWebPCoder
 
 class Utility {
     
@@ -531,29 +532,63 @@ class Utility {
     }
     
     class func setImageWithSDWebImage(_ url: String, _ imageView: UIImageView) {
-        let urlwithPercentEscapes = url.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed)
-        let urlLogo = URL(string: urlwithPercentEscapes!)
-        imageView.sd_setImage(with: urlLogo, placeholderImage: UIImage(named: "BackPlaceholder"), options: .continueInBackground, completed: nil)
-    }
-    
-    class func downloadImageBySDWebImage(_ url: String, successBlock success : @escaping ( _ image : UIImage?, _  error: Error?) -> Void) {
-        let urlwithPercentEscapes = url.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed)
-        let urlLogo = URL(string: urlwithPercentEscapes!)
-        SDWebImageManager.shared().imageDownloader?.downloadImage(with: urlLogo, options: .continueInBackground, progress: nil, completed: { (image, data, error, boool) in
-            success(image, error)
-        })
-    }
-    
-    class func setImageWithSDWebImageOnButton(_ url: String, _ imageView: UIButton) {
-        let urlwithPercentEscapes = url.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed)
-        let urlLogo = URL(string: urlwithPercentEscapes!)
-        
-        imageView.sd_setImage(with: urlLogo, for:
-                                UIControl.State.normal, placeholderImage: UIImage(named:
-                                                                                    "BackPlaceholder"), options: SDWebImageOptions(rawValue: 0)) { (image,
-                                                                                                                                                error, cache, url) in
-            print("imagdoooooooooo\(image)")
+        guard !url.isEmpty,
+              let encoded = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let urlLogo = URL(string: encoded) else {
+            imageView.image = UIImage(named: "BackPlaceholder")
+            return
         }
+        imageView.sd_setImage(
+            with: urlLogo,
+            placeholderImage: UIImage(named: "BackPlaceholder"),
+            options: [.continueInBackground, .retryFailed],
+            completed: { image, error, _, _ in
+                if let error = error {
+                    print("❌ SDWebImage error: \(error.localizedDescription) | URL: \(url)")
+                    imageView.image = UIImage(named: "BackPlaceholder")
+                }
+            }
+        )
+    }
+
+    class func downloadImageBySDWebImage(_ url: String,
+                                         successBlock success: @escaping (_ image: UIImage?,
+                                                                          _ error: Error?) -> Void) {
+        guard !url.isEmpty,
+              let encoded = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let urlLogo = URL(string: encoded) else {
+            success(nil, nil)
+            return
+        }
+        
+        SDWebImageManager.shared.loadImage(
+            with: urlLogo,
+            options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.retryFailed],
+            progress: nil
+        ) { image, data, error, _, _, _ in
+            success(image, error)
+        }
+    }
+
+    class func setImageWithSDWebImageOnButton(_ url: String, _ button: UIButton) {
+        guard !url.isEmpty,
+              let encoded = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let urlLogo = URL(string: encoded) else {
+            button.setImage(UIImage(named: "BackPlaceholder"), for: .normal)
+            return
+        }
+        button.sd_setImage(
+            with: urlLogo,
+            for: .normal,
+            placeholderImage: UIImage(named: "BackPlaceholder"),
+            options: [.continueInBackground, .retryFailed],
+            completed: { image, error, _, _ in
+                if let error = error {
+                    print("❌ SDWebImage Button error: \(error.localizedDescription) | URL: \(url)")
+                    button.setImage(UIImage(named: "BackPlaceholder"), for: .normal)
+                }
+            }
+        )
     }
     
     class func blockUi() {
@@ -902,6 +937,24 @@ class Utility {
     
     class func localizedCurrencyName(code: String, locale: Locale) -> String {
         return locale.localizedString(forCurrencyCode: code) ?? code
+    }
+    
+    class func detectCountryCode(_ fullNumber: String) -> String {
+        
+        let cleanNumber = fullNumber.replacingOccurrences(of: "+", with: "")
+        
+        // longest match first (3 → 2 → 1)
+        let sortedCodes = Countries.shared
+            .map { $0.phoneExtension }
+            .sorted { $0.count > $1.count }
+        
+        for code in sortedCodes {
+            if cleanNumber.hasPrefix(code) {
+                return code   // 👈 sirf country code return hoga
+            }
+        }
+        
+        return ""
     }
 }
 

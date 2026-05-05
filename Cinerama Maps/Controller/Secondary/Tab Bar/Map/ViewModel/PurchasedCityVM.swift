@@ -9,20 +9,32 @@ import Foundation
 
 class PurchasedCityViewModel {
     
+    var cityLoading = true
     var arrayOfPurchasedCityMap: [Res_PurchasedCityMap] = []
     var arrayOfFilterPurchaseCityMap: [Res_PurchasedCityMap] = []
     var requestSuccessfull:(() -> Void)?
     
-    func fetchPurchaseCityMap(vC: UIViewController,tableHeight: NSLayoutConstraint)
-    {
+    func fetchPurchaseCityMap(vC: UIViewController,tableView: UITableView, tableHeight: NSLayoutConstraint) {
         Api.shared.requestToPurchasedCityMap(vC) { responseData in
-            if responseData.count > 0 {
-                self.arrayOfPurchasedCityMap = responseData
-                self.arrayOfFilterPurchaseCityMap = responseData
-                tableHeight.constant = CGFloat(self.arrayOfPurchasedCityMap.count * 180)
+            
+            if responseData.status == "1" {
+                if let res = responseData.result {
+                    if res.count > 0 {
+                        self.arrayOfPurchasedCityMap = res
+                        self.arrayOfFilterPurchaseCityMap = res
+                        tableHeight.constant = CGFloat(self.arrayOfPurchasedCityMap.count * 180)
+                        
+                        tableView.backgroundView = UIView()
+                        tableView.reloadData()
+                    }
+                }
             } else {
                 self.arrayOfPurchasedCityMap = []
                 self.arrayOfFilterPurchaseCityMap = []
+                
+                tableView.backgroundView = UIView()
+                tableView.reloadData()
+                Utility.showNoDataView(R.string.localizable.noDataAvailable(), k.emptyString, in: tableView, parentViewController: vC, image: #imageLiteral(resourceName: "empty_notification"))
             }
             self.requestSuccessfull?()
         }

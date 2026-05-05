@@ -29,9 +29,6 @@
 /* Class = "UILabel"; text = "Service"; ObjectID = "1un-1D-E54"; */
 "1un-1D-E54.text" = "الخدمة";
 
-/* Class = "UILabel"; text = "The writing date is 10/08/2024"; ObjectID = "2vg-4C-Tps"; */
-"2vg-4C-Tps.text" = "تاريخ الكتابة هو 10/08/2024";
-
 /* Class = "UILabel"; text = "Maps"; ObjectID = "3J5-Lj-cbQ"; */
 "3J5-Lj-cbQ.text" = "الخرائط";
 
@@ -239,8 +236,8 @@
 /* Class = "UILabel"; text = "A trip by Cineramamap"; ObjectID = "Jhm-VC-8pf"; */
 "Jhm-VC-8pf.text" = "رحلة بواسطة سينراما ماب";
 
-/* Class = "UILabel"; text = "City maps in the Rpublic of Turkey"; ObjectID = "Js8-mZ-Dle"; */
-"Js8-mZ-Dle.text" = "خرائط المدن في جمهورية تركيا";
+/* Class = "UILabel"; text = "City maps in"; ObjectID = "Js8-mZ-Dle"; */
+"Js8-mZ-Dle.text" = "خرائط المدن";
 
 /* Class = "UITextField"; placeholder = "Map Name"; ObjectID = "Keg-eO-3IL"; */
 "Keg-eO-3IL.placeholder" = "اسم الخريطة";
@@ -506,8 +503,8 @@
 /* Class = "UILabel"; text = "Gender"; ObjectID = "fsj-7P-3SM"; */
 "fsj-7P-3SM.text" = "الجنس";
 
-/* Class = "UILabel"; text = "City maps in the Republic of Turkey."; ObjectID = "fz3-bn-Iy6"; */
-"fz3-bn-Iy6.text" = "خرائط المدن في جمهورية تركيا.";
+/* Class = "UILabel"; text = "City maps in."; ObjectID = "fz3-bn-Iy6"; */
+"fz3-bn-Iy6.text" = "خرائط المدن";
 
 /* Class = "UILabel"; text = "Free trip schedule when planning"; ObjectID = "gQT-mw-hsL"; */
 "gQT-mw-hsL.text" = "جدول رحلة مجاني عند التخطيط";
@@ -698,8 +695,8 @@
 /* Class = "UILabel"; text = "Choose your country you would like to visit?"; ObjectID = "ybY-VZ-lL3"; */
 "ybY-VZ-lL3.text" = "اختر البلد الذي ترغب في زيارته؟";
 
-/* Class = "UITabBarItem"; title = "Favorites"; ObjectID = "ydM-DN-ttU"; */
-"ydM-DN-ttU.title" = "المفضلة";
+/* Class = "UITabBarItem"; title = "My map"; ObjectID = "ydM-DN-ttU"; */
+"ydM-DN-ttU.title" = "خرائطي";
 
 /* Class = "UILabel"; text = "Terms & Conditions"; ObjectID = "yhd-rn-5lI"; */
 "yhd-rn-5lI.text" = "الشروط والأحكام";
@@ -771,10 +768,10 @@
 "alh-Be-EB5.text" = "الخدمة";
 
 /* Class = "UIButton"; normalTitle = "Tourism Service"; ObjectID = "kCl-VQ-Xv6"; */
-"kCl-VQ-Xv6.normalTitle" = "خدمة السياحة";
+"kCl-VQ-Xv6.normalTitle" = "خدمات السياحه";
 
 /* Class = "UIButton"; normalTitle = "Partner Service"; ObjectID = "vMr-Gt-md8"; */
-"vMr-Gt-md8.normalTitle" = "خدمة الشريك";
+"vMr-Gt-md8.normalTitle" = "خدمات الشركاء";
 
 /* Class = "UIButton"; normalTitle = "Cinerama Offers"; ObjectID = "hVb-gP-lFt"; */
 "hVb-gP-lFt.normalTitle" = "عروض سينراما";

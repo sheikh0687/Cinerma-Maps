@@ -25,8 +25,8 @@ class CityMapsVC: UIViewController {
         city_MapTableVw.isSkeletonable = true
         
         self.city_MapTableVw.register(UINib(nibName: "CityMapCell", bundle: nil), forCellReuseIdentifier: "CityMapCell")
-        self.lbl_CountryMapHeading.text = "\(countryName) \(R.string.localizable.maps())"
-        self.lbl_CountryRepublicText.text = "\(R.string.localizable.cityMapsInTheRepublicOf()) \(countryName)"
+        self.lbl_CountryMapHeading.text = "\(countryName)"
+        self.lbl_CountryRepublicText.text = L102Language.currentAppleLanguage() == "en" ? "\("City maps in") \(countryName)" : "\("خرائط المدن في") \(countryName)"
         fetchCityMapDetails()
         search_Bar.delegate = self
         self.search_Bar.showsScopeBar = true

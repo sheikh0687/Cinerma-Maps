@@ -6,22 +6,35 @@
 //
 
 import Foundation
+import SwiftUI
 
 class FavCityMapViewModel {
     
+    var isLoading = true
     var arrayOfFavCityMap: [Res_FavCityMaps] = []
     var arrayOfFilteredFav: [Res_FavCityMaps] = []
     var fetchedSuccessfull:(() -> Void)?
     
-    func fetchFavCityMap(vC: UIViewController)
-    {
+    func fetchFavCityMap(vC: UIViewController, tableView: UITableView) {
         Api.shared.requestToFavCityMap(vC) { responseData in
-            if responseData.count > 0 {
-                self.arrayOfFavCityMap = responseData
-                self.arrayOfFilteredFav = responseData
+            if responseData.status == "1" {
+                if let result = responseData.result {
+                    if result.count > 0 {
+                        self.arrayOfFavCityMap = result
+                        self.arrayOfFilteredFav = result
+                        
+                        tableView.backgroundView = UIView()
+                        tableView.reloadData()
+                    }
+                }
             } else {
                 self.arrayOfFavCityMap = []
                 self.arrayOfFilteredFav = []
+                
+                tableView.backgroundView = UIView()
+                tableView.reloadData()
+                
+                Utility.showNoDataView(R.string.localizable.noDataAvailable(), k.emptyString, in: tableView, parentViewController: vC, image: #imageLiteral(resourceName: "empty_notification"))
             }
             self.fetchedSuccessfull?()
         }
@@ -50,6 +63,13 @@ class FavCityMapViewModel {
         vC.viewModel.cityId = cityId
         vC.cityId = cityId
         navigation?.pushViewController(vC, animated: true)
+        
+//        let swiftUIView = SubscriptionMapView(viewModel: .init(cityiD: cityId), cityId: cityId)
+//
+//        let hostingController = UIHostingController(rootView: swiftUIView)
+//        hostingController.hidesBottomBarWhenPushed = true
+//
+//        navigation?.pushViewController(hostingController, animated: true)
     }
     
     func navigateToCityMapsDetailViewController(from navigationController: UINavigationController?, cityId: String, isSubscribed: String, cityName: String, cityAmount: String, cityRating: String, cityAddress: String, cityMonth: String, cityLat: String, cityLon: String, countryiD: String, cityImg: String) {

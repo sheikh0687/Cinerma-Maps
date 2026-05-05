@@ -20,6 +20,7 @@ class HomeVC: UIViewController {
     @IBOutlet weak var map_CollectionVw: UICollectionView!
     @IBOutlet weak var guideline_CollectionVw: UICollectionView!
     @IBOutlet weak var advertisementCollection: UICollectionView!
+    @IBOutlet weak var advertisementCollectionHeight: NSLayoutConstraint!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var advertisementPage: UIPageControl!
     @IBOutlet weak var lbl_UseriD: UILabel!
@@ -32,10 +33,10 @@ class HomeVC: UIViewController {
     let advertisementVM = AdvertisementViewModel()
     
     //  MARK: CollectionViewLayout
-    private let mapRTLLayout = RTLCollectionViewFlowLayout()
-    private let guidelineRTLLayout = RTLCollectionViewFlowLayout()
-    private let serviceRTLLayout = RTLCollectionViewFlowLayout()
-    private let advertisementRTLLayout = RTLCollectionViewFlowLayout()
+    let mapRTLLayout = RTLCollectionViewFlowLayout()
+    let guidelineRTLLayout = RTLCollectionViewFlowLayout()
+    let serviceRTLLayout = RTLCollectionViewFlowLayout()
+    let advertisementRTLLayout = RTLCollectionViewFlowLayout()
     
     //  MARK: Variable
     var strSubscriptionStatus: String?
@@ -53,6 +54,20 @@ class HomeVC: UIViewController {
         map_CollectionVw.isSkeletonable = true
         guideline_CollectionVw.isSkeletonable = true
         
+        if L102Language.currentAppleLanguage() == "ar" {
+            mapRTLLayout.scrollDirection = .horizontal
+            map_CollectionVw.collectionViewLayout = mapRTLLayout
+            map_CollectionVw.semanticContentAttribute = .forceLeftToRight
+            
+            guidelineRTLLayout.scrollDirection = .horizontal
+            guideline_CollectionVw.collectionViewLayout = guidelineRTLLayout
+            guideline_CollectionVw.semanticContentAttribute = .forceLeftToRight
+            
+            advertisementRTLLayout.scrollDirection = .horizontal
+            advertisementCollection.collectionViewLayout = advertisementRTLLayout
+            advertisementCollection.semanticContentAttribute = .forceLeftToRight
+        }
+        
         self.btnCurrency.setTitle(CurrencyHandler.shared.selectedCurrency?["currencyCode"].stringValue, for: .normal)
         self.map_CollectionVw.isPagingEnabled = false
         self.guideline_CollectionVw.isPagingEnabled = false
@@ -68,6 +83,13 @@ class HomeVC: UIViewController {
         requestBanners()
         requestCountryMap()
         requestGuidelineTip()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !advertisementVM.arrayOfBanners.isEmpty {
+            updateBannerHeight()
+        }
     }
     
     private func startProfileShimmering() {
@@ -158,9 +180,7 @@ extension HomeVC {
             let uFirstName = k.userDefault.value(forKey: k.session.firstName) as? String
             let uLastName = k.userDefault.value(forKey: k.session.lastName) as? String
             let uiD = k.userDefault.value(forKey: k.session.userId) as? String
-            let uImage = k.userDefault.value(forKey: k.session.userImage) as? String
-            
-            print(uImage ?? "")
+            let uImage = k.userDefault.value(forKey: k.session.userImg) as? String
             
             self.lbl_UserName.text = "\(uFirstName ?? "") \(uLastName ?? "")"
             self.lbl_UseriD.text = "\(L102Language.currentAppleLanguage() == "en" ? "User ID" : "معرف المستخدم"): \(uiD ?? "")"
@@ -180,14 +200,15 @@ extension HomeVC {
         countryMapVM.fethcedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
                 guard let self else { return }
-                self.isLoadingCountryMaps = false
+                
                 if L102Language.currentAppleLanguage() == "ar" {
                     self.mapRTLLayout.scrollDirection = .horizontal
+                    self.map_CollectionVw.collectionViewLayout = self.mapRTLLayout
                     self.map_CollectionVw.semanticContentAttribute = .forceLeftToRight
                 }
                 
                 self.map_CollectionVw.stopSkeletonAnimation()
-                self.map_CollectionVw.hideSkeleton()
+                self.map_CollectionVw.hideSkeleton(reloadDataAfter: false)
                 
                 self.map_CollectionVw.reloadData()
             }
@@ -202,14 +223,14 @@ extension HomeVC {
             DispatchQueue.main.async {
                 guard let self else { return }
                 
-                self.isLoadingGuidelines = false
                 if L102Language.currentAppleLanguage() == "ar" {
                     self.guidelineRTLLayout.scrollDirection = .horizontal
+                    self.guideline_CollectionVw.collectionViewLayout = self.guidelineRTLLayout
                     self.guideline_CollectionVw.semanticContentAttribute = .forceLeftToRight
                 }
                 
                 self.guideline_CollectionVw.stopSkeletonAnimation()
-                self.guideline_CollectionVw.hideSkeleton()
+                self.guideline_CollectionVw.hideSkeleton(reloadDataAfter: false)
                 
                 self.guideline_CollectionVw.reloadData()
             }
@@ -224,20 +245,23 @@ extension HomeVC {
             DispatchQueue.main.async {
                 guard let self else { return }
                 self.advertisementPage.numberOfPages = self.advertisementVM.arrayOfBanners.count
+                
                 if L102Language.currentAppleLanguage() == "ar" {
                     self.advertisementRTLLayout.scrollDirection = .horizontal
+                    self.advertisementCollection.collectionViewLayout = self.advertisementRTLLayout
                     self.advertisementCollection.semanticContentAttribute = .forceLeftToRight
                 }
                 
                 self.advertisementCollection.stopSkeletonAnimation()
-                self.advertisementCollection.hideSkeleton()
+                self.advertisementCollection.hideSkeleton(reloadDataAfter: false)
                 
                 self.advertisementCollection.reloadData()
+                self.setupAdvertisementCollection()
+                self.updateBannerHeight()
             }
         }
     }
 }
-
 
 // MARK: COLLECTIONVIEW DATASOURCE, DELEGATE
 extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -264,8 +288,17 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == advertisementCollection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ServiceCell", for: indexPath) as! ServiceCell
-                        
+            
             let obj = self.advertisementVM.arrayOfBanners[indexPath.row]
+            
+            // Image styling
+            cell.service_Img.contentMode = .scaleAspectFill
+            cell.service_Img.clipsToBounds = true
+            cell.service_Img.layer.cornerRadius = 12
+            
+            // Add padding by inset the imageView
+            cell.contentView.backgroundColor = .clear
+            cell.backgroundColor = .clear
             
             if Router.BASE_IMAGE_URL != obj.image {
                 Utility.setImageWithSDWebImage(obj.image ?? "", cell.service_Img)
@@ -276,14 +309,14 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             return cell
         } else if collectionView == service_CollectionVw {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ServiceCell", for: indexPath) as! ServiceCell
-                        
+            
             let obj_Image = serviceVM.arrayOfImages[indexPath.row]
             print(obj_Image)
             Utility.setImageWithSDWebImage(obj_Image, cell.service_Img)
             return cell
         } else if collectionView == map_CollectionVw {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MapCell", for: indexPath) as! MapCell
-                        
+            
             let obj = countryMapVM.arrayCountryMaps[indexPath.row]
             
             if L102Language.currentAppleLanguage() == "en" {
@@ -324,11 +357,14 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == service_CollectionVw || collectionView == advertisementCollection {
-            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+//            let padding: CGFloat = 16  left + right padding
+            let width = collectionView.frame.width
+            let height = width * (9.0 / 16.0)
+            return CGSize(width: width, height: height)
         } else if collectionView == map_CollectionVw {
-            return CGSize(width: collectionView.frame.width / 2, height: collectionView.frame.height)
+            return CGSize(width: 190, height: 140)
         } else {
-            return CGSize(width: collectionView.frame.width / 2, height: collectionView.frame.height)
+            return CGSize(width: 190, height: collectionView.frame.height)
         }
     }
     
@@ -338,17 +374,27 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             self.viewModel.navigateToServicesViewController(from: self.navigationController, service_Id: obj.id ?? "")
             
         } else if collectionView == map_CollectionVw {
+            
             let obj = countryMapVM.arrayCountryMaps[indexPath.row]
-            self.viewModel.navigateToCityMapsViewController(from: self.navigationController, countryId: obj.id ?? "")
+            self.viewModel.navigateToCityMapsViewController (
+                from: self.navigationController,
+                countryId: obj.id ?? "",
+                countryName: L102Language.currentAppleLanguage() == "en"
+                ? obj.name ?? ""
+                : obj.name_ar ?? ""
+            )
             
         } else if collectionView == guideline_CollectionVw {
-
+            
             let obj = self.guidelinesTipVM.arrayGuidelinesTip[indexPath.row]
             self.viewModel.navigateToGuidlineViewController(from: self.navigationController, title: obj.title ?? "", dateTime: obj.date_time ?? "", description: obj.description ?? "", image: obj.image ?? "", isFrom: "Guideline",titleArabic: obj.title_ar ?? "", descriptionArabic: obj.description_ar ?? "")
             
         } else if collectionView == advertisementCollection {
             let obj = self.advertisementVM.arrayOfBanners[indexPath.row]
-            self.viewModel.navigateToGuidlineViewController(from: self.navigationController, title: obj.title ?? "", dateTime: obj.date_time ?? "", description: obj.description ?? "", image: obj.image ?? "", isFrom: "Advertisement",titleArabic: obj.title_ar ?? "", descriptionArabic: obj.description_ar ?? "")
+            
+            self.viewModel.navigateToGuidlineViewController (
+                from: self.navigationController,
+                title: obj.title ?? "", dateTime: obj.date_time ?? "", description: obj.description ?? "", image: obj.image ?? "", isFrom: "Advertisement",titleArabic: obj.title_ar ?? "", descriptionArabic: obj.description_ar ?? "")
         }
     }
     
@@ -362,6 +408,26 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         } else {
             // Ignore other collection views
         }
+    }
+    
+    private func setupAdvertisementCollection() {
+        advertisementCollection.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        advertisementCollection.decelerationRate = .fast
+        advertisementCollection.isPagingEnabled = false
+        
+        // ✅ Cast to the base class so it works for both LTR and RTL layouts
+        if let layout = advertisementCollection.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .horizontal
+            layout.minimumLineSpacing = 12
+        }
+    }
+    
+    private func updateBannerHeight() {
+        let padding: CGFloat = 16
+        let width = advertisementCollection.frame.width - (padding * 2)
+        let height = width * (9.0 / 16.0)
+        advertisementCollectionHeight.constant = height
+        self.view.layoutIfNeeded()
     }
 }
 
@@ -377,6 +443,16 @@ extension HomeVC: SkeletonCollectionViewDataSource {
     }
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6 // ✅ Show 6 shimmer placeholders while loading
+        return 6
+    }
+    
+    // ✅ ADD THIS — tells skeleton NOT to override your custom layout
+    func collectionSkeletonView(_ skeletonView: UICollectionView, skeletonCellForItemAt indexPath: IndexPath) -> UICollectionViewCell? {
+        return nil // let the normal cellForItemAt handle it
+    }
+    
+    // ✅ ADD THIS — prevents skeleton from resetting layout after hide
+    func collectionSkeletonView(_ skeletonView: UICollectionView, prepareCellForSkeleton cell: UICollectionViewCell, at indexPath: IndexPath) {
+        // Do nothing — prevent skeleton from mutating cell layout
     }
 }

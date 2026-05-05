@@ -27,21 +27,31 @@ class SignupVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setDefaultCountry()
         self.lbl_NavigationTitle.text = signupViewModel.textOnValue()
-//        self.txt_MobileNum.text = signupViewModel.uMobile
         self.txt_Email.text = signupViewModel.uEmail
+//        txt_MobileNum.setContentHuggingPriority(.defaultLow, for: .horizontal)
+//        txt_MobileNum.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         if isFrom == "Profile" {
             fetchUserDetails()
             setupBindings()
-            self.btnCountryPickerOt.isHidden = true
-            self.btnCountryPickerOt.isEnabled = false
+//            self.btnCountryPickerOt.isHidden = true
+//            self.btnCountryPickerOt.isEnabled = false
             self.txt_Email.isEnabled = false
         } else {
-            self.btnCountryPickerOt.isHidden = true
-            self.btnCountryPickerOt.isEnabled = false
+//            self.btnCountryPickerOt.isHidden = true
+//            self.btnCountryPickerOt.isEnabled = false
             self.txt_Email.isEnabled = false
             setupBindings()
         }
+    }
+    
+    @IBAction func btn_CountryPicker(_ sender: UIButton) {
+        print("Country Picker Tapped!!")
+        let countryListVC = CountryList()
+        countryListVC.delegate = self
+        let navController = UINavigationController(rootViewController: countryListVC)
+        self.present(navController, animated: true, completion: nil)
     }
 
     @IBAction func btn_Back(_ sender: UIButton) {
@@ -121,7 +131,7 @@ class SignupVC: UIViewController {
             }
             
             signupViewModel.registerSuccess = { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
                 Switcher.updateRootVC()
             }
         }
@@ -137,6 +147,12 @@ class SignupVC: UIViewController {
             self.txt_LastName.text = self.profileViewModel.uLastName
             self.txt_Email.text = self.profileViewModel.uEmail
             self.txt_MobileNum.text = self.profileViewModel.uMobile
+            
+            if let country = Countries.shared.first(where: { $0.phoneExtension == self.profileViewModel.phoneKey }) {
+                self.updateCountryButton(title: self.makeTitle(for: country))
+            }
+            
+//            self.btnCountryPickerOt.setTitle(self.profileViewModel.phoneKey, for: .normal)
             self.btn_SelectGenderOt.setTitle(self.profileViewModel.uGender, for: .normal)
             self.btn_DOBOt.setTitle(self.profileViewModel.uDob, for: .normal)
             
@@ -146,5 +162,57 @@ class SignupVC: UIViewController {
                 self.btn_ImagePickerOt.setImage(R.image.profile_ic(), for: .normal)
             }
         }
+    }
+}
+
+extension SignupVC: CountryListDelegate {
+ 
+    // MARK: - Delegate
+    func selectedCountry(country: Country) {
+        signupViewModel.phoneKey = country.phoneExtension
+        profileViewModel.phoneKey = country.phoneExtension
+        updateCountryButton(title: makeTitle(for: country))
+        print("Selected: \(makeTitle(for: country))")
+    }
+ 
+    // MARK: - Default Country (call from viewDidLoad)
+    func setDefaultCountry() {
+        if let saudi = Countries.shared.first(where: { $0.countryCode == "SA" }) {
+            signupViewModel.phoneKey = saudi.phoneExtension
+            profileViewModel.phoneKey = saudi.phoneExtension
+            updateCountryButton(title: makeTitle(for: saudi))
+        }
+    }
+ 
+    // MARK: - Title Builder (RTL/LTR)
+    private func makeTitle(for country: Country) -> String {
+        let flag = country.flag ?? "🏳"
+        let ext  = "+\(country.phoneExtension)"
+        let code = country.countryCode
+ 
+        if L102Language.currentAppleLanguage() == "ar" {
+            return "\(code) \(ext) \(flag)"   // ⭐️ AR:  SA +966 🇸🇦
+        } else {
+            return "\(flag) \(ext) \(code)"   // ⭐️ EN:  🇸🇦 +966 SA
+        }
+    }
+ 
+    // MARK: - Button Updater
+    private func updateCountryButton(title: String) {
+        btnCountryPickerOt.setTitle(title, for: .normal)
+        btnCountryPickerOt.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+//        btnCountryPickerOt.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+// 
+//        // ⭐️ Alignment based on language
+//        if L102Language.currentAppleLanguage() == "ar" {
+//            btnCountryPickerOt.contentHorizontalAlignment = .right
+//            btnCountryPickerOt.semanticContentAttribute   = .forceRightToLeft
+//        } else {
+//            btnCountryPickerOt.contentHorizontalAlignment = .left
+//            btnCountryPickerOt.semanticContentAttribute   = .forceLeftToRight
+//        }
+// 
+//        btnCountryPickerOt.setContentHuggingPriority(.required, for: .horizontal)
+//        btnCountryPickerOt.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }

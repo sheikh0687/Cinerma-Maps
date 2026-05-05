@@ -1054,18 +1054,17 @@ class Api: NSObject {
         }
     }
     
-    func requestToPurchasedCityMap(_ vC: UIViewController,_ success: @escaping(_ responseData: [Res_PurchasedCityMap]) -> Void) {
+    func requestToPurchasedCityMap(_ vC: UIViewController,_ success: @escaping(_ responseData: Api_PurchasedCityMaps) -> Void) {
         vC.showProgressBar()
         Service.post(url: Router.get_purcahse_city_map_list.url(), params: paramGetUserId(), method: .get, vc: vC, successBlock: { (response) in
             do {
                 let jsonDecoder = JSONDecoder()
                 let root = try jsonDecoder.decode(Api_PurchasedCityMaps.self, from: response)
-                if root.status == "1" {
-                    if let result = root.result {
-                        success(result)
-                    }
+                if root.result != nil {
+                    success(root)
                 } else {
                     print("No Data Available to show!!")
+                    vC.hideProgressBar()
                 }
                 vC.hideProgressBar()
             } catch {
@@ -1078,17 +1077,15 @@ class Api: NSObject {
         }
     }
     
-    func requestToFavCityMap(_ vC: UIViewController,_ success: @escaping(_ responseData: [Res_FavCityMaps]) -> Void) {
+    func requestToFavCityMap(_ vC: UIViewController,_ success: @escaping(_ responseData: Api_FavCityMaps) -> Void) {
         vC.showProgressBar()
         Service.post(url: Router.my_fav_citymap.url(), params: paramGetUserId(), method: .get, vc: vC, successBlock: { (response) in
             do {
                 let jsonDecoder = JSONDecoder()
                 let root = try jsonDecoder.decode(Api_FavCityMaps.self, from: response)
-                if root.status == "1" {
-                    if let result = root.result {
-                        success(result)
-                        vC.hideProgressBar()
-                    }
+                if root.result != nil {
+                    success(root)
+                    vC.hideProgressBar()
                 } else {
                     print("No Data Available to show!!")
                     vC.hideProgressBar()

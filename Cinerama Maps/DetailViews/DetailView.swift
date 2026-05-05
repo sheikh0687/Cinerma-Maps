@@ -289,13 +289,13 @@ struct DetailView: View {
                                     }
                                     .frame(height: 120)
                                 } else {
-                                    ScrollView(.vertical, showsIndicators: true) {
-                                        Text(attributedText.string)
-                                            .font(.custom("Avenir-Medium", size: 14))
-                                            .multilineTextAlignment(.leading)
-                                            .fixedSize(horizontal: false, vertical: true)
-                                    }
-                                    .frame(height: 120)
+//                                    ScrollView(.vertical, showsIndicators: true) {
+//                                    }
+//                                    .frame(height: 120)
+                                    Text(attributedText.string)
+                                        .font(.custom("Avenir-Medium", size: 14))
+                                        .multilineTextAlignment(.leading)
+//                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                             }
                             .padding(.horizontal, 16)

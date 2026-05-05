@@ -13,6 +13,8 @@ import GooglePlaces
 import FirebaseCore
 import FirebaseMessaging
 import SwiftUI
+import SDWebImage
+import SDWebImageWebPCoder
 
 let Kstoryboard = UIStoryboard.init(name: "Main", bundle: nil)
 let kAppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -26,7 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     var CURRENT_LAT = ""
     var CURRENT_LON = ""
     let language = k.userDefault.value(forKey: k.session.language) as? String
-    
     
     let notificationCenter = UNUserNotificationCenter.current()
     
@@ -83,6 +84,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
                 UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
             }
         }
+        
+        SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
         
         Switcher.updateRootVC()
         
@@ -188,8 +191,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler()
     }
     
-    func navigateToMyBooking()
-    {
+    func navigateToMyBooking() {
         let visibleVC = UIApplication.shared.topmostViewController()
         
         let vC = Kstoryboard.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
@@ -199,31 +201,36 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 extension UIViewController {
     func topmostViewController() -> UIViewController {
-        
+        if !Thread.isMainThread {
+            return DispatchQueue.main.sync {
+                self.topmostViewController()
+            }
+        }
         if let navigationVC = self as? UINavigationController,
            let topVC = navigationVC.topViewController {
             return topVC.topmostViewController()
         }
-        
         if let tabBarVC = self as? UITabBarController,
            let selectedVC = tabBarVC.selectedViewController {
             return selectedVC.topmostViewController()
         }
-        
         if let presentedVC = presentedViewController {
             return presentedVC.topmostViewController()
         }
-        
         if let childVC = children.first {
             return childVC.topmostViewController()
         }
-        
         return self
     }
 }
 
 extension UIApplication {
     func topmostViewController() -> UIViewController? {
+        if !Thread.isMainThread {
+            return DispatchQueue.main.sync {
+                self.topmostViewController()
+            }
+        }
         return keyWindow?.rootViewController?.topmostViewController()
     }
 }

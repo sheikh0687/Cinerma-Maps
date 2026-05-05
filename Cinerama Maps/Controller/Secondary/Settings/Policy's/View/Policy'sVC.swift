@@ -8,6 +8,7 @@
 import UIKit
 import Foundation
 import WebKit
+import SkeletonView
 
 class Policy_sVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerDelegate {
 
@@ -29,6 +30,7 @@ class Policy_sVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerDel
         setupWebView()
         setupBackGesture()
         fetchAllPolicies()
+        setupSkeletons()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -185,5 +187,41 @@ extension Policy_sVC {
             
             self.loadHTML(html)
         }
+    }
+}
+
+extension Policy_sVC {
+
+    private func setupSkeletons() {
+        webContainer.isSkeletonable = true
+        webContainer.skeletonCornerRadius = 8
+
+        startSkeletons()
+    }
+
+    private func startSkeletons() {
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        let gradient = SkeletonGradient(baseColor: .clouds)
+
+        webContainer.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+    }
+
+    private func stopSkeletons() {
+        webContainer.hideSkeleton()
+    }
+}
+
+extension Policy_sVC {
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webContainer.hideSkeleton()    // ← HTML is painted, hide shimmer
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        webContainer.hideSkeleton()    // ← Also stop on failure
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        webContainer.hideSkeleton()    // ← Also stop on provisional failure
     }
 }

@@ -43,7 +43,7 @@ class SettingVC: UIViewController {
         DispatchQueue.main.async { [self] in
             let uFirstName = k.userDefault.value(forKey: k.session.firstName) as? String
             let uLastName = k.userDefault.value(forKey: k.session.lastName) as? String
-            let uImage = k.userDefault.value(forKey: k.session.userImage) as? String
+            let uImage = k.userDefault.value(forKey: k.session.userImg) as? String
 
             self.lbl_UserName.text = "\(uFirstName ?? "") \(uLastName ?? "")"
             

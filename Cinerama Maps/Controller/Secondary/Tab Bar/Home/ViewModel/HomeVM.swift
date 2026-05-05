@@ -27,13 +27,13 @@ class HomeViewModel {
         search_Bar.layer.masksToBounds = true
     }
     
-    func fetchUserProfileDetails(vC: UIViewController)
-    {
-        Api.shared.requestUserProfile(vC) { responseData in
-            self.arrayUserProfile = responseData
-            self.fetchSuccessfully?()
-        }
-    }
+//    func fetchUserProfileDetails(vC: UIViewController)
+//    {
+//        Api.shared.requestUserProfile(vC) { responseData in
+//            self.arrayUserProfile = responseData
+//            self.fetchSuccessfully?()
+//        }
+//    }
 }
 
 extension HomeViewModel {
@@ -82,9 +82,10 @@ extension HomeViewModel {
         navigationController?.pushViewController(vC, animated: true)
     }
     
-    func navigateToCityMapsViewController(from navigationController: UINavigationController?, countryId: String) {
+    func navigateToCityMapsViewController(from navigationController: UINavigationController?, countryId: String, countryName: String) {
         let vC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CityMapsVC") as! CityMapsVC
         vC.viewModel.country_ID = countryId
+        vC.countryName = countryName
         navigationController?.pushViewController(vC, animated: true)
     }
 }

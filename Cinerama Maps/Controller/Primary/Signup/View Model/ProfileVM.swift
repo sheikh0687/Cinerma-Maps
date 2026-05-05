@@ -33,6 +33,8 @@ class ProfileViewModel {
     var showErrorMessage: (() -> Void)?
     var fetchedSuccess: (() -> Void)?
     
+    var phoneKey:String! = ""
+    
     var profileUpdatedSuccessfull:(() -> Void)?
     
     func textOnValue() -> String {
@@ -43,8 +45,7 @@ class ProfileViewModel {
         }
     }
     
-    func isValidUserInput() -> Bool
-    {
+    func isValidUserInput() -> Bool {
         if uFirstName.isEmpty {
             errorMessage = R.string.localizable.pleaseEnterTheFirstName()
             return false
@@ -68,8 +69,7 @@ class ProfileViewModel {
         return true
     }
     
-    func configureDropDown(sender: UIButton)
-    {
+    func configureDropDown(sender: UIButton) {
         dropDown.anchorView = sender
         dropDown.show()
         dropDown.dataSource = [R.string.localizable.male(), R.string.localizable.female()]
@@ -84,8 +84,7 @@ class ProfileViewModel {
         }
     }
     
-    func configureProfileImg(vC: UIViewController, sender: UIButton)
-    {
+    func configureProfileImg(vC: UIViewController, sender: UIButton) {
         CameraHandler.shared.showActionSheet(vc: vC)
         CameraHandler.shared.imagePickedBlock = { (image) in
             self.image = image
@@ -94,14 +93,14 @@ class ProfileViewModel {
         }
     }
     
-    func requestUserProfile(vC: UIViewController)
-    {
+    func requestUserProfile(vC: UIViewController) {
         Api.shared.requestUserProfile(vC) { responseData in
             print(responseData)
             let obj = responseData
             self.uFirstName = obj.first_name ?? ""
             self.uLastName = obj.last_name ?? ""
-            self.uMobile = obj.mobile_with_code ?? ""
+            self.uMobile = obj.mobile ?? ""
+            self.phoneKey = Utility.detectCountryCode(obj.mobile_with_code ?? "")
             self.uEmail = obj.email ?? ""
             self.uGender = obj.gender ?? ""
             self.uDob = obj.dob ?? ""
@@ -110,8 +109,7 @@ class ProfileViewModel {
         }
     }
     
-    func requestToUpdate(vC: UIViewController)
-    {
+    func requestToUpdate(vC: UIViewController) {
         guard self.isValidUserInput() else { return }
         
         var param: [String : String] = [:]
@@ -119,7 +117,7 @@ class ProfileViewModel {
         param["first_name"] = uFirstName
         param["last_name"] = uLastName
         param["mobile"] = uMobile
-        param["mobile_with_code"] = "\(uMobile)"
+        param["mobile_with_code"] = "\(phoneKey!)\(uMobile)"
         param["email"] = uEmail
         param["register_id"] = k.emptyString
         param["ios_register_id"] = k.iosRegisterId

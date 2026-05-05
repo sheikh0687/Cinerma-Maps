@@ -34,9 +34,8 @@ class SubscriptionVC: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func setUpBinding()
-    {
-        viewModel.fetchPurchaseCityMap(vC: self, tableHeight: subscription_TableHeight)
+    func setUpBinding() {
+        viewModel.fetchPurchaseCityMap(vC: self, tableView: subscription_TableVw, tableHeight: subscription_TableHeight)
         viewModel.requestSuccessfull = {[] in
             self.subscription_TableVw.reloadData()
         }

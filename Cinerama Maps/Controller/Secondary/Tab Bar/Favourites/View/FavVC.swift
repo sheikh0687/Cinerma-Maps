@@ -51,14 +51,12 @@ class FavVC: UIViewController {
     }
     
     func setUpBindViewModel() {
-        viewModel.isLoading = true
         fav_TableVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
         
-        self.viewModel.fetchFavCityMap(vC: self)
+        self.viewModel.fetchFavCityMap(vC: self, tableView: fav_TableVw)
         self.viewModel.fetchedSuccessfull = { [weak self] in
             DispatchQueue.main.async {
                 guard let self else { return }
-                self.viewModel.isLoading = false
                 
                 self.fav_TableVw.stopSkeletonAnimation()
                 self.fav_TableVw.hideSkeleton(reloadDataAfter: true)

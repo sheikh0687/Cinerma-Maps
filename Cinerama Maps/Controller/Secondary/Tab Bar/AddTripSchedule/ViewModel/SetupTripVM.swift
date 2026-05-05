@@ -70,10 +70,14 @@ class SetupTripVM {
     func fetchPurchaseCityMap(vC: UIViewController)
     {
         Api.shared.requestToPurchasedCityMap(vC) { responseData in
-            if responseData.count > 0 {
-                self.arrayOfPurchasedCityMap = responseData
-            } else {
-                self.arrayOfPurchasedCityMap = []
+            if responseData.status == "1" {
+                if let res = responseData.result {
+                    if res.count > 0 {
+                        self.arrayOfPurchasedCityMap = res
+                    } else {
+                        self.arrayOfPurchasedCityMap = []
+                    }
+                }
             }
             self.fethcedCityPurchaseMapSuccessfully?()
         }

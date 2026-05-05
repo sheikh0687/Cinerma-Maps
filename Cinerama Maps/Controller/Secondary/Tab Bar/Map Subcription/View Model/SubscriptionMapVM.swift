@@ -676,6 +676,6 @@ extension SubscriptionMapViewModel {
     func prefetchIcons() {
         let allIcons = arrayOfPlaceDetails.compactMap { $0.icon }
         let urls = allIcons.compactMap { URL(string: $0) }
-        SDWebImagePrefetcher.shared().prefetchURLs(urls)
+        SDWebImagePrefetcher.shared.prefetchURLs(urls)
     }
 }

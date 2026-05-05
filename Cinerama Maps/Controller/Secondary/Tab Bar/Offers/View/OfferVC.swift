@@ -853,11 +853,11 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if dependonUi == "Tourism" {
-            return 200
+            return 250
         } else if dependonUi == "Partner" {
             return 120
         } else {
-            return 200
+            return 250
         }
     }
     
@@ -873,8 +873,12 @@ extension OfferVC: UISearchBarDelegate {
             if searchText.isEmpty {
                 self.tourismViewModel.arrayTourismService = tourismViewModel.arrayOfFilteredTourismService
             } else {
-                self.tourismViewModel.arrayTourismService = tourismViewModel.arrayOfFilteredTourismService.filter {
+                self.tourismViewModel.arrayTourismService = L102Language.currentAppleLanguage() == "en"
+                ? tourismViewModel.arrayOfFilteredTourismService.filter {
                     $0.company_name?.range(of: searchText, options: [.diacriticInsensitive, .caseInsensitive]) != nil
+                }
+                : tourismViewModel.arrayOfFilteredTourismService.filter {
+                    $0.company_name_ar?.range(of: searchText, options: [.diacriticInsensitive, .caseInsensitive]) != nil
                 }
             }
             
@@ -882,8 +886,12 @@ extension OfferVC: UISearchBarDelegate {
             if searchText.isEmpty {
                 self.partnerViewModel.arrayPartnerService = partnerViewModel.arrayFilteredPartnerService
             } else {
-                self.partnerViewModel.arrayPartnerService = partnerViewModel.arrayFilteredPartnerService.filter {
+                self.partnerViewModel.arrayPartnerService = L102Language.currentAppleLanguage() == "en"
+                ? partnerViewModel.arrayFilteredPartnerService.filter {
                     $0.company_name?.range(of: searchText, options: [.diacriticInsensitive, .caseInsensitive]) != nil
+                }
+                : partnerViewModel.arrayFilteredPartnerService.filter {
+                    $0.company_name_ar?.range(of: searchText, options: [.diacriticInsensitive, .caseInsensitive]) != nil
                 }
             }
             
@@ -891,8 +899,12 @@ extension OfferVC: UISearchBarDelegate {
             if searchText.isEmpty {
                 self.viewModel.arrayOfOffers = viewModel.arrayFilteredCompanyOffer
             } else {
-                self.viewModel.arrayOfOffers = viewModel.arrayFilteredCompanyOffer.filter {
+                self.viewModel.arrayOfOffers = L102Language.currentAppleLanguage() == "en"
+                ? viewModel.arrayFilteredCompanyOffer.filter {
                     $0.company_name?.range(of: searchText, options: [.diacriticInsensitive, .caseInsensitive]) != nil
+                }
+                : viewModel.arrayFilteredCompanyOffer.filter {
+                    $0.company_name_ar?.range(of: searchText, options: [.diacriticInsensitive, .caseInsensitive]) != nil
                 }
             }
         }

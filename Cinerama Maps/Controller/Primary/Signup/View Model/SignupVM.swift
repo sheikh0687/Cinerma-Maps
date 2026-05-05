@@ -92,16 +92,12 @@ extension SignupViewModel {
         } else if uDob.isEmpty {
             errorMessage = R.string.localizable.pleaseEnterYourDateOfBirth()
             return false
-        } else if image.size == CGSize.zero {
-            errorMessage = R.string.localizable.pleaseUploadTheProfileImage()
-            return false
         }
         
         return true
     }
     
-    func requestToRegisterUser(vC: UIViewController)
-    {
+    func requestToRegisterUser(vC: UIViewController) {
         guard self.isValidUserInput() else { return }
         
         var param: [String : String] = [:]

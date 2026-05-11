@@ -27,18 +27,23 @@ class RatingVC: UIViewController {
     @IBAction func btn_Done(_ sender: UIButton) {
         viewModel.ratingStar = cosmosRating.rating
         viewModel.ratingMessage = txt_Review.text
-        viewModel.addServiceRating(vC: self)
+        
+        if viewModel.reviewType == "City" {
+            viewModel.addCityRating(vC: self)
+        } else {
+            viewModel.addServiceRating(vC: self)
+        }
     }
     
-    private func bindViewModel()
-    {
+    private func bindViewModel() {
         viewModel.showErrorMessage = { [weak self] in
             if let errorMessage = self?.viewModel.errorMessage {
                 Utility.showAlertMessage(withTitle: k.appName, message: errorMessage, delegate: nil, parentViewController: self!)
             }
         }
         
-        viewModel.fetchedSuccessfully = { [] in
+        viewModel.fetchedSuccessfully = { [weak self] in
+            guard let self else { return }
             Utility.showAlertWithAction(withTitle: k.appName, message: R.string.localizable.ratingAddedSuccessfully(), delegate: nil, parentViewController: self) { bool in
                 self.navigationController?.popViewController(animated: true)
             }

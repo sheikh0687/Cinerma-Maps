@@ -30,7 +30,7 @@ class SubscriptionMapVC: UIViewController, UIGestureRecognizerDelegate {
     var isDataAlreadyLoaded = false
     private var selectedTagId: String? // Drawer Selecting
     
-    let language = k.userDefault.value(forKey: k.session.language) as? String
+    let language = L102Language.currentAppleLanguage()
     let viewModel = SubscriptionMapViewModel()
     var marklers:[AnnotationItem] = []
     var locationManager: CLLocationManager!
@@ -42,12 +42,16 @@ class SubscriptionMapVC: UIViewController, UIGestureRecognizerDelegate {
     var clusterRenderer: GMUDefaultClusterRenderer!
     var toastlbl: UILabel?
     
+    private var mapTransformApplied = false
+    private var mapFirstIdleDone = false
+    
     private var loadingOverlay: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         GMMapView.settings.myLocationButton = false
+        
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -95,18 +99,41 @@ class SubscriptionMapVC: UIViewController, UIGestureRecognizerDelegate {
         applyMinimalistMapStyle()
         
         GMMapView.delegate = self
-        
-//        if viewModel.arrayTagDetails.isEmpty {
-//            self.btn_TagOt.isHidden = true
-//        } else {
-//            self.btn_TagOt.isHidden = false
-//        }
-        
+
         setHostView()
         
         showLoadingOverlay()
         
         bindViewModelData()
+        
+        self.view.semanticContentAttribute = L102Language.isRTL ? .forceRightToLeft : .forceLeftToRight
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Apply only once, after GMSMapView has fully built its internal subview tree
+        guard !mapTransformApplied, L102Language.isRTL else { return }
+        mapTransformApplied = true
+        applyRTLMapTransform()
+    }
+
+    private func applyRTLMapTransform() {
+        guard L102Language.isRTL else { return }
+        
+        let mirror = CGAffineTransform(scaleX: -1, y: 1)
+        
+        // Flip the entire map surface
+        GMMapView.transform = mirror
+        
+        // Counter-flip every internal subview so tiles/labels stay correct
+        GMMapView.subviews.forEach { subview in
+            subview.transform = mirror
+            // Also counter-flip their children (GMSMapView nests multiple layers deep)
+            subview.subviews.forEach { child in
+                child.transform = mirror
+            }
+        }
     }
     
     private func showLoadingOverlay() {
@@ -613,7 +640,7 @@ class SubscriptionMapVC: UIViewController, UIGestureRecognizerDelegate {
 //        updateAnnotations()
 //    }
     
-    func getColors(tags: [Tag_details]) -> [UIColor]{
+    func getColors(tags: [Tag_details]) -> [UIColor] {
         var colors:[UIColor] = []
         for tag in tags{
             colors.append(UIColor.hexStringToUIColor(hex: tag.color_code ?? "#000000"))
@@ -718,8 +745,14 @@ extension SubscriptionMapVC: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         updateClusterAlgorithm(for: position.zoom)
+        
+        // Re-apply transform once on first idle — catches late-added subviews
+        if !mapFirstIdleDone && L102Language.isRTL {
+            mapFirstIdleDone = true
+            applyRTLMapTransform()
+        }
     }
-
+    
     private func addCustomLongPressToMap() {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         longPress.minimumPressDuration = 0.5
@@ -742,7 +775,7 @@ extension SubscriptionMapVC: GMSMapViewDelegate {
                 let distance = sqrt(dx * dx + dy * dy)
                 
                 if distance < 50 {
-                    showToast(message: "      \((L102Language.currentAppleLanguage() == "ar" ? item.cityNameAr : item.cityName) ?? "Unknown Place") ", font: .systemFont(ofSize: 12))
+                    showToast(message: "      \((L102Language.isRTL ? item.cityNameAr : item.cityName) ?? "Unknown Place") ", font: .systemFont(ofSize: 12))
                     return
                 }
             }

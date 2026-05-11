@@ -16,8 +16,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="383" height="133"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner1" translatesAutoresizingMaskIntoConstraints="NO" id="URw-4b-wiE">
-                        <rect key="frame" x="2" y="2" width="379" height="129"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BANNER_IMG_36068" translatesAutoresizingMaskIntoConstraints="NO" id="URw-4b-wiE">
+                        <rect key="frame" x="2" y="0.0" width="379" height="133"/>
                     </imageView>
                 </subviews>
             </view>
@@ -25,8 +25,8 @@
             <constraints>
                 <constraint firstItem="URw-4b-wiE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="1Cg-jD-dsd"/>
                 <constraint firstAttribute="trailing" secondItem="URw-4b-wiE" secondAttribute="trailing" constant="2" id="4gL-gF-DM9"/>
-                <constraint firstAttribute="bottom" secondItem="URw-4b-wiE" secondAttribute="bottom" constant="2" id="5aW-gu-Om5"/>
-                <constraint firstItem="URw-4b-wiE" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="BI5-FT-qZe"/>
+                <constraint firstItem="URw-4b-wiE" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="BI5-FT-qZe"/>
+                <constraint firstAttribute="bottom" secondItem="URw-4b-wiE" secondAttribute="bottom" id="EeT-xf-LTR"/>
             </constraints>
             <size key="customSize" width="383" height="133"/>
             <userDefinedRuntimeAttributes>
@@ -38,10 +38,10 @@
             <connections>
                 <outlet property="service_Img" destination="URw-4b-wiE" id="lKm-3M-gLY"/>
             </connections>
-            <point key="canvasLocation" x="206.87022900763358" y="17.95774647887324"/>
+            <point key="canvasLocation" x="320" y="-79"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="banner1" width="381" height="160"/>
+        <image name="BANNER_IMG_36068" width="1200" height="625"/>
     </resources>
 </document>

@@ -11,8 +11,9 @@ import SkeletonView
 class DiscountCell: UITableViewCell {
 
     @IBOutlet weak var offer_Img: UIImageView!
-    @IBOutlet weak var offer_CodeAndPercent: UIButton!
+    @IBOutlet weak var offer_CodeAndPercent: UILabel!
     @IBOutlet weak var lbl_OfferDescription: UILabel!
+    @IBOutlet weak var textDiscount: UILabel!
     
     @IBOutlet weak var subVw: UIView!
     

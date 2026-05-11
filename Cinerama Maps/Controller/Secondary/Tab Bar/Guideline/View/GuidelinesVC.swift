@@ -20,15 +20,12 @@ class GuidelinesVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerD
     @IBOutlet weak var lbl_Headline: UILabel!
     @IBOutlet weak var discountButtonVw: UIView!
     @IBOutlet weak var btn_DiscountOt: UIButton!
-
-    // ⭐️ Connect this outlet to the HEIGHT constraint of wv_Container in Storyboard
     @IBOutlet weak var wv_ContainerHeightConstraint: NSLayoutConstraint!
     
     // MARK: - VARIABLES
     var titleVal: String = ""
     var dateTime: String = "" {
         didSet {
-            // ⭐️ Safely update label if view is already loaded
             guard isViewLoaded else { return }
             lbl_Date.text = dateTime
         }
@@ -39,20 +36,21 @@ class GuidelinesVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerD
     var isFrom: String = ""
     private var hasSetFinalHeight = false
     
-    // ⭐️ Isolated process pool (fix WEBP crash 100%)
     private let processPool = WKProcessPool()
     private var webView: WKWebView!
-    
-    // ⭐️ Prevent redundant height updates
     private var isObservingContentSize = false
     
     // MARK: - LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         setupWebView()
-        setupSkeletons()
-        setGuideTips()
         setupBackGesture()
+        setupSkeletons()          // 1️⃣ Show skeleton first
+        // ⭐️ Do NOT call setGuideTips() here
+        // stopSkeletons() will call it once skeletons are ready to hide
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.stopSkeletons()  // 2️⃣ Hide skeleton + load data
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,7 +60,6 @@ class GuidelinesVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerD
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // ⭐️ Stop loading when leaving screen
         webView.stopLoading()
     }
     
@@ -92,16 +89,49 @@ class GuidelinesVC: UIViewController, WKNavigationDelegate, UIGestureRecognizerD
         if keyPath == "contentSize",
            let scrollView = object as? UIScrollView {
             let newHeight = scrollView.contentSize.height
-            guard newHeight > 10 else { return } // ⭐️ Ignore invalid/zero heights
+            guard newHeight > 10 else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                // ⭐️ Only update if height actually changed (avoid layout thrashing)
                 if self.wv_ContainerHeightConstraint.constant != newHeight {
                     self.wv_ContainerHeightConstraint.constant = newHeight
                     self.webView.scrollView.isScrollEnabled = false
                     self.view.layoutIfNeeded()
                 }
             }
+        }
+    }
+}
+
+// MARK: - Setup UI
+extension GuidelinesVC {
+    
+    // ⭐️ Only called from stopSkeletons() — never directly from viewDidLoad
+    private func setGuideTips() {
+        if isFrom == "Advertisement" {
+            lbl_Date.isHidden = true
+            lbl_Headline.text = R.string.localizable.advertisementDetails()
+//            lbl_Title.textColor = .black
+            discountButtonVw.isHidden = true
+        } else if isFrom == "Guideline" {
+            lbl_Date.isHidden = false
+            lbl_Date.text = "\(self.dateTime)"
+            lbl_Headline.text = R.string.localizable.guidelinesAndTips()
+            lbl_Title.textColor = R.color.main()
+            discountButtonVw.isHidden = true
+        } else {
+            lbl_Headline.text = R.string.localizable.offerDetails()
+            lbl_Date.isHidden = true
+            btn_DiscountOt.setTitle(offerCode, for: .normal)
+            discountButtonVw.isHidden = false
+        }
+        
+        lbl_Title.text = titleVal
+        loadHTML(descriptionVal)
+        
+        if Router.BASE_IMAGE_URL != placeImg {
+            img.sd_setImage(with: URL(string: placeImg), placeholderImage: nil)
+        } else {
+            img.image = R.image.blank()
         }
     }
 }
@@ -114,8 +144,8 @@ extension GuidelinesVC {
         webView = nil
         
         let config = WKWebViewConfiguration()
-        config.processPool = processPool           // ⭐️ CRASH FIX
-        config.websiteDataStore = .nonPersistent() // ⭐️ CRASH FIX
+        config.processPool = processPool
+        config.websiteDataStore = .nonPersistent()
         
         let prefs = WKPreferences()
         prefs.javaScriptEnabled = true
@@ -127,8 +157,6 @@ extension GuidelinesVC {
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         webView.backgroundColor = .clear
         webView.isOpaque = false
-        
-        // ⭐️ Disable internal scroll — outer ScrollView handles all scrolling
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
         
@@ -141,13 +169,6 @@ extension GuidelinesVC {
             webView.leadingAnchor.constraint(equalTo: wv_Container.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: wv_Container.trailingAnchor)
         ])
-        
-        // ⭐️ KVO to catch height changes from lazy-loaded images / late rendering
-//        webView.scrollView.addObserver(self,
-//                                       forKeyPath: "contentSize",
-//                                       options: .new,
-//                                       context: nil)
-//        isObservingContentSize = true
     }
 }
 
@@ -155,14 +176,12 @@ extension GuidelinesVC {
 extension GuidelinesVC {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // ⭐️ Small delay to allow images/media to finish laying out
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             guard let self = self, !self.hasSetFinalHeight else { return }
-            
             self.webView.evaluateJavaScript("document.body.scrollHeight") { result, _ in
                 guard let height = result as? CGFloat, height > 10 else { return }
                 DispatchQueue.main.async {
-                    self.hasSetFinalHeight = true  // ⭐️ Set ONCE, never updated again
+                    self.hasSetFinalHeight = true
                     self.wv_ContainerHeightConstraint.constant = height
                     self.webView.scrollView.isScrollEnabled = false
                     self.view.layoutIfNeeded()
@@ -178,8 +197,9 @@ extension GuidelinesVC {
 
 // MARK: - Load HTML
 extension GuidelinesVC {
-    
+
     private func loadHTML(_ html: String) {
+        let isArabic = L102Language.currentAppleLanguage() == "ar"
         let styledHTML = """
         <html>
         <head>
@@ -187,17 +207,58 @@ extension GuidelinesVC {
         <style>
             * { box-sizing: border-box; }
             body {
-                font-family: 'Avenir-Book', -apple-system;
+                font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
                 font-size: 16px;
-                color: black;
+                line-height: 1.6;
+                color: #1A1A1A;
+                background-color: transparent;
                 padding: 0px;
                 margin: 0px;
-                direction: \(L102Language.currentAppleLanguage() == "ar" ? "rtl" : "ltr");
-                text-align: \(L102Language.currentAppleLanguage() == "ar" ? "right" : "left");
+                direction: \(isArabic ? "rtl" : "ltr");
+                text-align: \(isArabic ? "right" : "left");
             }
-            img { max-width: 100%; height: auto; display: block; }
+            h1 {
+                font-size: 20px;
+                font-weight: 700;
+                color: #E8510A;
+                margin: 0 0 8px 0;
+                padding: 0;
+                line-height: 1.3;
+            }
+            h2 {
+                font-size: 17px;
+                font-weight: 700;
+                color: #E8510A;
+                margin: 16px 0 6px 0;
+                padding: 0;
+                line-height: 1.35;
+            }
+            h3 {
+                font-size: 15px;
+                font-weight: 600;
+                color: #E8510A;
+                margin: 12px 0 4px 0;
+                padding: 0;
+                line-height: 1.35;
+            }
+            p {
+                font-size: 15px;
+                color: #1A1A1A;
+                margin: 0 0 10px 0;
+            }
+            ul, ol {
+                font-size: 15px;
+                color: #1A1A1A;
+                margin: 4px 0 10px 0;
+                padding-\(isArabic ? "right" : "left"): 20px;
+            }
+            li { margin-bottom: 4px; }
+            strong, b { color: #1A1A1A; font-weight: 700; }
+            hr { border: none; border-top: 1px solid #E0E0E0; margin: 12px 0; }
+            img { max-width: 100%; height: auto; border-radius: 6px; display: block; }
             iframe { max-width: 100%; }
-            a { color: #007AFF; }
+            a { color: #E8510A; text-decoration: none; }
+            a:active { opacity: 0.7; }
         </style>
         </head>
         <body>
@@ -206,48 +267,6 @@ extension GuidelinesVC {
         </html>
         """
         webView.loadHTMLString(styledHTML, baseURL: URL(string: "https://cineramamaps.com"))
-    }
-}
-
-// MARK: - Setup UI
-extension GuidelinesVC {
-    
-    private func setGuideTips() {
-        if isFrom == "Advertisement" {
-            self.lbl_Date.isHidden = true
-            self.lbl_Headline.text = R.string.localizable.advertisementDetails()
-            self.lbl_Title.textColor = .black
-            discountButtonVw.isHidden = true
-        } else if isFrom == "Guideline" {
-            self.lbl_Date.isHidden = false
-            self.lbl_Date.text = "\(self.dateTime)"
-            print(self.dateTime)
-            self.lbl_Headline.text = R.string.localizable.guidelinesAndTips()
-            self.lbl_Title.textColor = R.color.main()
-            discountButtonVw.isHidden = true
-        } else {
-            self.lbl_Headline.text = R.string.localizable.offerDetails()
-            self.lbl_Date.isHidden = true
-            self.btn_DiscountOt.setTitle(offerCode, for: .normal)
-            discountButtonVw.isHidden = false
-        }
-        
-        self.lbl_Title.text = self.titleVal
-        
-        loadHTML(descriptionVal)
-        
-        if Router.BASE_IMAGE_URL != placeImg {
-            img.sd_setImage(with: URL(string: placeImg), placeholderImage: nil) { [weak self] _, _, _, _ in
-                self?.img.hideSkeleton()
-            }
-        } else {
-            self.img.image = R.image.blank()
-            self.img.hideSkeleton()
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.stopSkeletons()
-        }
     }
 }
 
@@ -270,16 +289,16 @@ extension GuidelinesVC {
 // MARK: - Skeleton
 extension GuidelinesVC {
 
-    private func setupSkeletons() {
+    func setupSkeletons() {
         [lbl_Title, lbl_Date, img, wv_Container].forEach {
             $0?.isSkeletonable = true
         }
-        img.isSkeletonable = true
         img.skeletonCornerRadius = 8
+        wv_Container.skeletonCornerRadius = 8
         startSkeletons()
     }
 
-    private func startSkeletons() {
+    func startSkeletons() {
         let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
         let gradient = SkeletonGradient(baseColor: .clouds)
         lbl_Title.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
@@ -289,9 +308,15 @@ extension GuidelinesVC {
     }
 
     func stopSkeletons() {
+        // 1️⃣ Hide ALL skeletons first — unblocks every view
         lbl_Title.hideSkeleton()
         lbl_Date.hideSkeleton()
         img.hideSkeleton()
         wv_Container.hideSkeleton()
+
+        // 2️⃣ Views are now clear — safe to push real data
+        DispatchQueue.main.async { [weak self] in
+            self?.setGuideTips()
+        }
     }
 }

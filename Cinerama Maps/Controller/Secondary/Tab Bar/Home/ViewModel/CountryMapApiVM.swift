@@ -9,12 +9,12 @@ import Foundation
 
 class CountryMapApiViewModel {
     
+    var countryLoading = true
     var arrayCountryMaps: [Res_CountryMap] = []
     var arrayFilteredCountryMaps: [Res_CountryMap] = []
     var fethcedSuccessfully:(() -> Void)?
     
-    func fetchCountryMaps(vC: UIViewController)
-    {
+    func fetchCountryMaps(vC: UIViewController) {
         var paramDict: [String : AnyObject] = [:]
         paramDict["user_id"] = k.userDefault.value(forKey: k.session.userId) as AnyObject?
         paramDict["type"] = "All" as AnyObject

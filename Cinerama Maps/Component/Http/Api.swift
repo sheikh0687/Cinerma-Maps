@@ -1018,6 +1018,7 @@ class Api: NSObject {
                 let root = try jsonDecoder.decode(Api_BasicModel.self, from: response)
                 if root.result != nil {
                     success(root)
+                    vC.hideProgressBar()
                 } else {
                     print("No Data Available to show!!")
                     vC.hideProgressBar()
@@ -1062,6 +1063,7 @@ class Api: NSObject {
                 let root = try jsonDecoder.decode(Api_PurchasedCityMaps.self, from: response)
                 if root.result != nil {
                     success(root)
+                    vC.hideProgressBar()
                 } else {
                     print("No Data Available to show!!")
                     vC.hideProgressBar()
@@ -1162,6 +1164,30 @@ class Api: NSObject {
             do {
                 let jsonDecoder = JSONDecoder()
                 let root = try jsonDecoder.decode(Api_ServiceRating.self, from: response)
+                if root.status == "1" {
+                    if let result = root.result {
+                        success(result)
+                    }
+                } else {
+                    vC.hideProgressBar()
+                    vC.alert(alertmessage: root.message ?? "")
+                }
+            } catch {
+                print(error)
+                vC.hideProgressBar()
+            }
+        }) { (error: Error) in
+            vC.alert(alertmessage: error.localizedDescription)
+            vC.hideProgressBar()
+        }
+    }
+    
+    func requestToAddCityRating(_ vC: UIViewController,_ param: [String : AnyObject],_ success: @escaping(_ responseData: Res_AddCityRating) -> Void) {
+        vC.showProgressBar()
+        Service.post(url: Router.add_city_rating_review.url(), params: param, method: .get, vc: vC, successBlock: { (response) in
+            do {
+                let jsonDecoder = JSONDecoder()
+                let root = try jsonDecoder.decode(Api_AddCityRating.self, from: response)
                 if root.status == "1" {
                     if let result = root.result {
                         success(result)

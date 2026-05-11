@@ -10,8 +10,11 @@ import UIKit
 class PlacesHeader: UITableViewCell {
 
     @IBOutlet weak var lblName: UILabel!
+    
+    @IBOutlet weak var textViewAll: UILabel!
     @IBOutlet weak var imgHeart: UIImageView!
     @IBOutlet weak var imgWidth: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

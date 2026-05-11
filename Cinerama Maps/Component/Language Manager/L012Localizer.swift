@@ -64,6 +64,10 @@ extension UILabel {
             }
         } 
         
+        if self.textAlignment == .center {
+            return
+        }
+        
         self.textAlignment = UIApplication.isRTL() ? .right : .left
     }
 }

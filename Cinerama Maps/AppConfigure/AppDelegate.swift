@@ -49,24 +49,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         GMSServices.provideAPIKey("AIzaSyAGxLMNvIuc8XpG21cOF3VkxbK1EkTpuzQ")
         GMSPlacesClient.provideAPIKey("AIzaSyAGxLMNvIuc8XpG21cOF3VkxbK1EkTpuzQ")
                         
-        if k.userDefault.value(forKey: k.session.language) == nil {
-            print("language not set")
-            k.userDefault.set(emLang.ar.rawValue, forKey: k.session.language)
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-            UIPageControl.appearance().semanticContentAttribute = .forceRightToLeft
-            L102Language.setAppleLAnguageTo(lang: "ar")
-            print(L102Language.currentAppleLanguage())
-            L102Localizer.DoTheMagic()
-        } else {
-            print(L102Language.currentAppleLanguage())
-            // Match pageControl appearance to current language
-            if L102Language.currentAppleLanguage() == "ar" {
-                UIPageControl.appearance().semanticContentAttribute = .forceRightToLeft
-            } else {
-                UIPageControl.appearance().semanticContentAttribute = .forceLeftToRight
+        if let savedLang = k.userDefault.value(forKey: k.session.language) as? String {
+            print("Language found in defaults: \(savedLang)")
+            if L102Language.currentAppleLanguage() != savedLang {
+                L102Language.setAppleLAnguageTo(lang: savedLang)
             }
-            L102Localizer.DoTheMagic()
+        } else {
+            print("language not set, defaulting to ar")
+            k.userDefault.set(emLang.ar.rawValue, forKey: k.session.language)
+            L102Language.setAppleLAnguageTo(lang: "ar")
         }
+        
+        let isRTL = L102Language.currentAppleLanguage() == "ar"
+        UIView.appearance().semanticContentAttribute = isRTL ? .forceRightToLeft : .forceLeftToRight
+        UIPageControl.appearance().semanticContentAttribute = isRTL ? .forceRightToLeft : .forceLeftToRight
+        L102Localizer.DoTheMagic()
         
         UIScrollView.appearance().bounces = false
         

@@ -42,15 +42,13 @@ class OnboardingVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         self.collectionView.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
         
-        let flowLayout = RTLCollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        self.collectionView.collectionViewLayout = flowLayout
-        
-        // Set semantic direction to match language
         if L102Language.currentAppleLanguage() == "ar" {
+            let flowLayout = RTLCollectionViewFlowLayout()
+            flowLayout.scrollDirection = .horizontal
+            self.collectionView.collectionViewLayout = flowLayout
             self.collectionView.semanticContentAttribute = .forceLeftToRight
         } else {
-            self.collectionView.semanticContentAttribute = .forceRightToLeft
+            self.collectionView.semanticContentAttribute = .forceLeftToRight
         }
     }
     

@@ -17,7 +17,7 @@ struct MapView: View {
     @State private var selectedIndex: Int? = nil
 
     // MARK: DECLARED
-    let language = k.userDefault.value(forKey: k.session.language) as? String
+    let language = L102Language.currentAppleLanguage()
     var filters = ["Popular", "Name", "Oldest", "Distance"]
 
     var body: some View {

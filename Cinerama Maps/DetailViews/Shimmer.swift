@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct ShimmerEffect: ViewModifier {
     @State private var phase: CGFloat = 0
 

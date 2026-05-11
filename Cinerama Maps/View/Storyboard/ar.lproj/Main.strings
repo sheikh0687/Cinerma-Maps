@@ -808,3 +808,6 @@
 
 /* Class = "UILabel"; text = "Verification code will be sent to your email"; ObjectID = "f2a-z1-OyJ"; */
 "f2a-z1-OyJ.text" = "سوف يصلك رمز التحقق على البريد الكتروني";
+
+/* Class = "UILabel"; text = "After tapping, please wait while you are redirected to the payment page."; ObjectID = "IXq-7J-q4c"; */
+"IXq-7J-q4c.text" = "بعد الضغط، يرجى الانتظار حتى يتم تحويلك لصفحة الدفع.";

@@ -79,6 +79,7 @@ class AllMapsDetailVC: UIViewController {
     
     //    Mark RatingView Outlet
     @IBOutlet weak var rating_TableVw: UITableView!
+    @IBOutlet weak var btn_SubmitReviewOt: UIButton!
     
     //    Mark ImagesView Outlet
     @IBOutlet weak var images_CollectionVw: UICollectionView!
@@ -122,6 +123,7 @@ class AllMapsDetailVC: UIViewController {
         totalAmount = amountForCity.round()
         self.registerIdentifiers()
         self.configureiUUpdates()
+        
         updateCurrency()
         updateUSDCurrency()
         setupClusterManager()
@@ -183,8 +185,10 @@ class AllMapsDetailVC: UIViewController {
         
         if isSubscribed == "Yes" {
             self.btn_SubscribeOt.isHidden = true
+            self.btn_SubmitReviewOt.isHidden = false
         } else {
             self.btn_SubscribeOt.isHidden = false
+            self.btn_SubmitReviewOt.isHidden = true
         }
     }
     
@@ -265,6 +269,26 @@ class AllMapsDetailVC: UIViewController {
     
     @IBAction func btn_SubmitReview(_ sender: UIButton) {
         let vC = Kstoryboard.instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
+        vC.viewModel.reviewType = "City"
+        vC.viewModel.requestId = viewModel.arrayOfDetailCityMaps.id ?? ""
+        vC.viewModel.cityId = viewModel.arrayOfDetailCityMaps.place_details?.first?.city_id ?? ""
+        vC.viewModel.reloadSuccessfully = { [weak self] responseData in
+            guard let self else { return }
+//            let newReview = Rating_review (
+//                id: responseData.id,
+//                user_id: responseData.user_id,
+//                city_id: responseData.city_id,
+//                place_id: responseData.place_id,
+//                rating: responseData.rating,
+//                review: responseData.review,
+//                type: responseData.type,
+//                date_time: responseData.date_time,
+//                user_name: "",
+//                image: ""
+//            )
+//            self.viewModel.arrayOfReviews.insert(newReview, at: 0)
+            self.rating_TableVw.reloadData()
+        }
         self.navigationController?.pushViewController(vC, animated: true)
     }
     

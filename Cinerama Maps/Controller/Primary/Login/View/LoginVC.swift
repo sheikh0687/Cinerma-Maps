@@ -16,6 +16,7 @@ class LoginVC: UIViewController {
     @IBOutlet weak var lbl_Language: UILabel!
     
     @IBOutlet weak var btnCountryPickOt: UIButton!
+    @IBOutlet weak var btnTermsAndCondition: UIButton!
     
     let viewModel = LoginViewModel()
     let socialViewModel = GoogleSign()
@@ -34,6 +35,29 @@ class LoginVC: UIViewController {
             self.lbl_Language.textAlignment = .right
         }
         self.navigationController?.navigationBar.isHidden = true
+        setTermsAndConditionsText()
+    }
+    
+    func setTermsAndConditionsText() {
+        let text = L102Language.currentAppleLanguage() == "en" 
+            ? "By registering, you will agree to our terms and conditions." 
+            : "عند تسجيلك فإنك توافق على شروطنا وأحكامنا."
+        
+        let subText = L102Language.currentAppleLanguage() == "en" 
+            ? "terms and conditions" 
+            : "شروطنا وأحكامنا"
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        let range = (text as NSString).range(of: subText)
+        
+        if range.location != NSNotFound {
+            attributedString.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: range)
+            attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range)
+        }
+        
+        btnTermsAndCondition.setAttributedTitle(attributedString, for: .normal)
+        btnTermsAndCondition.titleLabel?.numberOfLines = 0
+        btnTermsAndCondition.titleLabel?.textAlignment = .center
     }
     
     @IBAction func btn_Login(_ sender: UIButton) {
@@ -55,8 +79,7 @@ class LoginVC: UIViewController {
         }
     }
     
-    @IBAction func btn_DropLanguage(_ sender: UIButton)
-    {
+    @IBAction func btn_DropLanguage(_ sender: UIButton) {
         viewModel.configureDropDown(sender: sender)
     }
     

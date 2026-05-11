@@ -65,6 +65,7 @@ enum Router: String {
     
     case add_user_trip_schedule
     case add_service_rating_review
+    case add_city_rating_review
     case add_country_map_suggestion
     case fav_unfav_citymap
     case update_user_trip_schedule
@@ -145,6 +146,8 @@ enum Router: String {
             
         case .add_service_rating_review:
             return Router.oAuthPath(path: "add_service_rating_review")
+        case .add_city_rating_review:
+            return Router.oAuthPath(path: "add_city_rating_review")
         case .add_country_map_suggestion:
             return Router.oAuthPath(path: "add_country_map_suggestion")
         case .fav_unfav_citymap:

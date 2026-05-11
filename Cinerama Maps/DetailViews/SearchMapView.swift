@@ -11,7 +11,7 @@ struct SearchMapView: View {
 
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: SubscriptionMapViewModel
-    let language = k.userDefault.value(forKey: k.session.language) as? String
+    let language = L102Language.currentAppleLanguage()
 
     @State private var like = false
     @State private var dislike = false

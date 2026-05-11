@@ -88,7 +88,7 @@ class ProfileViewModel {
         CameraHandler.shared.showActionSheet(vc: vC)
         CameraHandler.shared.imagePickedBlock = { (image) in
             self.image = image
-            sender.contentMode = .scaleToFill
+            sender.contentMode = .scaleAspectFill
             sender.setImage(image, for: .normal)
         }
     }

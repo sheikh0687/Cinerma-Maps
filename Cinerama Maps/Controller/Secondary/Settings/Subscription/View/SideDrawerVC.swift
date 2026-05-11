@@ -14,6 +14,7 @@ class SideDrawerVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     @IBOutlet weak var cancelButton: UIButton!
     weak var navController: UINavigationController?
     @IBOutlet weak var tagTableView: UITableView!
+    
     var tags: [Tag_details] = []
     var onTagSelected: ((String?) -> Void)? // Getting The Same Tag on Map
     var favoriteTags: [Place_details] = []
@@ -33,8 +34,6 @@ class SideDrawerVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         UIView.animate(withDuration: 0.3) {
             self.view.frame.origin.x = self.drawerMainView.frame.width
         }
-        
-        
 
 //        // Tap anywhere outside drawerMainView to dismiss
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
@@ -62,6 +61,7 @@ class SideDrawerVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             self.dismiss(animated: false)
         }
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
@@ -115,8 +115,6 @@ class SideDrawerVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         2
     }
     
- 
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = Bundle.main.loadNibNamed("PlacesHeader", owner: self, options: nil)?.first as? PlacesHeader else {
                 return nil
@@ -125,11 +123,13 @@ class SideDrawerVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         case 0:
             headerView.imgHeart.isHidden = false
             headerView.imgWidth.constant = 28
+            headerView.textViewAll.isHidden = true
             headerView.lblName.text = R.string.localizable.favourite_Places()
          
         default:
             headerView.imgHeart.isHidden = true
             headerView.imgWidth.constant = 0
+            headerView.textViewAll.isHidden = false
             headerView.lblName.text = R.string.localizable.tags()
         }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(headerTapped(_:)))
@@ -149,7 +149,8 @@ class SideDrawerVC: UIViewController, UITableViewDataSource, UITableViewDelegate
            }
             dismissSelf()
         }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        36
+        45
     }
 }

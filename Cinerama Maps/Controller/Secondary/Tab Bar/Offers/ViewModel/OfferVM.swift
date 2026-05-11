@@ -23,6 +23,8 @@ class CompanyOfferViewModel {
     var cloSubOfferSuccessful:(() -> Void)?
     var cloChildOfferSuccessfull:(() -> Void)?
     
+    var isLoading = true
+    
     //    MARK: SEARCHBAR
     func setupSearchBar(searchBar: UISearchBar!) {
         searchBar.placeholder = R.string.localizable.search()

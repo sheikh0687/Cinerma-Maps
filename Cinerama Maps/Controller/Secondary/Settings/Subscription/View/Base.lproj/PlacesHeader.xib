@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -42,10 +41,18 @@
                                 <color key="textColor" systemColor="systemGray2Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="view all" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYG-Zz-2DD">
+                                <rect key="frame" x="392" y="28.333333333333336" width="40" height="16.666666666666664"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="KZi-Zk-YZn" firstAttribute="leading" secondItem="l8U-hc-32o" secondAttribute="trailing" constant="5" id="7Oo-e1-UTJ"/>
+                            <constraint firstAttribute="trailing" secondItem="vYG-Zz-2DD" secondAttribute="trailing" constant="10" id="OnP-I4-Ib7"/>
+                            <constraint firstItem="vYG-Zz-2DD" firstAttribute="centerY" secondItem="Ulj-Cj-fng" secondAttribute="centerY" id="Zlt-vV-ItX"/>
                             <constraint firstAttribute="trailing" secondItem="KZi-Zk-YZn" secondAttribute="trailing" constant="10" id="a31-Xr-t4i"/>
                             <constraint firstItem="l8U-hc-32o" firstAttribute="centerY" secondItem="KZi-Zk-YZn" secondAttribute="centerY" id="bai-5V-rAx"/>
                             <constraint firstAttribute="bottom" secondItem="KZi-Zk-YZn" secondAttribute="bottom" id="d96-Us-Leo"/>
@@ -76,6 +83,7 @@
                 <outlet property="imgHeart" destination="l8U-hc-32o" id="N7y-Xj-YWu"/>
                 <outlet property="imgWidth" destination="k5J-Df-u2k" id="xXu-vU-wZS"/>
                 <outlet property="lblName" destination="KZi-Zk-YZn" id="OoE-18-wAP"/>
+                <outlet property="textViewAll" destination="vYG-Zz-2DD" id="Mep-Xh-VOH"/>
             </connections>
             <point key="canvasLocation" x="90.07633587786259" y="37.676056338028168"/>
         </tableViewCell>

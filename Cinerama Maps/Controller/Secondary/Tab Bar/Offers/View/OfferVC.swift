@@ -763,7 +763,9 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
             
             cell.view_Cities.isHidden = true
             cell.view_Company.isHidden = false
+            
             cell.lbl_Title.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
+            
             cell.lbl_CompanyName.text = obj.address ?? ""
             
 //            cell.setupCompanyWebView(processPool: webProcessPool)
@@ -783,30 +785,36 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MoreServiceCell", for: indexPath) as! MoreServiceCell
             let obj = self.partnerViewModel.arrayPartnerService[indexPath.row]
             
-            cell.view_Company.isHidden = true
-            cell.view_Cities.isHidden = false
-            cell.lbl_CityName.text = obj.address ?? ""
-            cell.lbl_CityTitle.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
+            cell.view_Company.isHidden = false
+            cell.view_Cities.isHidden = true
             
-            // ⭐️ Setup & load WebView
-//            cell.setupCityWebView(processPool: webProcessPool)
+            cell.lbl_CompanyName.text = obj.address ?? ""
+            
+            cell.lbl_Title.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
+            
             let html = L102Language.currentAppleLanguage() == "en" ? obj.description ?? "" : obj.description_ar ?? ""
             
             if let attributedText = html.htmlAttributedString3 {
-                cell.lbl_CityDescription.attributedText = attributedText
+                cell.lbl_Description.attributedText = attributedText
             }
             
             if Router.BASE_IMAGE_URL != obj.image1 {
-                Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.city_Img)
+                Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.company_Img)
             }
             
             return cell
             
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DiscountCell", for: indexPath) as! DiscountCell
+            
             let obj = self.viewModel.arrayOfOffers[indexPath.row]
             
-            cell.offer_CodeAndPercent.setTitle("\(obj.discount_code ?? "") \(obj.discount_percentage ?? "")% Off", for: .normal)
+            let percentText = "\(obj.discount_percentage ?? "")%"
+
+            cell.offer_CodeAndPercent.text = percentText
+            
+            let text = R.string.localizable.discount()
+            cell.textDiscount.text = text
             
             cell.lbl_OfferDescription.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
             
@@ -836,6 +844,7 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
             let obj = self.viewModel.arrayOfOffers[indexPath.row]
             if L102Language.currentAppleLanguage() == "en" {
                 vC.titleVal = obj.company_name ?? ""
+                print(vC.titleVal)
                 vC.descriptionVal = obj.description ?? ""
                 vC.placeImg = obj.image ?? ""
                 vC.offerCode = "\(obj.discount_code ?? "") \(obj.discount_percentage ?? "")% Off"
@@ -853,11 +862,11 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if dependonUi == "Tourism" {
-            return 250
+            return 280
         } else if dependonUi == "Partner" {
-            return 120
+            return 280
         } else {
-            return 250
+            return 280
         }
     }
     

@@ -31,7 +31,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Republic of Turkey." textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9la-PN-wmX">
-                                <rect key="frame" x="20" y="118.66666666666667" width="235" height="19.333333333333329"/>
+                                <rect key="frame" x="8" y="118.66666666666667" width="247" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -39,15 +39,15 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="01O-TS-fwR" firstAttribute="top" secondItem="2YQ-xt-25E" secondAttribute="top" id="5Ki-jY-Kol"/>
-                            <constraint firstAttribute="trailing" secondItem="9la-PN-wmX" secondAttribute="trailing" constant="8" id="G84-1Q-SPJ"/>
-                            <constraint firstItem="9la-PN-wmX" firstAttribute="leading" secondItem="2YQ-xt-25E" secondAttribute="leading" constant="20" id="JDp-0J-eoR"/>
-                            <constraint firstAttribute="trailing" secondItem="01O-TS-fwR" secondAttribute="trailing" id="N0H-EO-Qgb"/>
-                            <constraint firstAttribute="bottom" secondItem="01O-TS-fwR" secondAttribute="bottom" id="NUZ-tm-IcK"/>
-                            <constraint firstAttribute="bottom" secondItem="9la-PN-wmX" secondAttribute="bottom" constant="8" id="T8E-lu-vh1"/>
-                            <constraint firstItem="01O-TS-fwR" firstAttribute="leading" secondItem="2YQ-xt-25E" secondAttribute="leading" id="WMs-7t-WiM"/>
+                            <constraint firstAttribute="bottom" secondItem="9la-PN-wmX" secondAttribute="bottom" constant="8" id="1PE-4N-khv"/>
+                            <constraint firstAttribute="trailing" secondItem="9la-PN-wmX" secondAttribute="trailing" constant="8" id="PTr-3K-BEk"/>
+                            <constraint firstAttribute="trailing" secondItem="01O-TS-fwR" secondAttribute="trailing" id="Pk2-li-Ujh"/>
+                            <constraint firstAttribute="bottom" secondItem="01O-TS-fwR" secondAttribute="bottom" id="cPp-Up-PI4"/>
+                            <constraint firstItem="9la-PN-wmX" firstAttribute="leading" secondItem="2YQ-xt-25E" secondAttribute="leading" constant="8" id="gXE-IS-8IX"/>
+                            <constraint firstItem="01O-TS-fwR" firstAttribute="leading" secondItem="2YQ-xt-25E" secondAttribute="leading" id="i0C-U4-EHT"/>
                             <constraint firstItem="wFD-W8-f2V" firstAttribute="top" secondItem="2YQ-xt-25E" secondAttribute="top" constant="10" id="ifS-a2-Dz3"/>
                             <constraint firstItem="wFD-W8-f2V" firstAttribute="leading" secondItem="2YQ-xt-25E" secondAttribute="leading" constant="10" id="sPH-zC-qW6"/>
+                            <constraint firstItem="01O-TS-fwR" firstAttribute="top" secondItem="2YQ-xt-25E" secondAttribute="top" id="xun-e4-OhU"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

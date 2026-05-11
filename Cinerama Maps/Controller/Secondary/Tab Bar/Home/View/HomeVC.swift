@@ -18,7 +18,9 @@ class HomeVC: UIViewController {
     @IBOutlet weak var btnCurrency: UIButton!
     @IBOutlet weak var service_CollectionVw: UICollectionView!
     @IBOutlet weak var map_CollectionVw: UICollectionView!
+    @IBOutlet weak var map_CollectionHeight: NSLayoutConstraint!
     @IBOutlet weak var guideline_CollectionVw: UICollectionView!
+    @IBOutlet weak var guideline_CollectionHeight: NSLayoutConstraint!
     @IBOutlet weak var advertisementCollection: UICollectionView!
     @IBOutlet weak var advertisementCollectionHeight: NSLayoutConstraint!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -83,14 +85,23 @@ class HomeVC: UIViewController {
         requestBanners()
         requestCountryMap()
         requestGuidelineTip()
+        
+//        // In viewDidLoad — static, set once
+//        let guideCellWidth: CGFloat = 190
+//        guideline_CollectionHeight.constant = (guideCellWidth / 1.91) + 80 + 16
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if !advertisementVM.arrayOfBanners.isEmpty {
-            updateBannerHeight()
-        }
-    }
+        
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        
+//        // Advertisement (16:9) — depends on frame width (Recommended: 1920x1080)
+//        advertisementCollectionHeight.constant =
+//            advertisementCollection.frame.width * 9 / 16
+//        
+//        // Map (1.91:1) — depends on frame width (Recommended: 1200x628)
+//        let mapCellWidth = (map_CollectionVw.frame.width / 2) - 12
+//        map_CollectionHeight.constant = (mapCellWidth / 1.91) + 40
+//    }
     
     private func startProfileShimmering() {
         self.profile_Img.showAnimatedSkeleton()
@@ -256,8 +267,6 @@ extension HomeVC {
                 self.advertisementCollection.hideSkeleton(reloadDataAfter: false)
                 
                 self.advertisementCollection.reloadData()
-                self.setupAdvertisementCollection()
-                self.updateBannerHeight()
             }
         }
     }
@@ -291,14 +300,8 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             
             let obj = self.advertisementVM.arrayOfBanners[indexPath.row]
             
-            // Image styling
-            cell.service_Img.contentMode = .scaleAspectFill
+            cell.service_Img.contentMode = .scaleToFill
             cell.service_Img.clipsToBounds = true
-            cell.service_Img.layer.cornerRadius = 12
-            
-            // Add padding by inset the imageView
-            cell.contentView.backgroundColor = .clear
-            cell.backgroundColor = .clear
             
             if Router.BASE_IMAGE_URL != obj.image {
                 Utility.setImageWithSDWebImage(obj.image ?? "", cell.service_Img)
@@ -319,6 +322,9 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             
             let obj = countryMapVM.arrayCountryMaps[indexPath.row]
             
+            cell.CountryImage.contentMode = .scaleToFill
+            cell.CountryImage.clipsToBounds = true
+
             if L102Language.currentAppleLanguage() == "en" {
                 cell.lbl_CountryName.text = obj.name ?? ""
             } else {
@@ -342,6 +348,9 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GuidelineCell", for: indexPath) as! GuidelineCell
             
             let obj = self.guidelinesTipVM.arrayGuidelinesTip[indexPath.row]
+                        
+            cell.img.contentMode = .scaleToFill
+            cell.img.clipsToBounds = true
             
             cell.lbl_Text.text = L102Language.currentAppleLanguage() == "en" ? obj.title ?? "" : obj.title_ar ?? ""
             
@@ -357,9 +366,9 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == service_CollectionVw || collectionView == advertisementCollection {
-//            let padding: CGFloat = 16  left + right padding
+            // Advertisement (16:9) - Recommended: 1920x1080
             let width = collectionView.frame.width
-            let height = width * (9.0 / 16.0)
+            let height = collectionView.frame.height
             return CGSize(width: width, height: height)
         } else if collectionView == map_CollectionVw {
             return CGSize(width: 190, height: 140)
@@ -408,26 +417,6 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         } else {
             // Ignore other collection views
         }
-    }
-    
-    private func setupAdvertisementCollection() {
-        advertisementCollection.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        advertisementCollection.decelerationRate = .fast
-        advertisementCollection.isPagingEnabled = false
-        
-        // ✅ Cast to the base class so it works for both LTR and RTL layouts
-        if let layout = advertisementCollection.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-            layout.minimumLineSpacing = 12
-        }
-    }
-    
-    private func updateBannerHeight() {
-        let padding: CGFloat = 16
-        let width = advertisementCollection.frame.width - (padding * 2)
-        let height = width * (9.0 / 16.0)
-        advertisementCollectionHeight.constant = height
-        self.view.layoutIfNeeded()
     }
 }
 

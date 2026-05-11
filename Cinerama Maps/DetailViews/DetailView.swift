@@ -36,7 +36,7 @@ struct DetailView: View {
     @State var isLoadingMore: Bool = false
     @State private var isDescriptionLoading: Bool = true
     
-    let language = k.userDefault.value(forKey: k.session.language) as? String
+    let language = L102Language.currentAppleLanguage()
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {

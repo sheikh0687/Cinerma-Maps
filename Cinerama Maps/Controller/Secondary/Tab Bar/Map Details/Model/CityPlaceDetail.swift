@@ -338,6 +338,19 @@ struct Rating_review : Codable {
         case user_name = "user_name"
         case image = "image"
     }
+    
+    init(id: String?, user_id: String?, city_id: String?, place_id: String?, rating: String?, review: String?, type: String?, date_time: String?, user_name: String?, image: String?) {
+        self.id = id
+        self.user_id = user_id
+        self.city_id = city_id
+        self.place_id = place_id
+        self.rating = rating
+        self.review = review
+        self.type = type
+        self.date_time = date_time
+        self.user_name = user_name
+        self.image = image
+    }
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)

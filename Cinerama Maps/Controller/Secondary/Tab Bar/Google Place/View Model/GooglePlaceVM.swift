@@ -5,26 +5,30 @@ import Foundation
 class GooglePlaceVM: ObservableObject {
     
     var generatedSuccessfull:((_ placeId: String) -> Void)?
-    var val_Address:String = ""
-    var place_Id:String = ""
     
-    var fetchedDetailSuccessfull:(() -> Void)?
     var arrayPlaceDetail: Res_GooglePlaceDetail?
     var arrayMorePlaceDetails: Res_GoogePlaceResult?
+    
     var arrayPlaceTags: [Tag_details] = []
     var arrayRatingReview: [Rating_review] = []
+    
     var arrayPlaceImages: [Places_images] = []
+    var arrayGooglePhotos: [Res_GooglePhotos] = []
     
     var arrayWeekDays: [String] = []
+    
+    var val_Address:String = ""
+    var place_Id:String = ""
     var lat:String = ""
     var lon:String = ""
-    
     var phoneNum:String = ""
     var websiteLink:String = ""
     
+    var fetchedDetailSuccessfull:(() -> Void)?
     var fetchedPhotosSuccessfull:(() -> Void)?
-    var arrayGooglePhotos: [Res_GooglePhotos] = []
+    
     var sendDataBack: ((Bool, String) -> Void)?
+    
     var isFav = false
     
     func fetchPlaceId(vC: UIViewController) {
@@ -44,8 +48,7 @@ class GooglePlaceVM: ObservableObject {
         }
     }
     
-    func fetchGooglePlaceDetail(vC: UIViewController, placeId: String,tagCollection: UICollectionView, weekCollection: UICollectionView, ratingTable: UITableView)
-    {
+    func fetchGooglePlaceDetail(vC: UIViewController, placeId: String,tagCollection: UICollectionView, weekCollection: UICollectionView, ratingTable: UITableView) {
         var paramDict: [String : AnyObject] = [:]
         paramDict["user_id"] = k.userDefault.value(forKey: k.session.userId) as AnyObject?
         paramDict["place_id"] = placeId as AnyObject
@@ -112,8 +115,7 @@ class GooglePlaceVM: ObservableObject {
         }
     }
     
-    func fetchPlacesPhotos(vC: UIViewController,placeId: String)
-    {
+    func fetchPlacesPhotos(vC: UIViewController,placeId: String) {
         var paramDict: [String : AnyObject] = [:]
         paramDict["place_id"] = placeId as AnyObject
         paramDict["lang"] = k.userDefault.value(forKey: k.session.language) as AnyObject
@@ -130,8 +132,7 @@ class GooglePlaceVM: ObservableObject {
         }
     }
     
-    func requestToFavUnfavPlace(vC: UIViewController, status: String)
-    {
+    func requestToFavUnfavPlace(vC: UIViewController, status: String) {
         var paramDict: [String : AnyObject] = [:]
         paramDict["user_id"] = k.userDefault.value(forKey: k.session.userId) as AnyObject?
         paramDict["place_id"] = place_Id as AnyObject

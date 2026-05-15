@@ -64,12 +64,14 @@ class OnboardingVC: UIViewController {
                 self.collectionView.isPagingEnabled = true
             }
         } else {
+            k.userDefault.set(true, forKey: k.session.isFirstTime)
             let vc = Kstoryboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     @IBAction func btnSkip(_ sender: UIButton) {
+        k.userDefault.set(true, forKey: k.session.isFirstTime)
         let vc = Kstoryboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
         self.navigationController?.pushViewController(vc, animated: true)
     }

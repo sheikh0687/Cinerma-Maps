@@ -412,3 +412,40 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
+extension UIAlertController {
+ 
+    func setTitleAlignment(_ alignment: NSTextAlignment) {
+        guard let title = self.title else { return }
+        let attributed = NSMutableAttributedString(string: title)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = alignment
+        attributed.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: title.utf16.count)
+        )
+        setValue(attributed, forKey: "attributedTitle")
+    }
+ 
+    func setMessageAlignment(_ alignment: NSTextAlignment) {
+        guard let message = self.message else { return }
+        let attributed = NSMutableAttributedString(string: message)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = alignment
+        attributed.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: message.utf16.count)
+        )
+        setValue(attributed, forKey: "attributedMessage")
+    }
+ 
+    func applyRTLAlignment() {
+        let alignment: NSTextAlignment = L102Language.currentAppleLanguage() == "ar" ? .right : .left
+        setTitleAlignment(alignment)
+        setMessageAlignment(alignment)
+    }
+}
+
+

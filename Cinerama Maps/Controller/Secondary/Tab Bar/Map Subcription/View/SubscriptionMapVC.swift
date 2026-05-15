@@ -105,36 +105,107 @@ class SubscriptionMapVC: UIViewController, UIGestureRecognizerDelegate {
         showLoadingOverlay()
         
         bindViewModelData()
-        
-        self.view.semanticContentAttribute = L102Language.isRTL ? .forceRightToLeft : .forceLeftToRight
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // Apply only once, after GMSMapView has fully built its internal subview tree
-        guard !mapTransformApplied, L102Language.isRTL else { return }
-        mapTransformApplied = true
-        applyRTLMapTransform()
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        
+//        // Apply only once, after GMSMapView has fully built its internal subview tree
+//        guard !mapTransformApplied, L102Language.isRTL else { return }
+//        mapTransformApplied = true
+//        applyRTLMapTransform()
+//    }
+//
+//    private func applyRTLMapTransform() {
+//        guard L102Language.isRTL else { return }
+//        
+//        let mirror = CGAffineTransform(scaleX: -1, y: 1)
+//        
+//        // Flip the entire map surface
+//        GMMapView.transform = mirror
+//        
+//        // Counter-flip every internal subview so tiles/labels stay correct
+//        counterFlipSubviews(GMMapView, mirror: mirror)
+//    }
+//    
+//    private func counterFlipSubviews(_ view: UIView, mirror: CGAffineTransform) {
+//        for subview in view.subviews {
+//            subview.transform = mirror
+//            counterFlipSubviews(subview, mirror: mirror)
+//        }
+//    }
 
-    private func applyRTLMapTransform() {
-        guard L102Language.isRTL else { return }
-        
-        let mirror = CGAffineTransform(scaleX: -1, y: 1)
-        
-        // Flip the entire map surface
-        GMMapView.transform = mirror
-        
-        // Counter-flip every internal subview so tiles/labels stay correct
-        GMMapView.subviews.forEach { subview in
-            subview.transform = mirror
-            // Also counter-flip their children (GMSMapView nests multiple layers deep)
-            subview.subviews.forEach { child in
-                child.transform = mirror
-            }
-        }
-    }
+//    private func applyRTLMapTransform() {
+//        guard L102Language.isRTL else { return }
+//        
+//        let mirror = CGAffineTransform(scaleX: -1, y: 1)
+//        GMMapView.transform = mirror
+//        
+//        // Counter-flip all subviews
+//        fixSubviews(of: GMMapView, mirror: mirror)
+//        
+//        // ✅ Force counter-flip the Google logo specifically after everything else
+//        restoreGoogleAttributionViews(in: GMMapView)
+//    }
+//    
+//    private func restoreGoogleAttributionViews(in view: UIView) {
+//        for subview in view.subviews {
+//            if isGoogleAttributionView(subview) {
+//                // Remove any transform applied by fixSubviews, restore to identity
+//                subview.transform = .identity
+//            } else {
+//                restoreGoogleAttributionViews(in: subview)
+//            }
+//        }
+//    }
+//    
+//    private func fixSubviews(of view: UIView, mirror: CGAffineTransform) {
+//        
+//        for subview in view.subviews {
+//            
+//            if isGoogleAttributionView(subview) {
+//                // 🚫 Never touch Google logo / legal attribution
+//                continue
+//            }
+//            
+//            // Counter flip
+//            subview.transform = mirror
+//            
+//            // 🔁 Go deeper (Google logo lives deep inside)
+//            fixSubviews(of: subview, mirror: mirror)
+//        }
+//    }
+//    
+//    private func isGoogleAttributionView(_ view: UIView) -> Bool {
+//        let className = String(describing: type(of: view)).lowercased()
+//        
+//        if className.contains("attribution") ||
+//           className.contains("legal") ||
+//           className.contains("gmss") ||
+//           className.contains("gms") {
+//            return true
+//        }
+//        
+//        // ✅ Catch UIImageView that holds the Google logo (small, bottom area)
+//        if view is UIImageView {
+//            let size = view.bounds.size
+//            if size.width > 0 && size.width < 100 && size.height < 40 {
+//                if view.frame.origin.y > GMMapView.frame.height * 0.7 {
+//                    return true
+//                }
+//            }
+//        }
+//        
+//        // Existing size/position fallback
+//        let size = view.bounds.size
+//        if size.width < 120 && size.height < 40 {
+//            if view.frame.origin.y > GMMapView.frame.height - 80 {
+//                return true
+//            }
+//        }
+//        
+//        return false
+//    }
     
     private func showLoadingOverlay() {
         let overlay = UIView(frame: view.bounds)
@@ -746,11 +817,15 @@ extension SubscriptionMapVC: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         updateClusterAlgorithm(for: position.zoom)
         
-        // Re-apply transform once on first idle — catches late-added subviews
-        if !mapFirstIdleDone && L102Language.isRTL {
-            mapFirstIdleDone = true
-            applyRTLMapTransform()
-        }
+//        if !mapFirstIdleDone && L102Language.isRTL {
+//            mapFirstIdleDone = true
+//            applyRTLMapTransform()
+//        }
+        
+//        // ✅ Always re-check on idle — Google logo may have been added late
+//        if L102Language.isRTL {
+//            restoreGoogleAttributionViews(in: GMMapView)
+//        }
     }
     
     private func addCustomLongPressToMap() {

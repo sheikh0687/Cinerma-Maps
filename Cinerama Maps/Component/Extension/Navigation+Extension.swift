@@ -171,6 +171,7 @@ extension UIViewController {
         }
             )
         )
+        alert.setMessageAlignment(.natural)
         self.present(alert as UIViewController, animated: true, completion: nil)
     }
     

@@ -171,65 +171,27 @@ class Utility {
         return date
     }
     
-//    class func showAlertMessage(withTitle title: String, message msg: String, delegate del: Any?, parentViewController parentVC: UIViewController) {
-//        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-//        //We add buttons to the alert controller by creating UIAlertActions:
-//        let actionOk = UIAlertAction(title: R.string.localizable.ok(), style: .default, handler: nil)
-//        //You can use a block here to handle a press on this button
-//        alertController.addAction(actionOk)
-//        alertController.setMessageAlignment(.center)
-//        parentVC.present(alertController, animated: true, completion: nil)
-//    }
-  
-    class func showAlertMessage(withTitle title: String, message msg: String, delegate del: Any?, parentViewController parentVC: UIViewController) {
-        let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
-
-        // Centered Title
-        let titleAttributed = NSAttributedString(
-            string: title,
-            attributes: [
-                .font: UIFont.boldSystemFont(ofSize: 17),
-                .foregroundColor: UIColor.black,
-                .paragraphStyle: {
-                    let style = NSMutableParagraphStyle()
-                    style.alignment = .center
-                    return style
-                }()
-            ])
-
-        // Centered Message
-        let messageAttributed = NSAttributedString(
-            string: msg,
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14),
-                .foregroundColor: UIColor.black,
-                .paragraphStyle: {
-                    let style = NSMutableParagraphStyle()
-                    style.alignment = .center
-                    return style
-                }()
-            ])
-
-        alertController.setValue(titleAttributed, forKey: "attributedTitle")
-        alertController.setValue(messageAttributed, forKey: "attributedMessage")
-
+    class func showAlertMessage (
+        withTitle title: String,
+        message msg: String,
+        delegate del: Any?,
+        parentViewController parentVC: UIViewController
+    ) {
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         let actionOk = UIAlertAction(title: R.string.localizable.ok(), style: .default, handler: nil)
         alertController.addAction(actionOk)
-
+        alertController.applyRTLAlignment() // ✅ RTL/LTR aware
         parentVC.present(alertController, animated: true, completion: nil)
     }
     
-    class func showAlertWithAction(withTitle title: String, message msg: String, delegate del: Any?, parentViewController parentVC: UIViewController, completionHandler: @escaping (Bool) -> Void ) {
+    class func showAlertWithAction (
+        withTitle title: String,
+        message msg: String,
+        delegate del: Any?,
+        parentViewController parentVC: UIViewController,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        //        let label = UILabel(frame: CGRect(x: 0, y: 0, width: alert.view.frame.width - 20, height: 50))
-        //        label.text = title
-        //        label.textAlignment = .center
-        //        alert.view.addSubview(label)
-        //
-        //        let label2 = UILabel(frame: CGRect(x: 0, y: 50, width: alert.view.frame.width - 20, height: 50))
-        //        label2.text = msg
-        //        label2.textAlignment = .center
-        //        alert.view.addSubview(label2)
         alert.addAction(UIAlertAction(title: R.string.localizable.ok(), style: .default, handler: { action in
             switch action.style {
             case .default:
@@ -238,13 +200,21 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
-        //        alert.setMessageAlignment(.center)
+        alert.applyRTLAlignment() // ✅ RTL/LTR aware
         parentVC.present(alert as UIViewController, animated: true, completion: nil)
     }
     
-    class func showAlertYesNoAction(withTitle title: String, message msg: String, delegate del: Any?, parentViewController parentVC: UIViewController, completionHandler: @escaping (Bool) -> Void ) {
+    class func showAlertYesNoAction (
+        withTitle title: String,
+        message msg: String,
+        delegate del: Any?,
+        parentViewController parentVC: UIViewController,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: R.string.localizable.yes(), style: .default, handler: { action in
             switch action.style {
@@ -254,6 +224,8 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
         alert.addAction(UIAlertAction(title: R.string.localizable.no(), style: .default, handler: { action in
@@ -264,13 +236,21 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
-        //        alert.setMessageAlignment(.center)
+        alert.applyRTLAlignment() // ✅ RTL/LTR aware
         parentVC.present(alert as UIViewController, animated: true, completion: nil)
     }
     
-    class func showAlertOkOrCancel(withTitle title: String, message msg: String, delegate del: Any?, parentViewController parentVC: UIViewController, completionHandler: @escaping (Bool) -> Void ) {
+    class func showAlertOkOrCancel (
+        withTitle title: String,
+        message msg: String,
+        delegate del: Any?,
+        parentViewController parentVC: UIViewController,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: R.string.localizable.open(), style: .default, handler: { action in
             switch action.style {
@@ -280,6 +260,8 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
         alert.addAction(UIAlertAction(title: R.string.localizable.cancel(), style: .default, handler: { action in
@@ -290,13 +272,23 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
-        //        alert.setMessageAlignment(.center)
+        alert.applyRTLAlignment() // ✅ RTL/LTR aware
         parentVC.present(alert as UIViewController, animated: true, completion: nil)
     }
     
-    class func showAlertWithCustomAction(withTitle title: String, message msg: String, firstTitle first: String, secondTitle second: String, delegate del: Any?, parentViewController parentVC: UIViewController, completionHandler: @escaping (Bool) -> Void ) {
+    class func showAlertWithCustomAction (
+        withTitle title: String,
+        message msg: String,
+        firstTitle first: String,
+        secondTitle second: String,
+        delegate del: Any?,
+        parentViewController parentVC: UIViewController,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: first, style: .default, handler: { action in
             switch action.style {
@@ -306,6 +298,8 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
         alert.addAction(UIAlertAction(title: second, style: .default, handler: { action in
@@ -316,11 +310,14 @@ class Utility {
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
+        alert.applyRTLAlignment() // ✅ RTL/LTR aware
         parentVC.present(alert as UIViewController, animated: true, completion: nil)
     }
-    
+
     class func isUserLogin ()-> Bool {
         if (k.userDefault.value(forKey: k.session.userId) != nil) {
             return true
@@ -373,8 +370,7 @@ class Utility {
         }
     }
     
-    class func openAnyUrl(Url: String)
-    {
+    class func openAnyUrl(Url: String) {
         guard let url = URL(string: Url) else {
           return //be safe
         }
@@ -732,65 +728,7 @@ class Utility {
             completionHandler(nil)
         }
     }
-    
-    //    class func showRouteOnMap(_ mapView: MKMapView, _ pickupCoordinate: CLLocationCoordinate2D, _ destinationCoordinate: CLLocationCoordinate2D, _ vc: UIViewController,top: CGFloat, bottom: CGFloat, left: CGFloat, right: CGFloat) {
-    //
-    //        Utility.initMapViewAnnotation(mapView)
-    //
-    //        let sourcePlacemark = MKPlacemark(coordinate: pickupCoordinate, addressDictionary: nil)
-    //        let destinationPlacemark = MKPlacemark(coordinate: destinationCoordinate, addressDictionary: nil)
-    //
-    //        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
-    //        let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
-    //
-    //        let sourceAnnotation = CustomPointAnnotation()
-    //
-    //        if let location = sourcePlacemark.location {
-    //            sourceAnnotation.coordinate = location.coordinate
-    //            sourceAnnotation.imageName = "pick.png"
-    //            sourceAnnotation.point = "source"
-    //        }
-    //
-    //        let destinationAnnotation = CustomPointAnnotation()
-    //
-    //        if let location = destinationPlacemark.location {
-    //            destinationAnnotation.coordinate = location.coordinate
-    //            destinationAnnotation.imageName = "drop.png"
-    //            destinationAnnotation.point = "destination"
-    //        }
-    //
-    //        mapView.showAnnotations([sourceAnnotation,destinationAnnotation], animated: true )
-    //
-    //        let directionRequest = MKDirections.Request()
-    //        directionRequest.source = sourceMapItem
-    //        directionRequest.destination = destinationMapItem
-    //        directionRequest.transportType = .automobile
-    //
-    //        // Calculate the direction
-    //        let directions = MKDirections(request: directionRequest)
-    //
-    //        directions.calculate {
-    //            (response, error) -> Void in
-    //
-    //            guard let response = response else {
-    //                if let error = error {
-    //                    print("Error: \(error)")
-    //                }
-    //
-    //                return
-    //            }
-    //
-    //            let route = response.routes[0]
-    //            mapView.addOverlay((route.polyline), level: MKOverlayLevel.aboveRoads)
-    //
-    //            //            let rect = route.polyline.boundingMapRect
-    //            //            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
-    //
-    //            let mapRect = MKPolygon(points: route.polyline.points(), count: route.polyline.pointCount)
-    //            mapView.setVisibleMapRect(mapRect.boundingMapRect, edgePadding: UIEdgeInsets(top: top,left: left,bottom: bottom,right: right), animated: true)
-    //        }
-    //    }
-    
+
     class func addRadiusCircle(_ mapView: MKMapView, location: CLLocationCoordinate2D, desiredRadius: CLLocationDistance) {
         let circle = MKCircle(center: location, radius: desiredRadius)
         mapView.addOverlay(circle)
@@ -903,11 +841,11 @@ class Utility {
         formatter.maximumFractionDigits = 2
         
         // detect current language
-        let locale = L102Language.currentAppleLanguage() == "ar"
-            ? Locale(identifier: "ar")
-            : Locale(identifier: "en")
+//        let locale = L102Language.currentAppleLanguage() == "ar"
+//            ? Locale(identifier: "ar")
+//            : Locale(identifier: "en")
         
-        formatter.locale = locale
+//        formatter.locale = locale
         formatter.currencyCode = currencyCode
         
         print(amount)

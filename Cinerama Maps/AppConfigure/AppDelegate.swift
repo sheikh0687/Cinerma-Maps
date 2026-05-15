@@ -84,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
         
-        Switcher.updateRootVC()
+        Switcher.updateRootVC(skipSplash: false)
         
         return true
     }

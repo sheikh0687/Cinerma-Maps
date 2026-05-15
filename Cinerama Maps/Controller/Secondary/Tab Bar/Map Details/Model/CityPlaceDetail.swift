@@ -56,7 +56,11 @@ struct Res_CityPlaceDetails : Codable {
     let the_waether : String?
     let the_waether_ar : String?
     let car_police_number : String?
+    let car_police_number_name: String?
+    let car_police_number_name_ar: String?
     let police_number : String?
+    let police_number_name: String?
+    let police_number_name_ar: String?
     let address : String?
     let lat : String?
     let lon : String?
@@ -100,7 +104,12 @@ struct Res_CityPlaceDetails : Codable {
         case the_waether = "the_waether"
         case the_waether_ar = "the_waether_ar"
         case car_police_number = "car_police_number"
+        case car_police_number_name = "car_police_number_name"
+        case car_police_number_name_ar = "car_police_number_name_ar"
         case police_number = "police_number"
+        case police_number_name = "police_number_name"
+        case police_number_name_ar = "police_number_name_ar"
+
         case address = "address"
         case lat = "lat"
         case lon = "lon"
@@ -159,6 +168,10 @@ struct Res_CityPlaceDetails : Codable {
         remove_status = try values.decodeIfPresent(String.self, forKey: .remove_status)
         youtube_video_link = try values.decodeIfPresent(String.self, forKey: .youtube_video_link)
         youtube_video_link_arabic = try values.decodeIfPresent(String.self, forKey: .youtube_video_link_arabic)
+        car_police_number_name = try values.decodeIfPresent(String.self, forKey: .car_police_number_name)
+        car_police_number_name_ar = try values.decodeIfPresent(String.self, forKey: .car_police_number_name_ar)
+        police_number_name = try values.decodeIfPresent(String.self, forKey: .police_number_name)
+        police_number_name_ar = try values.decodeIfPresent(String.self, forKey: .police_number_name_ar)
     }
 }
 

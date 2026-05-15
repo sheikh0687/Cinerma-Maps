@@ -1081,7 +1081,7 @@ class Api: NSObject {
     
     func requestToFavCityMap(_ vC: UIViewController,_ success: @escaping(_ responseData: Api_FavCityMaps) -> Void) {
         vC.showProgressBar()
-        Service.post(url: Router.my_fav_citymap.url(), params: paramGetUserId(), method: .get, vc: vC, successBlock: { (response) in
+        Service.post(url: Router.get_purcahse_city_map_list.url(), params: paramGetUserId(), method: .get, vc: vC, successBlock: { (response) in
             do {
                 let jsonDecoder = JSONDecoder()
                 let root = try jsonDecoder.decode(Api_FavCityMaps.self, from: response)

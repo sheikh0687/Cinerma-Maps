@@ -16,6 +16,8 @@
 		6895A4572DEA124600D12A55 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B33E772DE8B43E00F75421 /* InfoRow.swift */; };
 		6895A4582DEA124600D12A55 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B33E752DE8B3E200F75421 /* MapView.swift */; };
 		68A45F4E2DC92C1000C24B01 /* SideDrawerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A45F4D2DC92C1000C24B01 /* SideDrawerVC.swift */; };
+		B713815C2FB5DD8D0002CE9D /* PartnerServiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B713815B2FB5DD8D0002CE9D /* PartnerServiceCell.xib */; };
+		B713815D2FB5DD8D0002CE9D /* PartnerServiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713815A2FB5DD8D0002CE9D /* PartnerServiceCell.swift */; };
 		B7308EB92FA3514C00066F22 /* SkeletonRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7308EB82FA3514C00066F22 /* SkeletonRowView.swift */; };
 		B7308EBB2FA3518A00066F22 /* Shimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7308EBA2FA3518A00066F22 /* Shimmer.swift */; };
 		B7579AF72FA228DF00338FE0 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = B7579AF62FA228DF00338FE0 /* SkeletonView */; };
@@ -241,6 +243,8 @@
 		29B33E772DE8B43E00F75421 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
 		2A059AD1317AF312E5F8FBCE /* Pods-Cinerama Maps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinerama Maps.debug.xcconfig"; path = "Target Support Files/Pods-Cinerama Maps/Pods-Cinerama Maps.debug.xcconfig"; sourceTree = "<group>"; };
 		68A45F4D2DC92C1000C24B01 /* SideDrawerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideDrawerVC.swift; sourceTree = "<group>"; };
+		B713815A2FB5DD8D0002CE9D /* PartnerServiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerServiceCell.swift; sourceTree = "<group>"; };
+		B713815B2FB5DD8D0002CE9D /* PartnerServiceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PartnerServiceCell.xib; sourceTree = "<group>"; };
 		B7308EB82FA3514C00066F22 /* SkeletonRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonRowView.swift; sourceTree = "<group>"; };
 		B7308EBA2FA3518A00066F22 /* Shimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shimmer.swift; sourceTree = "<group>"; };
 		B7596EEB2F9A5A18000D635C /* MarkerImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerImageCache.swift; sourceTree = "<group>"; };
@@ -525,6 +529,15 @@
 			path = DetailViews;
 			sourceTree = "<group>";
 		};
+		B71381592FB5DD5E0002CE9D /* Partner Service */ = {
+			isa = PBXGroup;
+			children = (
+				B713815A2FB5DD8D0002CE9D /* PartnerServiceCell.swift */,
+				B713815B2FB5DD8D0002CE9D /* PartnerServiceCell.xib */,
+			);
+			path = "Partner Service";
+			sourceTree = "<group>";
+		};
 		B769B0C12F9247A500A6D39C /* City Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -745,6 +758,7 @@
 				CF8C4B632C7749C900177555 /* Services */,
 				CF8C4B682C774C9B00177555 /* Maps */,
 				CFCD30E12CE8D8A800C75BAB /* More Service */,
+				B71381592FB5DD5E0002CE9D /* Partner Service */,
 				CF2D338F2C77151C009E624F /* OnBoarding */,
 			);
 			path = Cell;
@@ -2172,6 +2186,7 @@
 				E4CB7DE72DCA156900D9FF5F /* TableTagsCell.xib in Resources */,
 				CFA11C552C78BF1300F9FBC8 /* ReviewCell.xib in Resources */,
 				CFD018A02C78A0B400F736AB /* NotifyCell.xib in Resources */,
+				B713815C2FB5DD8D0002CE9D /* PartnerServiceCell.xib in Resources */,
 				CFB3621B2CD8DF8D00AA3461 /* TagCell.xib in Resources */,
 				CF1234192CCB6DC900C0573E /* SubscriptionListCell.xib in Resources */,
 				CF8907472CF4A0350015919C /* OnboardingCell.xib in Resources */,
@@ -2360,6 +2375,7 @@
 				CF8F3B792D12D14700D7CFE5 /* GuidelineDetailVC.swift in Sources */,
 				CF7086CB2E323E8A0006CA0C /* OfferChildCategory.swift in Sources */,
 				CB576D782D46CB89001C28CD /* CurrencyCell.swift in Sources */,
+				B713815D2FB5DD8D0002CE9D /* PartnerServiceCell.swift in Sources */,
 				CFDFBF782E38B57B00647B18 /* ToursimChildCategory.swift in Sources */,
 				CFD018A92C78A4CA00F736AB /* TripScheduleCell.swift in Sources */,
 				CF2D33992C7718E1009E624F /* OnboardingCell.swift in Sources */,

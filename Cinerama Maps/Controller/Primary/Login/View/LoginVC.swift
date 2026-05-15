@@ -35,17 +35,19 @@ class LoginVC: UIViewController {
             self.lbl_Language.textAlignment = .right
         }
         self.navigationController?.navigationBar.isHidden = true
-        setTermsAndConditionsText()
+//        setTermsAndConditionsText()
     }
     
     func setTermsAndConditionsText() {
-        let text = L102Language.currentAppleLanguage() == "en" 
-            ? "By registering, you will agree to our terms and conditions." 
-            : "عند تسجيلك فإنك توافق على شروطنا وأحكامنا."
+        let isEnglish = L102Language.currentAppleLanguage() == "en"
         
-        let subText = L102Language.currentAppleLanguage() == "en" 
-            ? "terms and conditions" 
-            : "شروطنا وأحكامنا"
+        let text = isEnglish
+            ? "By registering, you will agree to our terms and conditions."
+            : "بالتسجيل، فإنك توافق على شروطنا شروطنا والأحكام"
+        
+        let subText = isEnglish
+            ? "terms and conditions"
+            : "شروطنا والأحكام"
         
         let attributedString = NSMutableAttributedString(string: text)
         let range = (text as NSString).range(of: subText)
@@ -58,6 +60,12 @@ class LoginVC: UIViewController {
         btnTermsAndCondition.setAttributedTitle(attributedString, for: .normal)
         btnTermsAndCondition.titleLabel?.numberOfLines = 0
         btnTermsAndCondition.titleLabel?.textAlignment = .center
+    }
+    
+    @IBAction func btn_TermCondition(_ sender: UIButton) {
+        let vC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Policy_sVC") as! Policy_sVC
+        vC.isFrom = "TermCondition"
+        self.navigationController?.pushViewController(vC, animated: true)
     }
     
     @IBAction func btn_Login(_ sender: UIButton) {

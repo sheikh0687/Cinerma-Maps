@@ -43,6 +43,7 @@ struct Res_PartnerService : Codable {
     let image1 : String?
     let image2 : String?
     let image3 : String?
+    let cover_image : String?
     let discount_percentage : String?
     let discount_code : String?
     let start_date : String?
@@ -67,6 +68,7 @@ struct Res_PartnerService : Codable {
         case image1 = "image1"
         case image2 = "image2"
         case image3 = "image3"
+        case cover_image = "cover_image"
         case discount_percentage = "discount_percentage"
         case discount_code = "discount_code"
         case start_date = "start_date"
@@ -97,7 +99,7 @@ struct Res_PartnerService : Codable {
         start_date = try values.decodeIfPresent(String.self, forKey: .start_date)
         end_date = try values.decodeIfPresent(String.self, forKey: .end_date)
         date_time = try values.decodeIfPresent(String.self, forKey: .date_time)
+        cover_image = try values.decodeIfPresent(String.self, forKey: .cover_image)
         type = try values.decodeIfPresent(String.self, forKey: .type)
     }
-
 }

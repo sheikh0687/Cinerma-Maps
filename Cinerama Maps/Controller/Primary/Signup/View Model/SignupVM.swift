@@ -18,7 +18,7 @@ class SignupViewModel {
     var uMobile: String = ""
     var uEmail: String = ""
     var uGender: String = ""
-    var uDob: String = "2024-01-02"
+    var uDob: String = ""
     
     var image = UIImage()
     
@@ -72,8 +72,7 @@ class SignupViewModel {
 
 extension SignupViewModel {
     
-    func isValidUserInput() -> Bool
-    {
+    func isValidUserInput() -> Bool {
         if uFirstName.isEmpty {
             errorMessage = R.string.localizable.pleaseEnterTheFirstName()
             return false

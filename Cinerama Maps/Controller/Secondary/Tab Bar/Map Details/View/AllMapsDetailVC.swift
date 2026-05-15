@@ -46,6 +46,7 @@ class AllMapsDetailVC: UIViewController {
     @IBOutlet weak var map_Vw: UIView!
     @IBOutlet weak var review_Vw: UIView!
     @IBOutlet weak var images_Vw: UIView!
+    @IBOutlet weak var allViewScroll: UIScrollView!
     
     //    Mark SubView Outlet
     @IBOutlet weak var cityImagesSlider: UICollectionView!
@@ -58,6 +59,7 @@ class AllMapsDetailVC: UIViewController {
     
     //    Mark About City View Outlet's
     @IBOutlet weak var lbl_AboutCity: UILabel!
+    @IBOutlet weak var btn_ReadMore: UIButton!
     @IBOutlet weak var lbl_Currrency: UILabel!
     @IBOutlet weak var lbl_Language: UILabel!
     @IBOutlet weak var lbl_Clothing: UILabel!
@@ -67,6 +69,8 @@ class AllMapsDetailVC: UIViewController {
     @IBOutlet weak var lbl_Communication: UILabel!
     @IBOutlet weak var lbl_Weather: UILabel!
     @IBOutlet weak var lbl_PoliceCarNum: UILabel!
+    @IBOutlet weak var textPoliceCarNum: UILabel!
+    @IBOutlet weak var textPolicePhoneNum: UILabel!
     @IBOutlet weak var lbl_PolicePhoneNum: UILabel!
     
     //    Mark MapView Outlet
@@ -117,10 +121,24 @@ class AllMapsDetailVC: UIViewController {
     
     private let imgCollectionsRTLLayout = RTLCollectionViewFlowLayout()
     
+    private var progressBars: [UIView] = []
+    private var progressBarContainer: UIView!
+    private var currentSliderIndex: Int = 0
+    private var progressAnimator: UIViewPropertyAnimator?
+    private let autoScrollInterval: TimeInterval = 3.5
+    private var autoScrollTimer: Timer?
+    
+    private var dotViews: [UIView] = []
+    private var dotContainer: UIView!
+    
+    var isAboutCityExpanded: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.mapView.delegate = self
-        totalAmount = amountForCity.round()
+        
+        self.totalAmount = amountForCity.round()
         self.registerIdentifiers()
         self.configureiUUpdates()
         
@@ -130,8 +148,10 @@ class AllMapsDetailVC: UIViewController {
         
         if L102Language.currentAppleLanguage() == "en" {
             imgPageControl.semanticContentAttribute = .forceLeftToRight
+            allViewScroll.semanticContentAttribute = .forceLeftToRight
         } else {
             imgPageControl.semanticContentAttribute = .forceRightToLeft
+            allViewScroll.semanticContentAttribute = .forceRightToLeft
         }
         
         if self.viewModel.arrayOfCityImages.isEmpty {
@@ -139,21 +159,89 @@ class AllMapsDetailVC: UIViewController {
         }
         
         startSkeletons()
+        
+        // Initial state for about city
+        lbl_AboutCity.numberOfLines = 2
+        btn_ReadMore.setTitle(L102Language.currentAppleLanguage() == "ar" ? "إقرأ المزيد" : "Read More", for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        startAutoScroll()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopAutoScroll()
     }
     
+    private func setupPageControl() {
+        if #available(iOS 14.0, *) {
+            imgPageControl.preferredIndicatorImage = nil
+            
+            // Active dot — wide pill
+            let activeConfig = UIImage.SymbolConfiguration(pointSize: 8)
+            imgPageControl.setCurrentPageIndicatorImage(nil, forPage: imgPageControl.currentPage)
+            imgPageControl.currentPageIndicatorTintColor = hexStringToUIColor(hex: "#e25e16")
+            imgPageControl.pageIndicatorTintColor = UIColor.gray
+            
+            imgPageControl.preferredCurrentPageIndicatorImage = makeRoundedRect(width: 20, height: 8, color: hexStringToUIColor(hex: "#e25e16"))
+            imgPageControl.preferredIndicatorImage = makeRoundedRect(width: 8, height: 8, color: UIColor.gray)
+        } else {
+            imgPageControl.currentPageIndicatorTintColor = hexStringToUIColor(hex: "#e25e16")
+            imgPageControl.pageIndicatorTintColor = UIColor.gray
+        }
+    }
+
+    private func makeRoundedRect(width: CGFloat, height: CGFloat, color: UIColor) -> UIImage {
+        let size = CGSize(width: width, height: height)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { ctx in
+            color.setFill()
+            let rect = CGRect(origin: .zero, size: size)
+            UIBezierPath(roundedRect: rect, cornerRadius: height / 2).fill()
+        }
+    }
+    
+    // ✅ Auto scroll to next image
+    private func scrollToNextImage() {
+        guard !viewModel.arrayOfCityImages.isEmpty else { return }
+        let nextIndex = (currentSliderIndex + 1) % viewModel.arrayOfCityImages.count
+        let indexPath = IndexPath(item: nextIndex, section: 0)
+        cityImagesSlider.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            guard let self else { return }
+            self.currentSliderIndex = nextIndex
+            self.imgPageControl.currentPage = nextIndex
+        }
+    }
+    
+//    private func scrollTabsToStart() {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//            if L102Language.currentAppleLanguage() == "ar" {
+//                // ✅ Scroll to rightmost (where first tab is in RTL)
+//                let maxOffset = self.allViewScroll.contentSize.width - self.allViewScroll.bounds.width
+//                if maxOffset > 0 {
+//                    self.allViewScroll.setContentOffset(CGPoint(x: maxOffset, y: 0), animated: false)
+//                }
+//            } else {
+//                // ✅ LTR starts at 0
+//                self.allViewScroll.setContentOffset(.zero, animated: false)
+//            }
+//        }
+//    }
+    
     func setupClusterManager() {
+        
         let iconGenerator = GMUDefaultClusterIconGenerator()
         
-        guard let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm(
+        guard let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm (
             clusterDistancePoints: 50
         ) else { return }
         
-        clusterRenderer = GMUDefaultClusterRenderer(
+        clusterRenderer = GMUDefaultClusterRenderer (
             mapView: mapView,
             clusterIconGenerator: iconGenerator
         )
@@ -161,7 +249,7 @@ class AllMapsDetailVC: UIViewController {
         clusterRenderer.delegate = self
         clusterRenderer.animationDuration = 0.3
         
-        clusterManager = GMUClusterManager(
+        clusterManager = GMUClusterManager (
             map: mapView,
             algorithm: algorithm,
             renderer: clusterRenderer
@@ -171,6 +259,13 @@ class AllMapsDetailVC: UIViewController {
     }
     
     func configureiUUpdates() {
+        if viewModel.cityId.isEmpty {
+            viewModel.cityId = cityID
+        }
+        if cityID.isEmpty {
+            cityID = viewModel.cityId
+        }
+        
         self.lbl_MainHeadline.text = nameOfCity
         self.lbl_CityNAme.text = nameOfCity
         self.ratingVw.rating = Double(ratingOfCity) ?? 0.0
@@ -182,6 +277,7 @@ class AllMapsDetailVC: UIViewController {
         selectTab(.aboutMap)
         bindDataFromVm()
         bindCityImages()
+//        scrollTabsToStart() // ✅ Add this
         
         if isSubscribed == "Yes" {
             self.btn_SubscribeOt.isHidden = true
@@ -196,21 +292,21 @@ class AllMapsDetailVC: UIViewController {
         let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: L102Language.currentAppleLanguage() == "en" ? .leftRight : .rightLeft)
 
         // Text labels
-        lbl_AboutCity.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Currrency.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Language.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Clothing.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Timing.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Health.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_ElectricSocket.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Communication.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Weather.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_PoliceCarNum.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_PolicePhoneNum.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_CityNAme.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_Amount.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_RatingReview.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
-        lbl_CityAddress.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_AboutCity.showAnimatedSkeleton()
+//        lbl_Currrency.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Language.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Clothing.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Timing.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Health.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_ElectricSocket.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Communication.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Weather.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_PoliceCarNum.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_PolicePhoneNum.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_CityNAme.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_Amount.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_RatingReview.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
+//        lbl_CityAddress.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
 
         // Table & Collection views
         rating_TableVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .clouds), animation: animation)
@@ -220,26 +316,26 @@ class AllMapsDetailVC: UIViewController {
     }
 
     private func stopSkeletons() {
-        lbl_AboutCity.hideSkeleton()
-        lbl_Currrency.hideSkeleton()
-        lbl_Language.hideSkeleton()
-        lbl_Clothing.hideSkeleton()
-        lbl_Timing.hideSkeleton()
-        lbl_Health.hideSkeleton()
-        lbl_ElectricSocket.hideSkeleton()
-        lbl_Communication.hideSkeleton()
-        lbl_Weather.hideSkeleton()
-        lbl_PoliceCarNum.hideSkeleton()
-        lbl_PolicePhoneNum.hideSkeleton()
-        lbl_CityNAme.hideSkeleton()
-        lbl_Amount.hideSkeleton()
-        lbl_RatingReview.hideSkeleton()
-        lbl_CityAddress.hideSkeleton()
+//        lbl_AboutCity.hideSkeleton(reloadDataAfter: true)
+//        lbl_Currrency.hideSkeleton(reloadDataAfter: true)
+//        lbl_Language.hideSkeleton(reloadDataAfter: true)
+//        lbl_Clothing.hideSkeleton(reloadDataAfter: true)
+//        lbl_Timing.hideSkeleton(reloadDataAfter: true)
+//        lbl_Health.hideSkeleton(reloadDataAfter: true)
+//        lbl_ElectricSocket.hideSkeleton(reloadDataAfter: true)
+//        lbl_Communication.hideSkeleton(reloadDataAfter: true)
+//        lbl_Weather.hideSkeleton(reloadDataAfter: true)
+//        lbl_PoliceCarNum.hideSkeleton(reloadDataAfter: true)
+//        lbl_PolicePhoneNum.hideSkeleton(reloadDataAfter: true)
+//        lbl_CityNAme.hideSkeleton(reloadDataAfter: true)
+//        lbl_Amount.hideSkeleton(reloadDataAfter: true)
+//        lbl_RatingReview.hideSkeleton(reloadDataAfter: true)
+//        lbl_CityAddress.hideSkeleton(reloadDataAfter: true)
 
-        rating_TableVw.hideSkeleton()
-        images_CollectionVw.hideSkeleton()
-        tag_CollectionVw.hideSkeleton()
-        cityImagesSlider.hideSkeleton()
+        rating_TableVw.hideSkeleton(reloadDataAfter: true)
+        images_CollectionVw.hideSkeleton(reloadDataAfter: true)
+        tag_CollectionVw.hideSkeleton(reloadDataAfter: true)
+        cityImagesSlider.hideSkeleton(reloadDataAfter: true)
     }
     
     @IBAction func allPlaceDetailButton(_ sender: UIButton) {
@@ -248,7 +344,7 @@ class AllMapsDetailVC: UIViewController {
     }
     
     private func selectTab(_ tab: MapDetailTab) {
-        let selectedColor = hexStringToUIColor(hex: "#008200")
+        let selectedColor = hexStringToUIColor(hex: "#e25e16")
         let defaultColor = UIColor.darkGray
         
         btn_AboutMap.setTitleColor(tab == .aboutMap ? selectedColor : defaultColor, for: .normal)
@@ -265,6 +361,20 @@ class AllMapsDetailVC: UIViewController {
         map_Vw.isHidden = tab != .place
         review_Vw.isHidden = tab != .review
         videoPlayerVW.isHidden = tab != .moreFeature
+        
+        // ✅ Scroll the selected tab button into visible area
+        let selectedButton: UIButton
+        switch tab {
+        case .aboutMap:    selectedButton = btn_AboutMap
+        case .place:       selectedButton = btn_Place
+        case .review:      selectedButton = btn_Review
+        case .moreFeature: selectedButton = btn_MoreFeature
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            let buttonFrame = selectedButton.convert(selectedButton.bounds, to: self.allViewScroll)
+            self.allViewScroll.scrollRectToVisible(buttonFrame, animated: true)
+        }
     }
     
     @IBAction func btn_SubmitReview(_ sender: UIButton) {
@@ -304,6 +414,21 @@ class AllMapsDetailVC: UIViewController {
         self.locationAddress_Vw.isHidden = true
     }
     
+    @IBAction func btn_ReadMore(_ sender: UIButton) {
+        isAboutCityExpanded.toggle()
+        if isAboutCityExpanded {
+            lbl_AboutCity.numberOfLines = 0
+            btn_ReadMore.setTitle(L102Language.currentAppleLanguage() == "ar" ? "إقرأ أقل" : "Read Less", for: .normal)
+        } else {
+            lbl_AboutCity.numberOfLines = 2
+            btn_ReadMore.setTitle(L102Language.currentAppleLanguage() == "ar" ? "إقرأ المزيد" : "Read More", for: .normal)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @IBAction func btn_FavUnfav(_ sender: UIButton) {
         
     }
@@ -328,75 +453,167 @@ class AllMapsDetailVC: UIViewController {
         let updatedCamera = GMSCameraUpdate.zoom(to: newZoom)
         mapView.animate(with: updatedCamera)
     }
-        
+    
     private func updateCurrency() {
         let json = CurrencyHandler.shared.selectedCurrency ?? JSON([:])
-        let currencyCode = json["currencyCode"].stringValue
         
-        _ = L102Language.currentAppleLanguage() == "ar" ? Locale(identifier: "ar") : Locale(identifier: "en")
+        // ✅ Try both possible key names defensively
+        let currencyCode = json["currencyCode"].stringValue.isEmpty
+            ? json["currency_code"].stringValue
+            : json["currencyCode"].stringValue
         
-        self.btnCurrency.setTitle(currencyCode, for: .normal)
+        // ✅ Fallback to SAR if still empty
+        let finalCode = currencyCode.isEmpty ? "SAR" : currencyCode.uppercased()
         
-        CurrencyHandler.shared.fetchCurrentCurrencyRate(code: currencyCode) { rate in
+        print("💰 currencyCode: \(finalCode)")
+        
+        self.btnCurrency.setTitle(finalCode, for: .normal)
+        
+        CurrencyHandler.shared.fetchCurrentCurrencyRate(code: finalCode) { [weak self] rate in
+            guard let self else { return }
+            
             self.totalAmount = (self.amountForCity * rate).round()
             
-            let formattedAmount = Utility.formatAmount(self.totalAmount, currencyCode: currencyCode)
+            // ✅ Force English locale numerals — fixes ٣٩ → 39
+            let englishLocale = Locale(identifier: "en_US")
             
-            print(formattedAmount)
+            // ✅ Format amount with English numerals always
+            let formattedAmount = self.formatAmountEnglish(
+                self.totalAmount,
+                currencyCode: finalCode,
+                locale: englishLocale
+            )
             
-            let amount = "\(self.totalAmount) \(currencyCode) for \(self.monthForCity) \(R.string.localizable.month())"
+            // ✅ Force monthForCity to English numerals too
+            let englishMonth = self.toEnglishNumerals(self.monthForCity)
             
-            print(amount)
+            // ✅ Build display text — numbers always English, text follows language
+            let monthText: String
+            if L102Language.currentAppleLanguage() == "ar" {
+                // Arabic: "39 SAR - لمدة 3 أشهر"
+                monthText = "\(formattedAmount) - لمدة \(englishMonth) أشهر"
+            } else {
+                // English: "39 SAR - for 3 Months"
+                monthText = "\(formattedAmount) - for \(englishMonth) Months"
+            }
             
-            let monthText = L102Language.currentAppleLanguage() == "ar"
-                ? "\(formattedAmount) لمدة \(self.monthForCity) شهور"
-                : "\(formattedAmount) for \(self.monthForCity) Months"
-
-            print(monthText)
+            print("💰 Final monthText: \(monthText)")
             
             DispatchQueue.main.async {
                 self.lbl_Amount.text = monthText
+                self.lbl_Amount.hideSkeleton()
             }
         }
     }
     
+    private func formatAmountEnglish(_ amount: Double, currencyCode: String, locale: Locale = Locale(identifier: "en_US")) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = locale                  // ✅ Forces 0-9 digits
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        
+        let formattedNumber = formatter.string(from: NSNumber(value: amount)) ?? "\(Int(amount))"
+        return "\(formattedNumber) \(currencyCode.uppercased())"
+    }
+
+    // ✅ Converts any Arabic-Eastern numerals to English Western numerals
+    private func toEnglishNumerals(_ input: String) -> String {
+        var result = input
+        let arabicNumerals = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"]
+        let englishNumerals = ["0","1","2","3","4","5","6","7","8","9"]
+        for (arabic, english) in zip(arabicNumerals, englishNumerals) {
+            result = result.replacingOccurrences(of: arabic, with: english)
+        }
+        return result
+    }
+    
     private func updateUSDCurrency() {
-        _ = CurrencyHandler.shared.selectedCurrency ?? JSON([:])
-        let currencyCode = "usd"//json["currencyCode"].stringValue
-        CurrencyHandler.shared.fetchCurrentCurrencyRate(code: currencyCode) { rate in
+        CurrencyHandler.shared.fetchCurrentCurrencyRate(code: "usd") { [weak self] rate in
+            guard let self else { return }
             self.totalUSDAmount = (self.amountForCity * rate).round()
+            print("💵 USD Amount: \(self.totalUSDAmount)")
         }
     }
     
-    private func bindDataFromVm()
-    {
-        viewModel.requestCountryMapDetails(vC: self, tagHeight: tagHeight, collectionVw: tag_CollectionVw)
+    private func bindDataFromVm() {
         viewModel.fetchedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
                 guard let self else { return }
                 
                 let obj = self.viewModel.arrayOfDetailCityMaps
                 
-                self.lbl_AboutCity.text = L102Language.currentAppleLanguage() == "en" ? obj?.about_city : obj?.about_city_ar ?? ""
+                let lang = L102Language.currentAppleLanguage()
                 
-                self.lbl_Currrency.text = L102Language.currentAppleLanguage() == "en" ? obj?.currency : obj?.currency_ar ?? ""
+                self.lbl_MainHeadline.text = lang == "en"
+                ? obj?.name
+                : obj?.name_ar ?? ""
                 
-                self.lbl_Language.text = L102Language.currentAppleLanguage() == "en" ? obj?.offical_language : obj?.offical_language_ar ?? ""
+                self.lbl_CityNAme.text = lang == "en"
+                ? obj?.name
+                : obj?.name_ar ?? ""
                 
-                self.lbl_Clothing.text = L102Language.currentAppleLanguage() == "en" ? obj?.clothing : obj?.clothing_ar ?? ""
+                self.lbl_CityAddress.text = obj?.address ?? ""
                 
-                self.lbl_Timing.text = L102Language.currentAppleLanguage() == "en" ? obj?.best_time_to_visit : obj?.best_time_to_visit_ar ?? ""
+                if let price = Double(obj?.city_map_price ?? "0") {
+                    self.amountForCity = price
+                }
                 
-                self.lbl_Health.text = L102Language.currentAppleLanguage() == "en" ? obj?.health : obj?.health_ar ?? ""
+                if let month = obj?.city_map_month {
+                    self.monthForCity = month
+                }
                 
-                self.lbl_ElectricSocket.text = L102Language.currentAppleLanguage() == "en" ? obj?.electrical_socket : obj?.electrical_socket_ar ?? ""
+                self.updateCurrency()
                 
-                self.lbl_Communication.text = L102Language.currentAppleLanguage() == "en" ? obj?.communications : obj?.communications_ar ?? ""
+                self.lbl_AboutCity.text = lang == "en" ?
+                obj?.about_city
+                : obj?.about_city_ar ?? ""
                 
-                self.lbl_Weather.text = L102Language.currentAppleLanguage() == "en" ? obj?.the_waether : obj?.the_waether_ar ?? ""
+                print(self.lbl_AboutCity.text ?? "NA")
+                
+                self.lbl_Currrency.text = lang == "en" 
+                ? obj?.currency
+                : obj?.currency_ar ?? ""
+                
+                self.lbl_Language.text = lang == "en"
+                ? obj?.offical_language
+                : obj?.offical_language_ar ?? ""
+                
+                self.lbl_Clothing.text = lang == "en"
+                ? obj?.clothing
+                : obj?.clothing_ar ?? ""
+                
+                self.lbl_Timing.text = lang == "en"
+                ? obj?.best_time_to_visit
+                : obj?.best_time_to_visit_ar ?? ""
+                
+                self.lbl_Health.text = lang == "en"
+                ? obj?.health
+                : obj?.health_ar ?? ""
+                
+                self.lbl_ElectricSocket.text = lang == "en"
+                ? obj?.electrical_socket
+                : obj?.electrical_socket_ar ?? ""
+                
+                self.lbl_Communication.text = lang == "en"
+                ? obj?.communications
+                : obj?.communications_ar ?? ""
+                
+                self.lbl_Weather.text = lang == "en"
+                ? obj?.the_waether
+                : obj?.the_waether_ar ?? ""
                 
                 self.lbl_PoliceCarNum.text = obj?.car_police_number
+                
+                self.textPoliceCarNum.text = lang == "en"
+                ? obj?.car_police_number_name ?? ""
+                : obj?.car_police_number_name_ar ?? ""
+                
                 self.lbl_PolicePhoneNum.text = obj?.police_number
+                
+                self.textPolicePhoneNum.text = lang == "en"
+                ? obj?.police_number_name ?? ""
+                : obj?.police_number_name_ar ?? ""
 
                 let videoLink = L102Language.currentAppleLanguage() == "en"
                     ? obj?.youtube_video_link ?? ""
@@ -421,24 +638,38 @@ class AllMapsDetailVC: UIViewController {
                 self.stopSkeletons()
             }
         }
+        viewModel.requestCountryMapDetails(vC: self, tagHeight: tagHeight, collectionVw: tag_CollectionVw)
     }
         
     private func bindCityImages() {
-        
-        viewModel.fetchCityImages(vC: self)
         viewModel.fetchedImagesSuccess = { [weak self] in
             DispatchQueue.main.async {
                 guard let self else { return }
-                self.imgPageControl.numberOfPages = self.viewModel.arrayOfCityImages.isEmpty ? 1 : self.viewModel.arrayOfCityImages.count
-                if L102Language.currentAppleLanguage() == "ar" {
-                    self.imgCollectionsRTLLayout.scrollDirection = .horizontal
-                    self.cityImagesSlider.semanticContentAttribute = .forceLeftToRight
-                }
                 
+                let count = self.viewModel.arrayOfCityImages.count
+                self.imgPageControl.numberOfPages = count == 0 ? 1 : count
+                self.imgPageControl.currentPage = 0
+                self.imgPageControl.isHidden = count <= 1
+                                
                 self.stopSkeletons()
                 self.cityImagesSlider.reloadData()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.setupPageControl()
+                    
+                    // ✅ For RTL, scroll to last index so index 0 shows first visually
+                    if L102Language.currentAppleLanguage() == "ar" && count > 1 {
+                        let lastIndex = IndexPath(item: count - 1, section: 0)
+                        self.cityImagesSlider.scrollToItem(at: lastIndex, at: .centeredHorizontally, animated: false)
+                        self.currentSliderIndex = count - 1
+                        self.imgPageControl.currentPage = 0
+                    }
+                    
+                    self.startAutoScroll()
+                }
             }
         }
+        viewModel.fetchCityImages(vC: self)
     }
     
     func updateAnnotations() {
@@ -624,16 +855,6 @@ extension AllMapsDetailVC: UITableViewDataSource, UITableViewDelegate, SkeletonT
 // MARK: - UICollectionView DataSource & Delegate
 extension AllMapsDetailVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SkeletonCollectionViewDataSource {
     
-    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        if skeletonView == tag_CollectionVw { return "MapTagCells" }
-        if skeletonView == images_CollectionVw { return "MapCell" }
-        return "CityImagesCell"
-    }
-
-    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4 // Placeholder skeleton item count
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == tag_CollectionVw {
             return viewModel.arrayOfCityTag.count
@@ -721,10 +942,29 @@ extension AllMapsDetailVC: UICollectionViewDataSource, UICollectionViewDelegateF
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == cityImagesSlider {
             let width = !viewModel.arrayOfCityImages.isEmpty ? 195.0 : scrollView.frame.width
-            let pageIndex = round(scrollView.contentOffset.x / width)
-            imgPageControl.currentPage = Int(pageIndex)
+            let pageIndex = Int(round(scrollView.contentOffset.x / width))
+
+            if pageIndex != currentSliderIndex,
+               pageIndex >= 0,
+               pageIndex < viewModel.arrayOfCityImages.count,
+               scrollView.isDragging || scrollView.isDecelerating {
+
+                currentSliderIndex = pageIndex
+                imgPageControl.currentPage = pageIndex
+            }
         }
     }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if skeletonView == tag_CollectionVw { return "MapTagCells" }
+        if skeletonView == images_CollectionVw { return "MapCell" }
+        return "CityImagesCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4 // Placeholder skeleton item count
+    }
+
 }
 
 // MARK: - GMUClusterManagerDelegate & GMUClusterRendererDelegate
@@ -949,5 +1189,21 @@ extension AllMapsDetailVC {
         
         print("❌ Could not extract YouTube ID from: \(urlString)")
         return nil
+    }
+}
+
+extension AllMapsDetailVC {
+    
+    private func startAutoScroll() {
+        guard viewModel.arrayOfCityImages.count > 1 else { return }
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 3.5, repeats: true) { [weak self] _ in
+            self?.scrollToNextImage()
+        }
+    }
+    
+    private func stopAutoScroll() {
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = nil
     }
 }

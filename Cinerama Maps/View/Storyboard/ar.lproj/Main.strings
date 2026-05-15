@@ -708,7 +708,7 @@
 "zfz-GG-B8R.text" = "اللغة الرسمية";
 
 /* Class = "UIButton"; normalTitle = "By registering, you will agree to our terms and conditions."; ObjectID = "31s-6U-Q8d"; */
-"31s-6U-Q8d.normalTitle" = "من خلال التسجيل، فإنك توافق على الشروط والأحكام الخاصة بنا.";
+"31s-6U-Q8d.normalTitle" = "من خلال التسجيل، فإنك توافق على الشروط والأحكام الخاصة بنا";
 
 /* Class = "UIButton"; normalTitle = "Continue with google"; ObjectID = "WJ1-Id-cnr"; */
 "WJ1-Id-cnr.normalTitle" = "المتابعة باستخدام جوجل";

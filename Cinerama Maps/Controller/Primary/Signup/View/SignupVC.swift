@@ -27,20 +27,17 @@ class SignupVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setDefaultCountry()
+        
         self.lbl_NavigationTitle.text = signupViewModel.textOnValue()
         self.txt_Email.text = signupViewModel.uEmail
-//        txt_MobileNum.setContentHuggingPriority(.defaultLow, for: .horizontal)
-//        txt_MobileNum.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
         if isFrom == "Profile" {
             fetchUserDetails()
             setupBindings()
-//            self.btnCountryPickerOt.isHidden = true
-//            self.btnCountryPickerOt.isEnabled = false
             self.txt_Email.isEnabled = false
         } else {
-//            self.btnCountryPickerOt.isHidden = true
-//            self.btnCountryPickerOt.isEnabled = false
             self.txt_Email.isEnabled = false
             setupBindings()
         }
@@ -152,7 +149,6 @@ class SignupVC: UIViewController {
                 self.updateCountryButton(title: self.makeTitle(for: country))
             }
             
-//            self.btnCountryPickerOt.setTitle(self.profileViewModel.phoneKey, for: .normal)
             self.btn_SelectGenderOt.setTitle(self.profileViewModel.uGender, for: .normal)
             self.btn_DOBOt.setTitle(self.profileViewModel.uDob, for: .normal)
             

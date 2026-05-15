@@ -109,16 +109,17 @@ extension FavVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 180
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let obj = self.viewModel.arrayOfFavCityMap[indexPath.row]
-        if obj.subscription_status == "Yes" {
-            viewModel.navigateToSubscriptionViewController(from: self.navigationController, cityId: obj.id ?? "")
-        } else {
-            viewModel.navigateToCityMapsDetailViewController(from: self.navigationController, cityId: obj.id ?? "", isSubscribed: obj.subscription_status ?? "",cityName: obj.name ?? "", cityAmount: obj.city_map_price ?? "", cityRating: obj.avg_rating ?? "", cityAddress: obj.address ?? "", cityMonth: obj.city_map_month ?? "", cityLat: obj.lat ?? "", cityLon: obj.lon ?? "", countryiD: obj.country_id ?? "", cityImg: obj.image ?? "")
-        }
+        viewModel.navigateToSubscriptionViewController(from: self.navigationController, cityId: obj.id ?? "")
+
+//        if obj.subscription_status == "Yes" {
+//        } else {
+//            viewModel.navigateToCityMapsDetailViewController(from: self.navigationController, cityId: obj.id ?? "", isSubscribed: obj.subscription_status ?? "",cityName: obj.name ?? "", cityAmount: obj.city_map_price ?? "", cityRating: obj.avg_rating ?? "", cityAddress: obj.address ?? "", cityMonth: obj.city_map_month ?? "", cityLat: obj.lat ?? "", cityLon: obj.lon ?? "", countryiD: obj.country_id ?? "", cityImg: obj.image ?? "")
+//        }
     }
 }
 

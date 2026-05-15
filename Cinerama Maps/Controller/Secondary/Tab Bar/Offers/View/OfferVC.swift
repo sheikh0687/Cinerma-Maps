@@ -51,7 +51,9 @@ class OfferVC: UIViewController {
         self.viewModel.setupSearchBar(searchBar: search_Bar)
         self.serviceTableVw.register(UINib(nibName: "MoreServiceCell", bundle: nil), forCellReuseIdentifier: "MoreServiceCell")
         self.serviceTableVw.register(UINib(nibName: "DiscountCell", bundle: nil), forCellReuseIdentifier: "DiscountCell")
-        
+        self.serviceTableVw.register(UINib(nibName: "PartnerServiceCell", bundle: nil), forCellReuseIdentifier: "PartnerServiceCell")
+
+
         self.mainCatCollectionVw.register(UINib(nibName: "CategoryCell", bundle: nil),forCellWithReuseIdentifier: "CategoryCell")
         self.subCatCollectionVw.register(UINib(nibName: "CategoryCell", bundle: nil),forCellWithReuseIdentifier: "CategoryCell")
         self.childCatCollectionVw.register(UINib(nibName: "CategoryCell", bundle: nil),forCellWithReuseIdentifier: "CategoryCell")
@@ -699,7 +701,6 @@ extension OfferVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayou
                 selectedSubIndex = nil
                 selectedChildIndex = nil
                 
-                
                 let obj = self.viewModel.arrayOfMainOfferCat[indexPath.row]
                 self.subCatCollectionVw.isHidden = false
                 self.childCatCollectionVw.isHidden = true
@@ -782,24 +783,23 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
             return cell
             
         } else if dependonUi == "Partner" {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MoreServiceCell", for: indexPath) as! MoreServiceCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PartnerServiceCell", for: indexPath) as! PartnerServiceCell
             let obj = self.partnerViewModel.arrayPartnerService[indexPath.row]
+                        
+            cell.lbl_CityAddress.text = obj.address ?? ""
             
-            cell.view_Company.isHidden = false
-            cell.view_Cities.isHidden = true
+            cell.lbl_CityTitle.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
             
-            cell.lbl_CompanyName.text = obj.address ?? ""
+//            let html = L102Language.currentAppleLanguage() == "en" ? obj.description ?? "" : obj.description_ar ?? ""
+//            
+//            if let attributedText = html.htmlAttributedString3 {
+//                cell.lbl_Description.attributedText = attributedText
+//            }
             
-            cell.lbl_Title.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
-            
-            let html = L102Language.currentAppleLanguage() == "en" ? obj.description ?? "" : obj.description_ar ?? ""
-            
-            if let attributedText = html.htmlAttributedString3 {
-                cell.lbl_Description.attributedText = attributedText
-            }
-            
-            if Router.BASE_IMAGE_URL != obj.image1 {
-                Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.company_Img)
+            if Router.BASE_IMAGE_URL != obj.cover_image {
+                Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.city_Img)
+            } else {
+                cell.city_Img.image = R.image.backPlaceholder()
             }
             
             return cell
@@ -864,14 +864,11 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
         if dependonUi == "Tourism" {
             return 280
         } else if dependonUi == "Partner" {
-            return 280
+            return 140
         } else {
             return 280
         }
     }
-    
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//    }
 }
 
 // MARK: SEARCH DELEGATE

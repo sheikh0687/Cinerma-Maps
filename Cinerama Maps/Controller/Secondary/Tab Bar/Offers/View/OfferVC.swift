@@ -797,7 +797,7 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
 //            }
             
             if Router.BASE_IMAGE_URL != obj.cover_image {
-                Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.city_Img)
+                Utility.setImageWithSDWebImage(obj.cover_image ?? "", cell.city_Img)
             } else {
                 cell.city_Img.image = R.image.backPlaceholder()
             }

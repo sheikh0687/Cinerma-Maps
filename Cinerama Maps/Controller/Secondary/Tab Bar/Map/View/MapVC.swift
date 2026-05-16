@@ -145,7 +145,7 @@ extension MapVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MapCell", for: indexPath) as! MapCell
         let numberOfItemsInRow = 2 // You can adjust this based on your layout
         let numberOfRows = (self.countryMapVM.arrayCountryMaps.count + numberOfItemsInRow - 1) / numberOfItemsInRow
-        let cellHeight: CGFloat = 160
+        let cellHeight: CGFloat = 140
         self.collection_Height.constant = CGFloat(numberOfRows) * cellHeight
                 
         let obj = self.countryMapVM.arrayCountryMaps[indexPath.row]
@@ -173,7 +173,7 @@ extension MapVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionWd = collectionView.frame.width
-        return CGSize(width: collectionWd / 2, height: 160)
+        return CGSize(width: collectionWd / 2, height: 140)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -234,7 +234,7 @@ extension MapVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 180
+        return 200
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

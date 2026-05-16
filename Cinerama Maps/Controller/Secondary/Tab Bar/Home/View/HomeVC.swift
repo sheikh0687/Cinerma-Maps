@@ -231,6 +231,7 @@ extension HomeVC {
         
         guidelinesTipVM.fetchGuidelineTips(vC: self)
         guidelinesTipVM.fethcedSuccessfully = { [weak self] in
+            
             DispatchQueue.main.async {
                 guard let self else { return }
                 
@@ -421,6 +422,7 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 }
 
 extension HomeVC: SkeletonCollectionViewDataSource {
+    
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         if skeletonView == advertisementCollection {
             return "ServiceCell"

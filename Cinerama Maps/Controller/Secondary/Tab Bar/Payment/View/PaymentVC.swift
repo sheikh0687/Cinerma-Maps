@@ -129,6 +129,7 @@ class PaymentVC: UIViewController {
         let lang = L102Language.currentAppleLanguage()
         
         let url = Router.paymentWithTapPaymentGateway.url() + "?order_id=\(orderId)&first_name=\(firstName)&last_name=\(lastName)&email=\(email)&amount=\(viewModel.offerApplyStatus == true ? discount_Amount : totalPaidAmount)&currency=\(currency)&lang=\(lang)&usd_amount=\(totalPaidAmountInUSD)"
+        
         print("Payment with tap gateway URL: \(url)")
         
         viewModel.redirectToPayment?(url)

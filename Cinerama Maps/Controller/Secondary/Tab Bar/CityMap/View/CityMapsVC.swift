@@ -44,17 +44,18 @@ class CityMapsVC: UIViewController {
     }
     
     func fetchCityMapDetails() {
-        city_MapTableVw.showAnimatedSkeleton()
+        city_MapTableVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         viewModel.requestCityMapDetails(vC: self)
         viewModel.requestSuccessfull = { [weak self] in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.city_MapTableVw.stopSkeletonAnimation()
-                self.city_MapTableVw.hideSkeleton()
-                
-                self.city_MapTableVw.reloadData()
+                self.city_MapTableVw.hideSkeleton(reloadDataAfter: true)
             }
         }
     }

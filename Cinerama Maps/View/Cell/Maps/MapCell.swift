@@ -16,11 +16,34 @@ class MapCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        // MARK: Enable Skeleton
+        isSkeletonable = true
+        contentView.isSkeletonable = true
+        
+        // Mark container view and its subviews as skeletonable
+        if let containerView = contentView.subviews.first {
+            containerView.isSkeletonable = true
+            containerView.subviews.forEach { $0.isSkeletonable = true }
+        }
+        
         CountryImage.isSkeletonable = true
         countryMap.isSkeletonable = true
         lbl_CountryName.isSkeletonable = true
+        
+        setupSkeletonUI()
+    }
+    
+    private func setupSkeletonUI() {
+        // Image rounded skeleton
+        CountryImage.skeletonCornerRadius = 10
+        
+        // Mini map icon skeleton
+        countryMap.skeletonCornerRadius = 4
+        
+        // Country Name → single line
         lbl_CountryName.linesCornerRadius = 4
-        contentView.isSkeletonable = true
+        lbl_CountryName.skeletonTextLineHeight = .relativeToFont
+        lbl_CountryName.lastLineFillPercent = 80
     }
 }

@@ -14,10 +14,13 @@ class ServiceCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        isSkeletonable = true
-        service_Img.isSkeletonable = true
-        contentView.isSkeletonable = true
+        
+//        // MARK: Enable Skeleton
+//        isSkeletonable = true
+//        contentView.isSkeletonable = true
+//        
+//        service_Img.isSkeletonable = true
+//        service_Img.skeletonCornerRadius = 10
     }
 
 }

@@ -26,6 +26,12 @@ class PartnerServiceCell: UITableViewCell {
         isSkeletonable = true
         contentView.isSkeletonable = true
         
+        // Mark container view and all its children as skeletonable
+        if let containerView = contentView.subviews.first {
+            containerView.isSkeletonable = true
+            containerView.subviews.forEach { $0.isSkeletonable = true }
+        }
+        
         city_Img.isSkeletonable = true
         lbl_CityTitle.isSkeletonable = true
         lbl_CityAddress.isSkeletonable = true

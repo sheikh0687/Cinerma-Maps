@@ -844,13 +844,13 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
                 print(vC.titleVal)
                 vC.descriptionVal = obj.description ?? ""
                 vC.placeImg = obj.image ?? ""
-                vC.offerCode = "\(obj.discount_code ?? "") \(obj.discount_percentage ?? "")% Off"
+                vC.offerCode = "\(obj.discount_percentage ?? "")% \(R.string.localizable.discount())"
                 vC.isFrom = "Offers"
             } else {
                 vC.titleVal = obj.company_name_ar ?? ""
                 vC.descriptionVal = obj.description_ar ?? ""
                 vC.placeImg = obj.image ?? ""
-                vC.offerCode = "\(obj.discount_code ?? "") \(obj.discount_percentage ?? "")% Off"
+                vC.offerCode = "\(obj.discount_percentage ?? "")% \(R.string.localizable.discount())"
                 vC.isFrom = "Offers"
             }
             navigationController?.pushViewController(vC, animated: true)
@@ -946,7 +946,7 @@ extension OfferVC: SkeletonTableViewDataSource {
             return 140   // PartnerServiceCell skeleton height
         }
         else {
-            return 260   // DiscountCell skeleton height
+            return 300   // DiscountCell skeleton height
         }
     }
     

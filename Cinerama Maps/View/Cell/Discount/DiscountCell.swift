@@ -14,6 +14,8 @@ class DiscountCell: UITableViewCell {
     @IBOutlet weak var offer_CodeAndPercent: UILabel!
     @IBOutlet weak var lbl_OfferDescription: UILabel!
     @IBOutlet weak var textDiscount: UILabel!
+    @IBOutlet weak var stackVw: UIStackView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,15 +26,21 @@ class DiscountCell: UITableViewCell {
         offer_Img.clipsToBounds = true
         
         // MARK: Enable Skeleton for full hierarchy
-        isSkeletonable = true
-        contentView.isSkeletonable = true
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         
-        offer_Img.isSkeletonable = true
-        offer_CodeAndPercent.isSkeletonable = true
-        lbl_OfferDescription.isSkeletonable = true
-        textDiscount.isSkeletonable = true
+        // Recursively enable skeleton for all nested subviews
+        self.enableSkeleton(self.contentView)
         
         setupSkeletonUI()
+    }
+    
+    private func enableSkeleton(_ view: UIView) {
+        view.isSkeletonable = true
+        if let stack = view as? UIStackView {
+            stack.arrangedSubviews.forEach { enableSkeleton($0) }
+        }
+        view.subviews.forEach { enableSkeleton($0) }
     }
     
     private func setupSkeletonUI() {
@@ -55,6 +63,9 @@ class DiscountCell: UITableViewCell {
         textDiscount.linesCornerRadius = 6
         textDiscount.skeletonTextLineHeight = .relativeToFont
         textDiscount.lastLineFillPercent = 40
+        
+        // 📦 StackView skeleton matching its rounded corners
+        stackVw.skeletonCornerRadius = 8
     }
     
     override func layoutSubviews() {

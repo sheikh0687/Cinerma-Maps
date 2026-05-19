@@ -358,6 +358,7 @@ class SubscriptionMapViewModel: ObservableObject {
             let placesDetailFromDB = try? context.fetch(fetchRequest)
             if placesDetailFromDB?.isEmpty ?? true {
                 DispatchQueue.main.async { [weak self] in
+                    self?.isLoading = false // ⭐️ Set loading false even if no data
                     self?.noDataInDB?()
                 }
                 return
@@ -451,7 +452,7 @@ class SubscriptionMapViewModel: ObservableObject {
         
         print(param)
         
-        Api.shared.requestCityPlaceDt(vC, param, progress: false) { responseData in
+        Api.shared.requestCityPlaceDt(vC, param, progress: false, success: { responseData in
             print(responseData)
             DispatchQueue.global(qos: .utility).async {
                 self.cityName = L102Language.currentAppleLanguage() == "en" ? responseData.name ?? "" : responseData.name_ar ?? ""
@@ -468,10 +469,15 @@ class SubscriptionMapViewModel: ObservableObject {
                     self.arrayOfPlaceDetails = responseData.place_details ?? []
                     self.arrayOfPlaceDetails1 = responseData.place_details ?? []
                     self.prefetchIcons()
+                    self.isLoading = false // ⭐️ Set loading false after API fetch
                     self.fetchedFromDbSuccessfully?()
                 }
             }
-        }
+        }, failure: { [weak self] in
+            DispatchQueue.main.async {
+                self?.isLoading = false // ⭐️ Set loading false on API failure
+            }
+        })
     }
     
     func requestToFavUnfavPlace(placeId:String, status: String)

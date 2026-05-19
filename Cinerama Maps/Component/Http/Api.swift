@@ -908,7 +908,7 @@ class Api: NSObject {
         }
     }
     
-    func requestCityPlaceDt(_ vC: UIViewController?,_ param: [String : AnyObject],progress: Bool = true,_ success: @escaping(_ responseData: Res_CityPlaceDetails) -> Void) {
+    func requestCityPlaceDt(_ vC: UIViewController?,_ param: [String : AnyObject],progress: Bool = true, success: @escaping(_ responseData: Res_CityPlaceDetails) -> Void, failure: (() -> Void)? = nil) {
         if progress{vC?.showProgressBar()}
         Service.post(url: Router.get_country_map_city_places_new.url(), params: param, method: .get, vc: vC, successBlock: { (response) in
             do {
@@ -917,19 +917,23 @@ class Api: NSObject {
                 if root.status == "1" {
                     if let result = root.result {
                         success(result)
-                        vC?.hideProgressBar()
+                    } else {
+                        failure?()
                     }
                 } else {
                     print("No Data Available to show!!")
-                    vC?.hideProgressBar()
+                    failure?()
                 }
+                vC?.hideProgressBar()
             } catch {
                 print(error)
                 vC?.hideProgressBar()
+                failure?()
             }
         }) { (error: Error) in
             vC?.alert(alertmessage: error.localizedDescription)
             vC?.hideProgressBar()
+            failure?()
         }
     }
     

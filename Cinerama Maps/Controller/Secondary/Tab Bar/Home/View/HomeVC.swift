@@ -51,6 +51,10 @@ class HomeVC: UIViewController {
     private var autoScrollTimer: Timer?
     private var currentAdvertisementPage: Int = 0
     
+    private var isArabic: Bool {
+        L102Language.currentAppleLanguage() == "ar"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         registerResuableCellIdentifier()
@@ -62,15 +66,15 @@ class HomeVC: UIViewController {
         if L102Language.currentAppleLanguage() == "ar" {
             mapRTLLayout.scrollDirection = .horizontal
             map_CollectionVw.collectionViewLayout = mapRTLLayout
-            map_CollectionVw.semanticContentAttribute = .forceLeftToRight
+            map_CollectionVw.semanticContentAttribute = .forceRightToLeft
             
             guidelineRTLLayout.scrollDirection = .horizontal
             guideline_CollectionVw.collectionViewLayout = guidelineRTLLayout
-            guideline_CollectionVw.semanticContentAttribute = .forceLeftToRight
+            guideline_CollectionVw.semanticContentAttribute = .forceRightToLeft
             
             advertisementRTLLayout.scrollDirection = .horizontal
             advertisementCollection.collectionViewLayout = advertisementRTLLayout
-            advertisementCollection.semanticContentAttribute = .forceLeftToRight
+            advertisementCollection.semanticContentAttribute = .forceRightToLeft
         }
         
         self.btnCurrency.setTitle(CurrencyHandler.shared.selectedCurrency?["currencyCode"].stringValue, for: .normal)
@@ -155,13 +159,30 @@ class HomeVC: UIViewController {
     }
     
     private func scrollToNextAdvertisement() {
-        guard advertisementVM.arrayOfBanners.count > 1 else { return }
-        
         let totalPages = advertisementVM.arrayOfBanners.count
+        guard totalPages > 1 else { return }
+
+        // ⭐ MOST IMPORTANT FIX — prevent scroll while animating
+        guard !advertisementCollection.isDragging,
+              !advertisementCollection.isDecelerating,
+              !advertisementCollection.isTracking else {
+            print("⛔️ Skip — collectionView busy")
+            return
+        }
+
         currentAdvertisementPage = (currentAdvertisementPage + 1) % totalPages
-        
+
+        print("✅ scrolling to page: \(currentAdvertisementPage) / total: \(totalPages)")
+
         let indexPath = IndexPath(item: currentAdvertisementPage, section: 0)
-        advertisementCollection.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+
+        // ⭐ smooth RTL safe scroll
+        advertisementCollection.scrollToItem (
+            at: indexPath,
+            at: .centeredHorizontally,
+            animated: true
+        )
+
         advertisementPage.currentPage = currentAdvertisementPage
     }
     
@@ -263,8 +284,12 @@ extension HomeVC {
     }
     
     private func requestCountryMap() {
-        map_CollectionVw.showAnimatedSkeleton()
-        
+        map_CollectionVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
+
         countryMapVM.fetchCountryMaps(vC: self)
         countryMapVM.fethcedSuccessfully = { [weak self] in
             DispatchQueue.main.async {
@@ -277,15 +302,17 @@ extension HomeVC {
                 }
                 
                 self.map_CollectionVw.stopSkeletonAnimation()
-                self.map_CollectionVw.hideSkeleton(reloadDataAfter: false)
-                
-                self.map_CollectionVw.reloadData()
+                self.map_CollectionVw.hideSkeleton(reloadDataAfter: true)
             }
         }
     }
     
     private func requestGuidelineTip() {
-        guideline_CollectionVw.showAnimatedSkeleton()
+        guideline_CollectionVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         guidelinesTipVM.fetchGuidelineTips(vC: self)
         guidelinesTipVM.fethcedSuccessfully = { [weak self] in
@@ -300,15 +327,17 @@ extension HomeVC {
                 }
                 
                 self.guideline_CollectionVw.stopSkeletonAnimation()
-                self.guideline_CollectionVw.hideSkeleton(reloadDataAfter: false)
-                
-                self.guideline_CollectionVw.reloadData()
+                self.guideline_CollectionVw.hideSkeleton(reloadDataAfter: true)
             }
         }
     }
     
     private func requestBanners() {
-        advertisementCollection.showAnimatedSkeleton()
+//        advertisementCollection.showAnimatedGradientSkeleton (
+//            usingGradient: .init(baseColor: .systemGray5),
+//            animation: nil,
+//            transition: .crossDissolve(0.25)
+//        )
         
         advertisementVM.requestToFetchAdvertisement(vC: self)
         advertisementVM.fetchedSuccessfully = { [weak self] in
@@ -322,8 +351,8 @@ extension HomeVC {
                     self.advertisementCollection.semanticContentAttribute = .forceLeftToRight
                 }
                 
-                self.advertisementCollection.stopSkeletonAnimation()
-                self.advertisementCollection.hideSkeleton(reloadDataAfter: false)
+//                self.advertisementCollection.stopSkeletonAnimation()
+//                self.advertisementCollection.hideSkeleton(reloadDataAfter: true)
                 
                 if self.advertisementVM.arrayOfBanners.count > 1 {
                     self.startAutoScrolling()
@@ -474,18 +503,18 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         if scrollView == service_CollectionVw {
             let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
             pageControl.currentPage = Int(pageIndex)
+            
         } else if scrollView == advertisementCollection {
             let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
             let page = Int(pageIndex)
+            
             advertisementPage.currentPage = page
             currentAdvertisementPage = page  // ✅ Keep in sync with manual swipe
-        } else {
-            // Ignore other collection views
         }
     }
 }
 
-extension HomeVC: SkeletonCollectionViewDataSource {
+extension HomeVC: SkeletonCollectionViewDataSource, SkeletonCollectionViewDelegate {
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         if skeletonView == advertisementCollection {
@@ -501,12 +530,24 @@ extension HomeVC: SkeletonCollectionViewDataSource {
         return 6
     }
     
-    // ✅ ADD THIS — tells skeleton NOT to override your custom layout
-    func collectionSkeletonView(_ skeletonView: UICollectionView, skeletonCellForItemAt indexPath: IndexPath) -> UICollectionViewCell? {
-        return nil // let the normal cellForItemAt handle it
+    func collectionSkeletonView(_ skeletonView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if skeletonView == advertisementCollection {
+            let width = skeletonView.frame.width
+            let height = skeletonView.frame.height
+            return CGSize(width: width, height: height)
+        } else if skeletonView == map_CollectionVw {
+            return CGSize(width: 190, height: 140)
+        } else {
+            return CGSize(width: 190, height: skeletonView.frame.height)
+        }
     }
     
-    // ✅ ADD THIS — prevents skeleton from resetting layout after hide
+    // ✅ Tells skeleton NOT to override your custom layout
+    func collectionSkeletonView(_ skeletonView: UICollectionView, skeletonCellForItemAt indexPath: IndexPath) -> UICollectionViewCell? {
+        return nil 
+    }
+    
+    // ✅ Prevents skeleton from resetting layout after hide
     func collectionSkeletonView(_ skeletonView: UICollectionView, prepareCellForSkeleton cell: UICollectionViewCell, at indexPath: IndexPath) {
         // Do nothing — prevent skeleton from mutating cell layout
     }

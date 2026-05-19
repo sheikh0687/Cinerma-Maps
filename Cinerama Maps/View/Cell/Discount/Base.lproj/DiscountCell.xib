@@ -122,6 +122,7 @@
                 <outlet property="lbl_OfferDescription" destination="MEw-m6-IxY" id="2uA-tP-ZBV"/>
                 <outlet property="offer_CodeAndPercent" destination="JG2-M3-rx0" id="CeA-wo-I4H"/>
                 <outlet property="offer_Img" destination="uCK-Jm-oRM" id="Y8j-wo-6dl"/>
+                <outlet property="stackVw" destination="GZO-V3-Fqa" id="hVD-8d-weI"/>
                 <outlet property="textDiscount" destination="wbq-UD-CnO" id="NIZ-1s-OlD"/>
             </connections>
             <point key="canvasLocation" x="173.2824427480916" y="13.732394366197184"/>

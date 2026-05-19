@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        GuidelinesVC.preWarm()
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
         notificationCenter.delegate = self

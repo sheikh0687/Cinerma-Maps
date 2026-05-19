@@ -505,10 +505,24 @@ struct DetailView: View {
             }
             .onAppear {
                 Task {
+                    let currentDetail = viewModel.openType == .direct
+                        ? (viewModel.arrayOfPlaceDetails.indices.contains(index) ? viewModel.arrayOfPlaceDetails[index] : nil)
+                        : (viewModel.newFilter.indices.contains(index) ? viewModel.newFilter[index] : nil)
+                    
+                    guard let detail = currentDetail else {
+                        await MainActor.run {
+                            isDescriptionLoading = false
+                        }
+                        return
+                    }
+                    
                     let descriptionText = language == "ar"
-                        ? viewModel.arrayOfPlaceDetails[index].description_ar ?? ""
-                        : viewModel.arrayOfPlaceDetails[index].description ?? ""
+                        ? detail.description_ar ?? ""
+                        : detail.description ?? ""
+                    
+                    // ⭐️ Convert HTML once
                     let converted = descriptionText.htmlAttributedString3
+                    
                     await MainActor.run {
                         attributedText = converted ?? NSAttributedString(string: "")
                         isDescriptionLoading = false

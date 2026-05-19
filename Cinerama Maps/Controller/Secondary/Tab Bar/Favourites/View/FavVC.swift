@@ -51,16 +51,18 @@ class FavVC: UIViewController {
     }
     
     func setUpBindViewModel() {
-        fav_TableVw.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
+        fav_TableVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         self.viewModel.fetchFavCityMap(vC: self, tableView: fav_TableVw)
         self.viewModel.fetchedSuccessfull = { [weak self] in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.fav_TableVw.stopSkeletonAnimation()
                 self.fav_TableVw.hideSkeleton(reloadDataAfter: true)
-                self.fav_TableVw.reloadData()
             }
         }
     }
@@ -147,7 +149,11 @@ extension FavVC: SkeletonTableViewDataSource {
         return "CityMapCell"
     }
     
+    func collectionSkeletonView(_ skeletonView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 180
+    }
+    
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4 // ✅ Show 4 shimmer placeholders while loading
+        return 6 // ✅ Show 6 shimmer placeholders while loading
     }
 }

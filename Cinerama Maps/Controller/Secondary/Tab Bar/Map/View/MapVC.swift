@@ -78,33 +78,31 @@ class MapVC: UIViewController {
     }
     
     private func requestCountryMap() {
-        countryMapVM.countryLoading = true
         map_Collection.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
         
         countryMapVM.fetchCountryMaps(vC: self)
         countryMapVM.fethcedSuccessfully = { [weak self] in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                self.countryMapVM.countryLoading = false
-                
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.map_Collection.stopSkeletonAnimation()
                 self.map_Collection.hideSkeleton(reloadDataAfter: true)
-                self.map_Collection.reloadData()
             }
         }
     }
     
     func requestCityMaps() {
-        cityMap_Table.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray5))
+        cityMap_Table.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         cityMapVM.fetchPurchaseCityMap(vC: self, tableView: cityMap_Table, tableHeight: tableVw_Height)
         cityMapVM.requestSuccessfull = { [weak self] in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.cityMap_Table.stopSkeletonAnimation()
                 self.cityMap_Table.hideSkeleton(reloadDataAfter: true)
-                self.cityMap_Table.reloadData()
             }
         }
     }
@@ -147,7 +145,7 @@ extension MapVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 
         let numberOfRows = (self.countryMapVM.arrayCountryMaps.count + numberOfItemsInRow - 1) / numberOfItemsInRow
         let cellHeight: CGFloat = 140
         self.collection_Height.constant = CGFloat(numberOfRows) * cellHeight
-                
+        
         let obj = self.countryMapVM.arrayCountryMaps[indexPath.row]
         
         if L102Language.currentAppleLanguage() == "en" {
@@ -190,6 +188,7 @@ extension MapVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 
             countryName: countryName
         )
     }
+    
 }
 
 extension MapVC: UITableViewDataSource, UITableViewDelegate {
@@ -271,7 +270,7 @@ extension MapVC: UISearchBarDelegate {
     }
 }
 
-extension MapVC: SkeletonCollectionViewDataSource {
+extension MapVC: SkeletonCollectionViewDataSource, SkeletonCollectionViewDelegate {
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return "MapCell"
     }
@@ -279,18 +278,28 @@ extension MapVC: SkeletonCollectionViewDataSource {
     func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 6 // ✅ Show 6 shimmer placeholders while loading
     }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let collectionWd = skeletonView.frame.width
+        return CGSize(width: collectionWd / 2, height: 140)
+    }
 }
 
 extension MapVC: SkeletonTableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return cityMapVM.arrayOfPurchasedCityMap.count
-//    }
+    //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //        return cityMapVM.arrayOfPurchasedCityMap.count
+    //    }
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return "CityMapCell"
     }
     
+    func collectionSkeletonView(_ skeletonView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
+    
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4 // ✅ Show 4 shimmer placeholders while loading
     }
+    
 }

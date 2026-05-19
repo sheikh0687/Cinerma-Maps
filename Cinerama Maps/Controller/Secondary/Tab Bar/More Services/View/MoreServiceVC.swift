@@ -104,7 +104,6 @@ extension MoreServiceVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MoreServiceCell", for: indexPath) as! MoreServiceCell
         if dependonUi == "Company" {
             let obj = self.arrayOfServices[indexPath.row]
-            cell.view_Cities.isHidden = true
             cell.view_Company.isHidden = false
             cell.lbl_Title.text = obj.company_name ?? ""
             cell.lbl_CompanyName.text = obj.address ?? ""
@@ -117,23 +116,6 @@ extension MoreServiceVC: UITableViewDataSource, UITableViewDelegate {
             
             if Router.BASE_IMAGE_URL != obj.image1 {
                 Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.company_Img)
-            }
-            
-        } else {
-            let obj = self.arrayOfServices[indexPath.row]
-            cell.view_Company.isHidden = true
-            cell.view_Cities.isHidden = false
-            cell.lbl_CityName.text = obj.address ?? ""
-            cell.lbl_CityTitle.text = obj.company_name ?? ""
-            
-            let html = obj.description ?? ""
-            
-            if let attributedText = html.htmlAttributedString3 {
-                cell.lbl_CityDescription.attributedText = attributedText
-            }
-            
-            if Router.BASE_IMAGE_URL != obj.image1 {
-                Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.city_Img)
             }
             
         }

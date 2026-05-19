@@ -52,8 +52,8 @@ class OfferVC: UIViewController {
         self.serviceTableVw.register(UINib(nibName: "MoreServiceCell", bundle: nil), forCellReuseIdentifier: "MoreServiceCell")
         self.serviceTableVw.register(UINib(nibName: "DiscountCell", bundle: nil), forCellReuseIdentifier: "DiscountCell")
         self.serviceTableVw.register(UINib(nibName: "PartnerServiceCell", bundle: nil), forCellReuseIdentifier: "PartnerServiceCell")
-
-
+        
+        
         self.mainCatCollectionVw.register(UINib(nibName: "CategoryCell", bundle: nil),forCellWithReuseIdentifier: "CategoryCell")
         self.subCatCollectionVw.register(UINib(nibName: "CategoryCell", bundle: nil),forCellWithReuseIdentifier: "CategoryCell")
         self.childCatCollectionVw.register(UINib(nibName: "CategoryCell", bundle: nil),forCellWithReuseIdentifier: "CategoryCell")
@@ -224,17 +224,18 @@ extension OfferVC {
     }
     
     private func setToursimService(strCatiD: String, subCatiD: String, strChildiD: String) {
-        serviceTableVw.showAnimatedSkeleton()
+        serviceTableVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         tourismViewModel.fetchToursimServiceDetails(vC: self, catiD: strCatiD, subCatiD: subCatiD, childiD: strChildiD, tableVw: serviceTableVw)
         tourismViewModel.cloTourismServiceSuccessfully = { [weak self] in
             guard let self else { return }
-            DispatchQueue.main.async {
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.serviceTableVw.stopSkeletonAnimation()
-                self.serviceTableVw.hideSkeleton()
-
-                self.serviceTableVw.reloadData()
+                self.serviceTableVw.hideSkeleton(reloadDataAfter: true)
             }
         }
     }
@@ -289,17 +290,18 @@ extension OfferVC {
     }
     
     private func setPartnerService(strCatiD: String, subCatiD: String, strChildiD: String) {
-        serviceTableVw.showAnimatedSkeleton()
+        serviceTableVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         partnerViewModel.fetchPartnerServiceDetails(vC: self, catiD: strCatiD, subCatiD: subCatiD, childiD: strChildiD, tableVw: serviceTableVw)
         partnerViewModel.fetchedPartnerServiceSuccessfully = { [weak self] in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.serviceTableVw.stopSkeletonAnimation()
-                self.serviceTableVw.hideSkeleton()
-                
-                self.serviceTableVw.reloadData()
+                self.serviceTableVw.hideSkeleton(reloadDataAfter: true)
             }
         }
     }
@@ -353,17 +355,18 @@ extension OfferVC {
     }
     
     private func setUpComanyOffers(strCatiD: String, strSubCatiD: String, strChildiD: String) {
-        serviceTableVw.showAnimatedSkeleton()
+        serviceTableVw.showAnimatedGradientSkeleton (
+            usingGradient: .init(baseColor: .systemGray5),
+            animation: nil,
+            transition: .crossDissolve(0.25)
+        )
         
         viewModel.requestCompanyOffer(vC: self, catiD: strCatiD,subCatiD: strSubCatiD, childiD: strChildiD, tableView: self.serviceTableVw)
         viewModel.fetchedSuccessfully = { [weak self] in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.serviceTableVw.stopSkeletonAnimation()
-                self.serviceTableVw.hideSkeleton()
-
-                self.serviceTableVw.reloadData()
+                self.serviceTableVw.hideSkeleton(reloadDataAfter: true)
             }
         }
     }
@@ -762,22 +765,22 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MoreServiceCell", for: indexPath) as! MoreServiceCell
             let obj = self.tourismViewModel.arrayTourismService[indexPath.row]
             
-            cell.view_Cities.isHidden = true
-            cell.view_Company.isHidden = false
-            
             cell.lbl_Title.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
             
             cell.lbl_CompanyName.text = obj.address ?? ""
             
-//            cell.setupCompanyWebView(processPool: webProcessPool)
             let html = L102Language.currentAppleLanguage() == "en" ? obj.description ?? "" : obj.description_ar ?? ""
             
             if let attributedText = html.htmlAttributedString3 {
                 cell.lbl_Description.attributedText = attributedText
             }
             
+            cell.company_Img.image = nil
+            
             if Router.BASE_IMAGE_URL != obj.image1 {
                 Utility.setImageWithSDWebImage(obj.image1 ?? "", cell.company_Img)
+            } else {
+                cell.company_Img.image = R.image.backPlaceholder()
             }
             
             return cell
@@ -789,13 +792,7 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
             cell.lbl_CityAddress.text = obj.address ?? ""
             
             cell.lbl_CityTitle.text = L102Language.currentAppleLanguage() == "en" ? obj.company_name ?? "" : obj.company_name_ar ?? ""
-            
-//            let html = L102Language.currentAppleLanguage() == "en" ? obj.description ?? "" : obj.description_ar ?? ""
-//            
-//            if let attributedText = html.htmlAttributedString3 {
-//                cell.lbl_Description.attributedText = attributedText
-//            }
-            
+                        
             if Router.BASE_IMAGE_URL != obj.cover_image {
                 Utility.setImageWithSDWebImage(obj.cover_image ?? "", cell.city_Img)
             } else {
@@ -860,15 +857,15 @@ extension OfferVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if dependonUi == "Tourism" {
-            return 280
-        } else if dependonUi == "Partner" {
-            return 140
-        } else {
-            return 280
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if dependonUi == "Tourism" {
+//            return 280
+//        } else if dependonUi == "Partner" {
+//            return 140
+//        } else {
+//            return 280
+//        }
+//    }
 }
 
 // MARK: SEARCH DELEGATE
@@ -930,11 +927,31 @@ extension OfferVC: SkeletonTableViewDataSource {
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return "DiscountCell"
+        if dependonUi == "Tourism" {
+            return "MoreServiceCell"
+        } else if dependonUi == "Partner" {
+            return "PartnerServiceCell"
+        } else {
+            return "DiscountCell"
+        }
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView,
+                                heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if dependonUi == "Tourism" {
+            return 280   // MoreServiceCell skeleton height
+        }
+        else if dependonUi == "Partner" {
+            return 140   // PartnerServiceCell skeleton height
+        }
+        else {
+            return 260   // DiscountCell skeleton height
+        }
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4 // ✅ Show 4 shimmer placeholders while loading
+        return 6 // ✅ Show 4 shimmer placeholders while loading
     }
 }
 

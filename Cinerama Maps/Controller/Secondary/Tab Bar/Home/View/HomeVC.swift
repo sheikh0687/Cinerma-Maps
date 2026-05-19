@@ -48,6 +48,9 @@ class HomeVC: UIViewController {
     var isLoadingProfile = true
     var isLoadingServices = true
     
+    private var autoScrollTimer: Timer?
+    private var currentAdvertisementPage: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         registerResuableCellIdentifier()
@@ -86,6 +89,10 @@ class HomeVC: UIViewController {
         requestCountryMap()
         requestGuidelineTip()
         
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPress.minimumPressDuration = 0.3
+        advertisementCollection.addGestureRecognizer(longPress)
+        
 //        // In viewDidLoad — static, set once
 //        let guideCellWidth: CGFloat = 190
 //        guideline_CollectionHeight.constant = (guideCellWidth / 1.91) + 80 + 16
@@ -103,6 +110,22 @@ class HomeVC: UIViewController {
 //        map_CollectionHeight.constant = (mapCellWidth / 1.91) + 40
 //    }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+        self.tabBarController?.tabBar.isHidden = false
+        reUseProfile()
+        
+        if advertisementVM.arrayOfBanners.count > 1 {
+            startAutoScrolling()
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAutoScrolling()
+    }
+    
     private func startProfileShimmering() {
         self.profile_Img.showAnimatedSkeleton()
         self.lbl_UserName.showAnimatedSkeleton()
@@ -115,15 +138,50 @@ class HomeVC: UIViewController {
         self.lbl_UseriD.hideSkeleton()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    private func startAutoScrolling() {
+        stopAutoScrolling()
+        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: { [weak self] _ in
+            self?.scrollToNextAdvertisement()
+        })
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-        self.tabBarController?.tabBar.isHidden = false
-        reUseProfile()
+    private func stopAutoScrolling() {
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = nil
+        
+        // ✅ Force-stop any in-progress scroll animation immediately
+        let currentOffset = advertisementCollection.contentOffset
+        advertisementCollection.setContentOffset(currentOffset, animated: false)
+    }
+    
+    private func scrollToNextAdvertisement() {
+        guard advertisementVM.arrayOfBanners.count > 1 else { return }
+        
+        let totalPages = advertisementVM.arrayOfBanners.count
+        currentAdvertisementPage = (currentAdvertisementPage + 1) % totalPages
+        
+        let indexPath = IndexPath(item: currentAdvertisementPage, section: 0)
+        advertisementCollection.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        advertisementPage.currentPage = currentAdvertisementPage
+    }
+    
+    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            stopAutoScrolling()
+            print("Stop Scrolling when hold")
+        case .ended, .cancelled, .failed:
+            // Small delay so it doesn't feel jumpy on release
+            print("Start Scrolling when un-hold")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let self else { return }
+                if self.advertisementVM.arrayOfBanners.count > 1 {
+                    self.startAutoScrolling()
+                }
+            }
+        default:
+            break
+        }
     }
     
     @IBAction func btn_Search(_ sender: UIButton) {
@@ -266,6 +324,10 @@ extension HomeVC {
                 
                 self.advertisementCollection.stopSkeletonAnimation()
                 self.advertisementCollection.hideSkeleton(reloadDataAfter: false)
+                
+                if self.advertisementVM.arrayOfBanners.count > 1 {
+                    self.startAutoScrolling()
+                }
                 
                 self.advertisementCollection.reloadData()
             }
@@ -414,7 +476,9 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             pageControl.currentPage = Int(pageIndex)
         } else if scrollView == advertisementCollection {
             let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
-            advertisementPage.currentPage = Int(pageIndex)
+            let page = Int(pageIndex)
+            advertisementPage.currentPage = page
+            currentAdvertisementPage = page  // ✅ Keep in sync with manual swipe
         } else {
             // Ignore other collection views
         }
